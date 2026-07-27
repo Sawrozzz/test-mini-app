@@ -47,6 +47,8 @@ export type Camera = {
   byteSize: number;
 };
 
+export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files";
+
 export type DevicePermissionRespons<T> = {
   status: PermissionStatus;
   data?: T;

@@ -1,14 +1,26 @@
 import { useState } from "react";
-import type { DriverLicense, Location, Camera, PermissionStatus } from "../../types";
+import { Menu, ChevronLeft } from "lucide-react";
+import type {
+  DriverLicense,
+  Location,
+  Camera,
+  PermissionStatus,
+  TabId,
+} from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
-import { Header } from "./Header";
-import { LicenseCard } from "./LicenseCard";
-import { ChatAction } from "./ChatAction";
-import { LocationSection } from "./LocationSection";
-import { CameraSection } from "./CameraSection";
+import { Sidebar } from "../Sidebar";
+import { TabHome } from "../TabHome";
+import { TabTestApi } from "../TabTestApi";
+import { TabChat } from "../TabChat";
+import { TabLocation } from "../TabLocation";
+import { TabCamera } from "../TabCamera";
+import { TabGallery } from "../TabGallery";
+import { TabFiles } from "../TabFiles";
 
 function MiniRevenueLicenseApp() {
   const { sdk, user } = usePlatformSDK();
+  const [activeTab, setActiveTab] = useState<TabId>("home");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loading, setLoading] = useState(false);
   const [navResult, setNavResult] = useState("");
@@ -141,40 +153,79 @@ function MiniRevenueLicenseApp() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4 md:p-8 antialiased">
-      <div className="max-w-xl w-full space-y-6">
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/80 border border-slate-200/60 overflow-hidden transition-all">
-          <Header userName={userName} license={license} />
-          <LicenseCard
-            license={license}
-            loading={loading}
-            error={error}
-            onFetchLicense={handleHttpGet}
-          />
+    <div className="flex min-h-screen bg-linear-to-br from-slate-50 to-slate-100 relative">
+      <Sidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        userName={userName}
+        open={sidebarOpen}
+        onToggle={() => setSidebarOpen((v) => !v)}
+      />
+
+      <main className="flex-1 overflow-y-auto min-w-0">
+        <div className="sticky top-0 z-30 h-0">
+          <button
+            onClick={() => setSidebarOpen((v) => !v)}
+            className="hidden md:flex absolute top-3 w-8 h-8 rounded-xl items-center justify-center transition-all duration-300 shadow-lg bg-white/90 backdrop-blur-sm border border-slate-200/80 text-slate-500 hover:text-slate-700 hover:bg-white hover:shadow-xl active:scale-95"
+            style={{
+              left: sidebarOpen ? "calc(2rem - 16px)" : "12px",
+            }}
+            title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+          >
+            <ChevronLeft
+              size={15}
+              className={`transition-transform duration-300 ${sidebarOpen ? "" : "rotate-180"}`}
+            />
+          </button>
+
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className={`md:hidden absolute top-3 left-3 w-9 h-9 rounded-xl items-center justify-center shadow-lg bg-white/90 backdrop-blur-sm border border-slate-200/80 text-slate-500 hover:text-slate-700 hover:bg-white transition-all duration-200 ${sidebarOpen ? "hidden" : "flex"}`}
+            title="Open sidebar"
+          >
+            <Menu size={18} />
+          </button>
         </div>
 
-        <ChatAction
-          navLoading={navLoading}
-          navResult={navResult}
-          onNavigate={handleNavigate}
-        />
-      </div>
-
-      <LocationSection
-        loadLocation={loadLocation}
-        location={location}
-        error={error}
-        locationPermission={locationPermission}
-        onViewLocation={handleViewLocation}
-      />
-
-      <CameraSection
-        loadCamera={loadCamera}
-        cameraResponse={cameraResponse}
-        cameraError={cameraError}
-        cameraPermission={cameraPermission}
-        onOpenCamera={handleOpenCamera}
-      />
+        <div className="pt-2">
+          {activeTab === "home" && <TabHome onNavigate={setActiveTab} />}
+          {activeTab === "test-api" && (
+            <TabTestApi
+              license={license}
+              loading={loading}
+              error={error}
+              onFetchLicense={handleHttpGet}
+            />
+          )}
+          {activeTab === "chat" && (
+            <TabChat
+              navLoading={navLoading}
+              navResult={navResult}
+              onNavigate={handleNavigate}
+            />
+          )}
+          {activeTab === "location" && (
+            <TabLocation
+              loadLocation={loadLocation}
+              location={location}
+              error={error}
+              locationPermission={locationPermission}
+              onViewLocation={handleViewLocation}
+            />
+          )}
+          {activeTab === "camera" && (
+            <TabCamera
+              loadCamera={loadCamera}
+              cameraResponse={cameraResponse}
+              cameraError={cameraError}
+              cameraPermission={cameraPermission}
+              onOpenCamera={handleOpenCamera}
+            />
+          )}
+          {activeTab === "gallery" && <TabGallery />}
+          {activeTab === "files" && <TabFiles />}
+        </div>
+      </main>
     </div>
   );
 }
