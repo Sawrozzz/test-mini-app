@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, ChevronLeft } from "lucide-react";
 import type {
   DriverLicense,
@@ -18,9 +18,14 @@ import { TabCamera } from "../TabCamera";
 import { TabGallery } from "../TabGallery";
 import { TabFiles } from "../TabFiles";
 
-function MiniRevenueLicenseApp() {
+function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
-  const [activeTab, setActiveTab] = useState<TabId>("home");
+  const [activeTab, setActiveTab] = useState<TabId>(
+    () =>
+      (initialPath as TabId) ||
+      (window.location.hash.slice(1) as TabId) ||
+      "home",
+  );
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loading, setLoading] = useState(false);
@@ -50,12 +55,21 @@ function MiniRevenueLicenseApp() {
   const [documentsError, setDocumentsError] = useState<string | null>(null);
   const [webDocuments, setWebDocuments] = useState<FileModule[] | null>(null);
   const [webDocumentsLoading, setWebDocumentsLoading] = useState(false);
-  const [webDocumentsError, setWebDocumentsError] = useState<string | null>(null);
+  const [webDocumentsError, setWebDocumentsError] = useState<string | null>(
+    null,
+  );
   const [browserCamera, setBrowserCamera] = useState<Camera | null>(null);
   const [browserCameraLoading, setBrowserCameraLoading] = useState(false);
-  const [browserCameraError, setBrowserCameraError] = useState<string | null>(null);
+  const [browserCameraError, setBrowserCameraError] = useState<string | null>(
+    null,
+  );
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
+
+  const handleTabChange = (tab: TabId) => {
+    setActiveTab(tab);
+    window.location.hash = tab;
+  };
 
   const handleHttpGet = async () => {
     setLoading(true);
@@ -106,9 +120,9 @@ function MiniRevenueLicenseApp() {
     setError("");
     setLocation(null);
     try {
-      const res = await sdk.device.location({
+      const res = (await sdk.device.location({
         reason: "To view your current location",
-      }) as any;
+      })) as any;
       switch (res.status) {
         case "granted":
           setLocation(res.data!);
@@ -124,7 +138,9 @@ function MiniRevenueLicenseApp() {
           break;
       }
     } catch (err: any) {
-      setError(err instanceof Error ? err.message : "Failed to get location via SDK");
+      setError(
+        err instanceof Error ? err.message : "Failed to get location via SDK",
+      );
     } finally {
       setLoadLocation(false);
     }
@@ -179,9 +195,9 @@ function MiniRevenueLicenseApp() {
     setCameraResponse(null);
     setCameraError(null);
     try {
-      const res = await sdk.device.camera({
+      const res = (await sdk.device.camera({
         reason: "To capture a photo for verification",
-      }) as any;
+      })) as any;
       switch (res.status) {
         case "granted":
           setCameraResponse(res.data!);
@@ -190,7 +206,9 @@ function MiniRevenueLicenseApp() {
           setCameraError("Camera permission denied.");
           break;
         case "parmanentlyDenied":
-          setCameraError("Please enable camera permission from device settings.");
+          setCameraError(
+            "Please enable camera permission from device settings.",
+          );
           break;
         case "restricted":
           setCameraError("Camera access is restricted on this device.");
@@ -428,11 +446,20 @@ function MiniRevenueLicenseApp() {
     input.click();
   };
 
+  useEffect(() => {
+    const onHashChange = () => {
+      const hash = window.location.hash.slice(1) as TabId;
+      if (hash && hash! != activeTab) setActiveTab(hash);
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, [activeTab]);
+
   return (
     <div className="flex min-h-screen bg-linear-to-br from-slate-50 to-slate-100 relative">
       <Sidebar
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
         userName={userName}
         open={sidebarOpen}
         onToggle={() => setSidebarOpen((v) => !v)}
@@ -538,4 +565,4 @@ function MiniRevenueLicenseApp() {
   );
 }
 
-export default MiniRevenueLicenseApp;
+export default TestMiniApp;

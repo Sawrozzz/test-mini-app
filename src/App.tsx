@@ -1,11 +1,11 @@
-import MiniRevenueLicenseApp from "./components/MiniApp";
+import TestMiniApp from "./components/MiniApp";
 import { PlatformSDKProvider } from "./providers/PlatformSDKProvider";
 import "./index.css";
 
-export default function App() {
+export default function App({initialPath}: {initialPath?:string}) {
   return (
     <PlatformSDKProvider>
-      <MiniRevenueLicenseApp />
+      <TestMiniApp initialPath= {initialPath} />
     </PlatformSDKProvider>
   );
 }
