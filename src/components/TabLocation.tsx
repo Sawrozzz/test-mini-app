@@ -87,9 +87,6 @@ function LocationCard({
     ? "from-emerald-600 to-teal-600 shadow-emerald-600/25 hover:shadow-emerald-600/40"
     : "from-indigo-600 to-blue-600 shadow-indigo-600/25 hover:shadow-indigo-600/40";
 
-  const showButton = !location && !isLoading && !error;
-  const showError = !!error && !location && !isLoading;
-
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8">
       <div className="flex items-center gap-2 mb-6">
@@ -104,21 +101,24 @@ function LocationCard({
           <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
           <p className="text-slate-400 text-xs">Fetching location...</p>
         </div>
-      ) : showError ? (
-        <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3">
-          <span className="text-rose-500 mt-0.5 shrink-0">
-            <MapPin size={14} />
-          </span>
-          <p className="text-rose-600 text-xs">{error}</p>
-        </div>
-      ) : location ? (
-        <LocationDataGrid location={location} />
-      ) : null}
+      ) : (
+        <>
+          {error && !location && (
+            <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3 mb-4">
+              <span className="text-rose-500 mt-0.5 shrink-0">
+                <MapPin size={14} />
+              </span>
+              <p className="text-rose-600 text-xs">{error}</p>
+            </div>
+          )}
+          {location && <LocationDataGrid location={location} />}
+        </>
+      )}
 
-      {showButton && (
+      {!isLoading && (
         <button
           onClick={onView}
-          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4`}
         >
           <MapPin size={16} />
           View Location

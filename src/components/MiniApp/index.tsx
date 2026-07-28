@@ -4,9 +4,9 @@ import type {
   DriverLicense,
   Location,
   Camera,
-  PermissionStatus,
   TabId,
   User,
+  FileModule,
 } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { Sidebar } from "../Sidebar";
@@ -35,12 +35,25 @@ function MiniRevenueLicenseApp() {
   const [cameraResponse, setCameraResponse] = useState<Camera | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [loadCamera, setLoadCamera] = useState(false);
-  const [cameraPermission, setCameraPermission] =
-    useState<PermissionStatus | null>(null);
   const [license, setLicense] = useState<DriverLicense | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [loadUser, setLoadUser] = useState(false);
   const [userError, setUserError] = useState<string | null>(null);
+  const [gallery, setGallery] = useState<FileModule[] | null>(null);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+  const [galleryError, setGalleryError] = useState<string | null>(null);
+  const [webImages, setWebImages] = useState<FileModule[] | null>(null);
+  const [webImagesLoading, setWebImagesLoading] = useState(false);
+  const [webImagesError, setWebImagesError] = useState<string | null>(null);
+  const [documents, setDocuments] = useState<FileModule[] | null>(null);
+  const [documentsLoading, setDocumentsLoading] = useState(false);
+  const [documentsError, setDocumentsError] = useState<string | null>(null);
+  const [webDocuments, setWebDocuments] = useState<FileModule[] | null>(null);
+  const [webDocumentsLoading, setWebDocumentsLoading] = useState(false);
+  const [webDocumentsError, setWebDocumentsError] = useState<string | null>(null);
+  const [browserCamera, setBrowserCamera] = useState<Camera | null>(null);
+  const [browserCameraLoading, setBrowserCameraLoading] = useState(false);
+  const [browserCameraError, setBrowserCameraError] = useState<string | null>(null);
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
@@ -168,21 +181,17 @@ function MiniRevenueLicenseApp() {
     try {
       const res = await sdk.device.camera({
         reason: "To capture a photo for verification",
-      });
-      setCameraPermission(res.status);
+      }) as any;
       switch (res.status) {
         case "granted":
           setCameraResponse(res.data!);
           break;
-
         case "denied":
           setCameraError("Camera permission denied.");
           break;
-
         case "parmanentlyDenied":
           setCameraError("Please enable camera permission from device settings.");
           break;
-
         case "restricted":
           setCameraError("Camera access is restricted on this device.");
           break;
@@ -191,10 +200,232 @@ function MiniRevenueLicenseApp() {
       setCameraError(
         error instanceof Error ? error.message : "Failed to open camera.",
       );
-      setCameraPermission("denied");
     } finally {
       setLoadCamera(false);
     }
+  };
+
+  const handleOpenBrowserCamera = () => {
+    setBrowserCameraLoading(true);
+    setBrowserCameraError(null);
+    setBrowserCamera(null);
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    let cancelled = true;
+
+    const finish = (err?: string) => {
+      if (err) setBrowserCameraError(err);
+      setBrowserCameraLoading(false);
+      window.removeEventListener("focus", onWindowFocus);
+    };
+
+    const onWindowFocus = () => {
+      setTimeout(() => {
+        if (cancelled) finish("Camera capture cancelled.");
+      }, 300);
+    };
+
+    window.addEventListener("focus", onWindowFocus);
+
+    input.onchange = () => {
+      cancelled = false;
+      window.removeEventListener("focus", onWindowFocus);
+
+      if (!input.files || input.files.length === 0) {
+        finish("No image captured.");
+        return;
+      }
+
+      const file = input.files[0];
+      const blobUrl = URL.createObjectURL(file);
+      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+
+      setBrowserCamera({
+        url: blobUrl,
+        fileName: file.name || `capture-${Date.now()}.${ext}`,
+        mimeType: file.type || "image/jpeg",
+        byteSize: file.size,
+      });
+      finish();
+    };
+
+    input.click();
+  };
+
+  const handleImages = async () => {
+    setGalleryLoading(true);
+    setGalleryError(null);
+
+    try {
+      const res = await (sdk.device as any).gallery({
+        reason: "To select images",
+        multiple: true,
+      });
+      switch (res.status) {
+        case "granted":
+          setGallery(res.data!.images ?? res.data!);
+          break;
+        case "denied":
+          setGalleryError("Image upload cancelled.");
+          break;
+        case "parmanentlyDenied":
+          setGalleryError(
+            "Please enable gallery permission from device settings.",
+          );
+          break;
+        case "restricted":
+          setGalleryError("Gallery access is restricted on this device.");
+          break;
+      }
+    } catch (error) {
+      setGalleryError(
+        error instanceof Error ? error.message : "Failed to open gallery.",
+      );
+    } finally {
+      setGalleryLoading(false);
+    }
+  };
+
+  const handleImageUploadByWebOnly = () => {
+    setWebImagesLoading(true);
+    setWebImagesError(null);
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.accept = "image/*";
+
+    let cancelled = true;
+
+    const finish = (err?: string) => {
+      if (err) setWebImagesError(err);
+      setWebImagesLoading(false);
+      window.removeEventListener("focus", onWindowFocus);
+    };
+
+    const onWindowFocus = () => {
+      setTimeout(() => {
+        if (cancelled) finish("No files selected.");
+      }, 300);
+    };
+
+    window.addEventListener("focus", onWindowFocus);
+
+    input.onchange = () => {
+      cancelled = false;
+      window.removeEventListener("focus", onWindowFocus);
+
+      if (!input.files || input.files.length === 0) {
+        finish("No files selected.");
+        return;
+      }
+
+      const files: FileModule[] = Array.from(input.files).map((file) => {
+        const blobUrl = URL.createObjectURL(file);
+        const ext = file.name.split(".").pop()?.toLowerCase() || "";
+        return {
+          url: blobUrl,
+          previewUrl: blobUrl,
+          fileName: file.name,
+          mimeType: file.type || "image/jpeg",
+          extension: ext,
+          byteSize: file.size,
+        };
+      });
+
+      setWebImages(files);
+      finish();
+    };
+
+    input.click();
+  };
+
+  const handleFileUpload = async () => {
+    setDocumentsLoading(true);
+    setDocumentsError(null);
+
+    try {
+      const res = await (sdk.device as any).files({
+        reason: "To select documents",
+        multiple: true,
+      });
+      switch (res.status) {
+        case "granted":
+          setDocuments(res.data!.files ?? res.data!);
+          break;
+        case "denied":
+          setDocumentsError("File access denied.");
+          break;
+        case "parmanentlyDenied":
+          setDocumentsError("Please enable file access from device settings.");
+          break;
+        case "restricted":
+          setDocumentsError("File access is restricted on this device.");
+          break;
+      }
+    } catch (error) {
+      setDocumentsError(
+        error instanceof Error ? error.message : "Failed to open file picker.",
+      );
+    } finally {
+      setDocumentsLoading(false);
+    }
+  };
+
+  const handleFileUploadByWeb = () => {
+    setWebDocumentsLoading(true);
+    setWebDocumentsError(null);
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+
+    let cancelled = true;
+
+    const finish = (err?: string) => {
+      if (err) setWebDocumentsError(err);
+      setWebDocumentsLoading(false);
+      window.removeEventListener("focus", onWindowFocus);
+    };
+
+    const onWindowFocus = () => {
+      setTimeout(() => {
+        if (cancelled) finish("No files selected.");
+      }, 300);
+    };
+
+    window.addEventListener("focus", onWindowFocus);
+
+    input.onchange = () => {
+      cancelled = false;
+      window.removeEventListener("focus", onWindowFocus);
+
+      if (!input.files || input.files.length === 0) {
+        finish("No files selected.");
+        return;
+      }
+
+      const files: FileModule[] = Array.from(input.files).map((file) => {
+        const blobUrl = URL.createObjectURL(file);
+        const ext = file.name.split(".").pop()?.toLowerCase() || "";
+        return {
+          url: blobUrl,
+          previewUrl: file.type?.startsWith("image/") ? blobUrl : undefined,
+          fileName: file.name,
+          mimeType: file.type || "application/octet-stream",
+          extension: ext,
+          byteSize: file.size,
+        };
+      });
+
+      setWebDocuments(files);
+      finish();
+    };
+
+    input.click();
   };
 
   return (
@@ -270,12 +501,37 @@ function MiniRevenueLicenseApp() {
               loadCamera={loadCamera}
               cameraResponse={cameraResponse}
               cameraError={cameraError}
-              cameraPermission={cameraPermission}
               onOpenCamera={handleOpenCamera}
+              browserCamera={browserCamera}
+              browserCameraLoading={browserCameraLoading}
+              browserCameraError={browserCameraError}
+              onOpenBrowserCamera={handleOpenBrowserCamera}
             />
           )}
-          {activeTab === "gallery" && <TabGallery />}
-          {activeTab === "files" && <TabFiles />}
+          {activeTab === "gallery" && (
+            <TabGallery
+              gallery={gallery}
+              galleryLoading={galleryLoading}
+              galleryError={galleryError}
+              onOpenGallery={handleImages}
+              webImages={webImages}
+              webImagesLoading={webImagesLoading}
+              webImagesError={webImagesError}
+              onUploadWebImages={handleImageUploadByWebOnly}
+            />
+          )}
+          {activeTab === "files" && (
+            <TabFiles
+              documents={documents}
+              documentsLoading={documentsLoading}
+              documentsError={documentsError}
+              onOpenFilePicker={handleFileUpload}
+              webDocuments={webDocuments}
+              webDocumentsLoading={webDocumentsLoading}
+              webDocumentsError={webDocumentsError}
+              onUploadWebFiles={handleFileUploadByWeb}
+            />
+          )}
         </div>
       </main>
     </div>

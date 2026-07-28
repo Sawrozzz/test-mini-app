@@ -66,6 +66,15 @@ export type User = {
   };
 };
 
+export type FileModule = {
+  url: string;
+  previewUrl?: string;
+  fileName: string;
+  mimeType: string;
+  extension: string;
+  byteSize: number;
+};
+
 export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files";
 
 export type DevicePermissionRespons<T> = {

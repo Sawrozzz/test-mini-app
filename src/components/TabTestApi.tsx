@@ -64,21 +64,24 @@ export function TabTestApi({
                 <Loader size={24} className="text-cyan-500 animate-spin mb-3" />
                 <p className="text-slate-400 text-xs">Fetching user data...</p>
               </div>
-            ) : userError && !userData ? (
-              <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3">
-                <span className="text-rose-500 mt-0.5 shrink-0">
-                  <FileText size={14} />
-                </span>
-                <p className="text-rose-600 text-xs">{userError}</p>
-              </div>
-            ) : userData ? (
-              <UserDataGrid user={userData} />
-            ) : null}
+            ) : (
+              <>
+                {userError && !userData && (
+                  <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3 mb-4">
+                    <span className="text-rose-500 mt-0.5 shrink-0">
+                      <FileText size={14} />
+                    </span>
+                    <p className="text-rose-600 text-xs">{userError}</p>
+                  </div>
+                )}
+                {userData && <UserDataGrid user={userData} />}
+              </>
+            )}
 
-            {!userData && !loadUser && !userError && (
+            {!loadUser && (
               <button
                 onClick={onFetchUser}
-                className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4"
               >
                 <Globe size={16} />
                 Fetch User
