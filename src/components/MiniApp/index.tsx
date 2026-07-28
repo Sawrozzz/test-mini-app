@@ -6,6 +6,7 @@ import type {
   Camera,
   PermissionStatus,
   TabId,
+  User,
 } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { Sidebar } from "../Sidebar";
@@ -28,14 +29,18 @@ function MiniRevenueLicenseApp() {
   const [location, setLocation] = useState<Location | null>(null);
   const [loadLocation, setLoadLocation] = useState(false);
   const [error, setError] = useState("");
+  const [browserLocation, setBrowserLocation] = useState<Location | null>(null);
+  const [browserError, setBrowserError] = useState<string | null>(null);
+  const [loadBrowserLocation, setLoadBrowserLocation] = useState(false);
   const [cameraResponse, setCameraResponse] = useState<Camera | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [loadCamera, setLoadCamera] = useState(false);
-  const [locationPermission, setLocationPermission] =
-    useState<PermissionStatus | null>(null);
   const [cameraPermission, setCameraPermission] =
     useState<PermissionStatus | null>(null);
   const [license, setLicense] = useState<DriverLicense | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
+  const [loadUser, setLoadUser] = useState(false);
+  const [userError, setUserError] = useState<string | null>(null);
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
@@ -83,36 +88,76 @@ function MiniRevenueLicenseApp() {
       setNavLoading(false);
     }
   };
-  const handleViewLocation = async () => {
+  const handleViewSdkLocation = async () => {
     setLoadLocation(true);
     setError("");
+    setLocation(null);
     try {
       const res = await sdk.device.location({
         reason: "To view your current location",
-      });
-      setLocationPermission(res.status);
+      }) as any;
       switch (res.status) {
         case "granted":
           setLocation(res.data!);
           break;
-
         case "denied":
           setError("Location permission denied.");
           break;
-
         case "parmanentlyDenied":
           setError("Please enable location permission from device settings.");
           break;
-
         case "restricted":
           setError("Location access is restricted on this device.");
           break;
       }
-    } catch (error) {
-      setError((error as any).message);
-      setLocationPermission("denied");
+    } catch (err: any) {
+      setError(err instanceof Error ? err.message : "Failed to get location via SDK");
     } finally {
       setLoadLocation(false);
+    }
+  };
+
+  const handleViewBrowserLocation = () => {
+    setLoadBrowserLocation(true);
+    setBrowserError(null);
+    setBrowserLocation(null);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setBrowserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+            timestamp: new Date(position.timestamp).toISOString(),
+          });
+          setLoadBrowserLocation(false);
+        },
+        (err) => {
+          setBrowserError(err.message);
+          setLoadBrowserLocation(false);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
+      );
+    } else {
+      setBrowserError("Geolocation is not supported by this browser.");
+      setLoadBrowserLocation(false);
+    }
+  };
+
+  const handleFetchUser = async () => {
+    setLoadUser(true);
+    setUserError(null);
+    setUserData(null);
+    try {
+      const res = await fetch("https://jsonplaceholder.typicode.com/users/1");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: User = await res.json();
+      setUserData(data);
+    } catch (err: any) {
+      setUserError(err.message || "Failed to fetch user data");
+    } finally {
+      setLoadUser(false);
     }
   };
 
@@ -195,6 +240,10 @@ function MiniRevenueLicenseApp() {
               loading={loading}
               error={error}
               onFetchLicense={handleHttpGet}
+              userData={userData}
+              loadUser={loadUser}
+              userError={userError}
+              onFetchUser={handleFetchUser}
             />
           )}
           {activeTab === "chat" && (
@@ -208,9 +257,12 @@ function MiniRevenueLicenseApp() {
             <TabLocation
               loadLocation={loadLocation}
               location={location}
-              error={error}
-              locationPermission={locationPermission}
-              onViewLocation={handleViewLocation}
+              sdkError={error}
+              loadBrowserLocation={loadBrowserLocation}
+              browserLocation={browserLocation}
+              browserError={browserError}
+              onViewSdkLocation={handleViewSdkLocation}
+              onViewBrowserLocation={handleViewBrowserLocation}
             />
           )}
           {activeTab === "camera" && (

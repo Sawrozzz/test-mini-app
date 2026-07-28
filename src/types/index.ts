@@ -47,6 +47,25 @@ export type Camera = {
   byteSize: number;
 };
 
+export type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  website: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+  };
+  company: {
+    name: string;
+    catchPhrase: string;
+  };
+};
+
 export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files";
 
 export type DevicePermissionRespons<T> = {

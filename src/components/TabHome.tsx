@@ -53,15 +53,15 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
         <div className="flex flex-col lg:flex-row items-center gap-10 mb-16">
           <div className="flex-1 w-full max-w-md mx-auto lg:mx-0">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/10 to-pink-400/20 rounded-full blur-3xl" />
+              <div className="absolute inset-0 bg-linear-to-br from-blue-400/20 via-purple-400/10 to-pink-400/20 rounded-full blur-3xl" />
               <div className="relative flex items-center justify-center">
-                <div className="w-56 h-56 md:w-64 md:h-64 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-3xl rotate-12 shadow-2xl shadow-blue-500/20 flex items-center justify-center">
+                <div className="w-56 h-56 md:w-64 md:h-64 bg-linear-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-3xl rotate-12 shadow-2xl shadow-blue-500/20 flex items-center justify-center">
                   <Sparkles size={72} className="text-white/80" />
                 </div>
-                <div className="absolute -top-3 -right-3 w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl -rotate-12 shadow-lg shadow-amber-500/30 flex items-center justify-center">
+                <div className="absolute -top-3 -right-3 w-20 h-20 bg-linear-to-br from-amber-400 to-orange-500 rounded-2xl -rotate-12 shadow-lg shadow-amber-500/30 flex items-center justify-center">
                   <Zap size={32} className="text-white" />
                 </div>
-                <div className="absolute -bottom-3 -left-3 w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl rotate-6 shadow-lg shadow-emerald-500/30 flex items-center justify-center">
+                <div className="absolute -bottom-3 -left-3 w-16 h-16 bg-linear-to-br from-emerald-400 to-teal-500 rounded-2xl rotate-6 shadow-lg shadow-emerald-500/30 flex items-center justify-center">
                   <span className="text-2xl">✨</span>
                 </div>
               </div>
