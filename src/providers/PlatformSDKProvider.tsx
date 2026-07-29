@@ -22,7 +22,7 @@ function reducer(_state: State, action: Action): State {
 }
 
 function getSDK() {
-  const instance = window.getMiniAppBridge?.()?.getActiveInstance() ?? null;
+  const instance = window.__GSA_SDK__ ?? null;
   if (!instance) throw new Error("SDK not available");
   return instance;
 }
