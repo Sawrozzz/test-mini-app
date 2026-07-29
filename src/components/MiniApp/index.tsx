@@ -74,16 +74,23 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const handleHttpGet = async () => {
     setLoading(true);
     try {
-      const res = await sdk.http.post({
+      // const res = await sdk.http.post({
+      //   endpoint: "/api/driving-license",
+      //   body: { method: "GET", path: "/v1/license" },
+      //   headers: { "x-app-id": "mini-revenue-app" },
+      // });
+
+      const response = await sdk.api.request({
         endpoint: "/api/driving-license",
+        // method: "POST",
         body: { method: "GET", path: "/v1/license" },
         headers: { "x-app-id": "mini-revenue-app" },
       });
 
-      if (res.data.data) {
-        setLicense(res.data.data.driverLicense);
+      if (response.data) {
+        setLicense(response.data.driverLicense);
       } else {
-        setError(res.data.error);
+        setError(response.data.error);
       }
     } catch (err) {
       console.error(err);
@@ -120,12 +127,13 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setError("");
     setLocation(null);
     try {
-      const res = (await sdk.device.location({
+      const res = (await (sdk.device as any).location({
         reason: "To view your current location",
       })) as any;
+
       switch (res.status) {
         case "granted":
-          setLocation(res.data!);
+          setLocation(res.data.location);
           break;
         case "denied":
           setError("Location permission denied.");
@@ -198,6 +206,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       const res = (await sdk.device.camera({
         reason: "To capture a photo for verification",
       })) as any;
+
       switch (res.status) {
         case "granted":
           setCameraResponse(res.data!);
