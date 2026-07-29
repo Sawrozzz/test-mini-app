@@ -15,85 +15,95 @@ interface GovSdkUser {
   avatar?: string;
 }
 
- interface GovDeviceLocationModule {
+interface GovDeviceLocationModule {
   latitude: number;
   longitude: number;
   accuracy?: number;
 }
 
- interface GovDeviceCameraModule {
+interface GovDeviceCameraModule {
   uri: string;
   base64?: string;
   width?: number;
   height?: number;
 }
 
- interface GovDeviceSdkModule {
+interface GovDeviceSdkModule {
   camera(): Promise<GovDeviceCameraModule>;
   location(): Promise<GovDeviceLocationModule>;
+  gallery(options?: { reason?: string; multiple?: boolean }): Promise<any>;
+  files(options?: { reason?: string; multiple?: boolean }): Promise<any>;
 }
-
-
 
 interface GovSdkHttp {
   get<T = unknown>(
     endpoint?: string,
     query?: Record<string, string>,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
   ): Promise<{ status: number; data: T; headers: Record<string, string> }>;
   post<T = unknown>(
     endpoint?: string,
     body?: unknown,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
   ): Promise<{ status: number; data: T; headers: Record<string, string> }>;
   put<T = unknown>(
     endpoint?: string,
     body?: unknown,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
   ): Promise<{ status: number; data: T; headers: Record<string, string> }>;
   patch<T = unknown>(
     endpoint?: string,
     body?: unknown,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
   ): Promise<{ status: number; data: T; headers: Record<string, string> }>;
   delete<T = unknown>(
     endpoint?: string,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
   ): Promise<{ status: number; data: T; headers: Record<string, string> }>;
 }
 
+interface GovSdkApi {
+  request<T = unknown, B = unknown>(params: {
+    method?: string;
+    endpoint?: string;
+    path?: string;
+    body?: B;
+    headers?: Record<string, string>;
+  }): Promise<{ status: number; data: T; headers: Record<string, string>; error?: string }>;
+}
+
+interface GovSdkStorage {
+  get(key: string): Promise<string | null>;
+  set(key: string, value: string): Promise<void>;
+  remove(key: string): Promise<void>;
+}
+
 interface GovSdkPlatform {
-  readonly type: 'WEB' | 'ANDROID' | 'IOS';
+  readonly type: 'WEB' | 'FLUTTER';
   isWeb(): boolean;
-  isAndroid(): boolean;
-  isIOS(): boolean;
+  isFlutter(): boolean;
   isMobile(): boolean;
 }
 
+interface GovSdkNavigation {
+  navigate(target: { route: string; app: string; params?: Record<string, string>; replace?: boolean }): Promise<void>;
+  getCurrent(): Promise<{ app: string; route: string; params: Record<string, string>; historyLength: number }>;
+}
+
 interface GovSdkInstance {
-  readonly moduleId: string;
-  readonly version: string;
+  readonly miniAppId: string;
+  readonly gsaProtocolVersion: string;
   readonly traceId: string;
   auth: GovSdkAuth;
+  api: GovSdkApi;
+  storage: GovSdkStorage;
   http: GovSdkHttp;
   platform: GovSdkPlatform;
-  device:GovDeviceSdkModule; 
+  device: GovDeviceSdkModule;
+  navigation: GovSdkNavigation;
   destroy(): void;
 }
 
-interface GovSdkRegistry {
-  createInstance(
-    moduleId: string,
-    options?: { timeout?: number; retryAttempts?: number; retryDelayMs?: number }
-  ): Promise<GovSdkInstance>;
-  getInstance(moduleId: string): GovSdkInstance | null;
-  getActiveInstance(): GovSdkInstance | null;
-  destroyInstance(moduleId: string): void;
-  hasInstance(moduleId: string): boolean;
-  getActiveModuleIds(): string[];
-}
-
 interface Window {
-  getMiniAppBridge(): GovSdkRegistry | undefined;
+  __GSA_SDK__?: GovSdkInstance;
 }
- 
