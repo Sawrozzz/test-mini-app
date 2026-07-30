@@ -47,3 +47,29 @@ export type User = {
 };
 
 export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download";
+
+export interface SdkFileModule {
+  rawFile?: File;
+  url: string;
+  fileName?: string;
+  mimeType?: string;
+  extension?: string;
+  byteSize?: number;
+  previewUrl?: string;
+}
+
+export interface SdkDeviceDownloadResult {
+  file: SdkFileModule;
+}
+
+export interface SdkDevicePermissionStatus {
+  status: "granted" | "denied" | "permanentlyDenied" | "restricted";
+}
+
+export interface SdkDevicePermissionBaseResponse<T> {
+  status: SdkDevicePermissionStatus["status"];
+  data?: T;
+  error?: string;
+}
+
+export interface SdkDeviceDownloadResponse extends SdkDevicePermissionBaseResponse<SdkDeviceDownloadResult> {}

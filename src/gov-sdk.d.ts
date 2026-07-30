@@ -7,6 +7,7 @@ import type {
   DeviceGalleryResult,
   DeviceFileResult,
   DeviceDownloadResult,
+  DeviceExtraOptions,
   FileModule,
 } from '@sawrozzz/mini-app-types';
 
@@ -19,8 +20,9 @@ declare global {
   type SdkDeviceCameraResult = DeviceCameraResult;
   type SdkDeviceGalleryResult = DeviceGalleryResult;
   type SdkDeviceFileResult = DeviceFileResult;
+  type SdkDeviceDownloadResult = DeviceDownloadResult;
   type SdkFileModule = FileModule;
-  type SdkDownloadModule = DeviceDownloadResult
+  type SdkDeviceExtraOptions = DeviceExtraOptions;
 
   interface Window {
     __GSA_SDK__?: MiniAppSdk;

@@ -566,9 +566,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
             />
           )}
           {
-            activeTab === "download" && (
-              <DownloadTab />
-            )
+            activeTab === "download" && <DownloadTab sdk={sdk!} />
           }
         </div>
       </main>

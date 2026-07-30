@@ -34,8 +34,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@sawrozzz/mini-app-types':
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^1.0.3
+        version: 1.0.3
       '@types/node':
         specifier: ^26.1.1
         version: 26.1.2
@@ -334,8 +334,8 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@sawrozzz/mini-app-types@1.0.2':
-    resolution: {integrity: sha512-T+L6Dptekuz0Dozw8DLcKrdoKxG719zQt2fBzAxNmrjeUutYWvURrhbY9IA8APA+h8YPZbd5VW3LCHPVgh97Ag==}
+  '@sawrozzz/mini-app-types@1.0.3':
+    resolution: {integrity: sha512-d25LtzFJLVv9B/mKp9EttMJtOBugz/TlPfBXWiVsLOm5vyzyhgirJBnLvNRWzD/dQ41AmHVcu2+E9UHgruygSw==}
 
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
@@ -1522,7 +1522,7 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sawrozzz/mini-app-types@1.0.2': {}
+  '@sawrozzz/mini-app-types@1.0.3': {}
 
   '@tailwindcss/node@4.3.3':
     dependencies:
