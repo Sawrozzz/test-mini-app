@@ -27,26 +27,6 @@ export type Address = {
   country: string;
 };
 
-export type PermissionStatus =
-  | "granted"
-  | "denied"
-  | "parmanentlyDenied"
-  | "restricted";
-
-export type Location = {
-  longitude: number;
-  latitude: number;
-  accuracy?: number;
-  timestamp: string;
-};
-
-export type Camera = {
-  url: string;
-  fileName?: string;
-  mimeType?: string;
-  byteSize: number;
-};
-
 export type User = {
   id: number;
   name: string;
@@ -66,19 +46,4 @@ export type User = {
   };
 };
 
-export type FileModule = {
-  url: string;
-  previewUrl?: string;
-  fileName: string;
-  mimeType: string;
-  extension: string;
-  byteSize: number;
-};
-
 export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files";
-
-export type DevicePermissionRespons<T> = {
-  status: PermissionStatus;
-  data?: T;
-  error?: string;
-};

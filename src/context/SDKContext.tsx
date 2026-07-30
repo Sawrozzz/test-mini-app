@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
 export interface SDKContextValue {
-  sdk: any | null;
-  user: any | null;
+  sdk: MiniAppSdk | null;
+  user: SdkPlatformUser | null;
   isReady: boolean;
   error: Error | null;
 }

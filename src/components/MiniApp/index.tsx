@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, ChevronLeft } from "lucide-react";
-import type {
-  DriverLicense,
-  Location,
-  Camera,
-  TabId,
-  User,
-  FileModule,
-} from "../../types";
+import type { DriverLicense, TabId, User } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { Sidebar } from "../Sidebar";
 import { TabHome } from "../TabHome";
@@ -31,34 +24,34 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [loading, setLoading] = useState(false);
   const [navResult, setNavResult] = useState("");
   const [navLoading, setNavLoading] = useState(false);
-  const [location, setLocation] = useState<Location | null>(null);
+  const [location, setLocation] = useState<SdkDeviceLocationResult | null>(null);
   const [loadLocation, setLoadLocation] = useState(false);
   const [error, setError] = useState("");
-  const [browserLocation, setBrowserLocation] = useState<Location | null>(null);
+  const [browserLocation, setBrowserLocation] = useState<SdkDeviceLocationResult | null>(null);
   const [browserError, setBrowserError] = useState<string | null>(null);
   const [loadBrowserLocation, setLoadBrowserLocation] = useState(false);
-  const [cameraResponse, setCameraResponse] = useState<Camera | null>(null);
+  const [cameraResponse, setCameraResponse] = useState<SdkDeviceCameraResult | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [loadCamera, setLoadCamera] = useState(false);
   const [license, setLicense] = useState<DriverLicense | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [loadUser, setLoadUser] = useState(false);
   const [userError, setUserError] = useState<string | null>(null);
-  const [gallery, setGallery] = useState<FileModule[] | null>(null);
+  const [gallery, setGallery] = useState<SdkFileModule[] | null>(null);
   const [galleryLoading, setGalleryLoading] = useState(false);
   const [galleryError, setGalleryError] = useState<string | null>(null);
-  const [webImages, setWebImages] = useState<FileModule[] | null>(null);
+  const [webImages, setWebImages] = useState<SdkFileModule[] | null>(null);
   const [webImagesLoading, setWebImagesLoading] = useState(false);
   const [webImagesError, setWebImagesError] = useState<string | null>(null);
-  const [documents, setDocuments] = useState<FileModule[] | null>(null);
+  const [documents, setDocuments] = useState<SdkFileModule[] | null>(null);
   const [documentsLoading, setDocumentsLoading] = useState(false);
   const [documentsError, setDocumentsError] = useState<string | null>(null);
-  const [webDocuments, setWebDocuments] = useState<FileModule[] | null>(null);
+  const [webDocuments, setWebDocuments] = useState<SdkFileModule[] | null>(null);
   const [webDocumentsLoading, setWebDocumentsLoading] = useState(false);
   const [webDocumentsError, setWebDocumentsError] = useState<string | null>(
     null,
   );
-  const [browserCamera, setBrowserCamera] = useState<Camera | null>(null);
+  const [browserCamera, setBrowserCamera] = useState<SdkDeviceCameraResult | null>(null);
   const [browserCameraLoading, setBrowserCameraLoading] = useState(false);
   const [browserCameraError, setBrowserCameraError] = useState<string | null>(
     null,
@@ -74,7 +67,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const handleHttpGet = async () => {
     setLoading(true);
     try {
-      const res = await sdk.http.post({
+      const res = await sdk!.http.post<{ data: { driverLicense: DriverLicense }; error?: string }>({
         endpoint: "/api/driving-license",
         body: { method: "GET", path: "/v1/license" },
         headers: { "x-app-id": "mini-revenue-app" },
@@ -83,7 +76,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       if (res.data.data) {
         setLicense(res.data.data.driverLicense);
       } else {
-        setError(res.data.error);
+        setError(res.data.error ?? "Unknown error");
       }
     } catch (err) {
       console.error(err);
@@ -101,7 +94,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         sourceApp: "mini-revenue-app",
         timestamp: Date.now().toString(),
       };
-      await sdk.navigation.navigate({
+      await sdk!.navigation.navigate({
         route: "/",
         app: "chat-mini-app",
         params: payload,
@@ -120,9 +113,9 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setError("");
     setLocation(null);
     try {
-      const res = (await sdk.device.location({
+      const res = await sdk!.device.location({
         reason: "To view your current location",
-      })) as any;
+      });
       switch (res.status) {
         case "granted":
           setLocation(res.data!);
@@ -130,7 +123,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         case "denied":
           setError("Location permission denied.");
           break;
-        case "parmanentlyDenied":
+        case "permanentlyDenied":
           setError("Please enable location permission from device settings.");
           break;
         case "restricted":
@@ -195,9 +188,9 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setCameraResponse(null);
     setCameraError(null);
     try {
-      const res = (await sdk.device.camera({
+      const res = await sdk!.device.camera({
         reason: "To capture a photo for verification",
-      })) as any;
+      });
       switch (res.status) {
         case "granted":
           setCameraResponse(res.data!);
@@ -205,7 +198,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         case "denied":
           setCameraError("Camera permission denied.");
           break;
-        case "parmanentlyDenied":
+        case "permanentlyDenied":
           setCameraError(
             "Please enable camera permission from device settings.",
           );
@@ -278,7 +271,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setGalleryError(null);
 
     try {
-      const res = await (sdk.device as any).gallery({
+      const res = await sdk!.device.gallery({
         reason: "To select images",
         multiple: true,
       });
@@ -289,7 +282,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         case "denied":
           setGalleryError("Image upload cancelled.");
           break;
-        case "parmanentlyDenied":
+        case "permanentlyDenied":
           setGalleryError(
             "Please enable gallery permission from device settings.",
           );
@@ -341,7 +334,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         return;
       }
 
-      const files: FileModule[] = Array.from(input.files).map((file) => {
+      const files: SdkFileModule[] = Array.from(input.files).map((file) => {
         const blobUrl = URL.createObjectURL(file);
         const ext = file.name.split(".").pop()?.toLowerCase() || "";
         return {
@@ -366,18 +359,18 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setDocumentsError(null);
 
     try {
-      const res = await (sdk.device as any).files({
+      const res = await sdk!.device.files({
         reason: "To select documents",
         multiple: true,
       });
       switch (res.status) {
         case "granted":
-          setDocuments(res.data!.files ?? res.data!);
+          setDocuments(res.data!.file ?? res.data!);
           break;
         case "denied":
           setDocumentsError("File access denied.");
           break;
-        case "parmanentlyDenied":
+        case "permanentlyDenied":
           setDocumentsError("Please enable file access from device settings.");
           break;
         case "restricted":
@@ -426,7 +419,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         return;
       }
 
-      const files: FileModule[] = Array.from(input.files).map((file) => {
+      const files: SdkFileModule[] = Array.from(input.files).map((file) => {
         const blobUrl = URL.createObjectURL(file);
         const ext = file.name.split(".").pop()?.toLowerCase() || "";
         return {

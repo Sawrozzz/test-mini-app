@@ -1,5 +1,5 @@
 import { Folder, Loader, Upload, X, FileText, HardDrive, FileImage, Film, FileArchive, FileCode, FileSpreadsheet } from "lucide-react";
-import type { FileModule } from "../types";
+
 
 export function TabFiles({
   documents,
@@ -11,11 +11,11 @@ export function TabFiles({
   webDocumentsError,
   onUploadWebFiles,
 }: {
-  documents: FileModule[] | null;
+  documents: SdkFileModule[] | null;
   documentsLoading: boolean;
   documentsError: string | null;
   onOpenFilePicker: () => void;
-  webDocuments: FileModule[] | null;
+  webDocuments: SdkFileModule[] | null;
   webDocumentsLoading: boolean;
   webDocumentsError: string | null;
   onUploadWebFiles: () => void;
@@ -78,7 +78,7 @@ function FileCard({
   title: string;
   icon: React.ReactNode;
   color: "cyan" | "amber";
-  files: FileModule[] | null;
+  files: SdkFileModule[] | null;
   isLoading: boolean;
   error: string | null;
   onAction: () => void;
@@ -147,9 +147,9 @@ function FileCard({
   );
 }
 
-function FilePreview({ file }: { file: FileModule }) {
-  const ext = file.extension || file.fileName.split(".").pop()?.toLowerCase() || "?";
-  const size = formatBytes(file.byteSize);
+function FilePreview({ file }: { file: SdkFileModule }) {
+  const ext = file.extension || file.fileName!.split(".").pop()?.toLowerCase() || "?";
+  const size = formatBytes(file.byteSize ?? 0);
   const isImage = file.mimeType?.startsWith("image/");
   const Icon = getFileIcon(ext);
 
