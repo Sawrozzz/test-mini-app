@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, ChevronLeft } from "lucide-react";
-import type { DriverLicense, TabId, User } from "../../types";
+import type { DriverLicense, TabId, User, SdkDeviceDownloadResult } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { Sidebar } from "../Sidebar";
 import { TabHome } from "../TabHome";
@@ -64,6 +64,18 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [browserCameraError, setBrowserCameraError] = useState<string | null>(
     null,
   );
+  const [imageDownload, setImageDownload] = useState<SdkDeviceDownloadResult | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [imageDownloadWeb, setImageDownloadWeb] = useState<boolean>(false);
+  const [imageLoadingWeb, setImageLoadingWeb] = useState(false);
+  const [imageErrorWeb, setImageErrorWeb] = useState<string | null>(null);
+  const [fileDownload, setFileDownload] = useState<SdkDeviceDownloadResult | null>(null);
+  const [fileLoading, setFileLoading] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [fileDownloadWeb, setFileDownloadWeb] = useState<boolean>(false);
+  const [fileLoadingWeb, setFileLoadingWeb] = useState(false);
+  const [fileErrorWeb, setFileErrorWeb] = useState<string | null>(null);
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
@@ -130,7 +142,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       });
       switch (res.status) {
         case "granted":
-          setLocation(res?.data || null);
+          setLocation(res?.data! || null);
           break;
         case "denied":
           setError("Location permission denied.");
@@ -451,6 +463,108 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     input.click();
   };
 
+  const handleDownloadImage = async () => {
+    setImageLoading(true);
+    setImageError(null);
+    setImageDownload(null);
+    try {
+      const res = await sdk!.device.download({
+        url: "https://picsum.photos/1200/800",
+        fileName: "sample-image.jpg",
+        mimeType: "image/jpeg",
+        reason: "To download the selected image",
+      });
+      switch (res.status) {
+        case "granted":
+          setImageDownload(res.data!);
+          break;
+        case "denied":
+          setImageError("Download permission denied.");
+          break;
+        case "permanentlyDenied":
+          setImageError("Please enable download permission from device settings.");
+          break;
+        case "restricted":
+          setImageError("Download is restricted on this device.");
+          break;
+      }
+    } catch (error) {
+      setImageError(error instanceof Error ? error.message : "Failed to download file.");
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  const handleDownloadImageWeb = () => {
+    setImageLoadingWeb(true);
+    setImageErrorWeb(null);
+    setImageDownloadWeb(false);
+    try {
+      const a = document.createElement("a");
+      a.href = "https://picsum.photos/1200/800";
+      a.download = "sample-image.jpg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setImageDownloadWeb(true);
+    } catch (error) {
+      setImageErrorWeb(error instanceof Error ? error.message : "Failed to download file.");
+    } finally {
+      setImageLoadingWeb(false);
+    }
+  };
+
+  const handleDownloadFile = async () => {
+    setFileLoading(true);
+    setFileError(null);
+    setFileDownload(null);
+    try {
+      const res = await sdk!.device.download({
+        url: "https://pdfobject.com/pdf/sample.pdf",
+        fileName: "sample.pdf",
+        mimeType: "application/pdf",
+        reason: "To download the selected file",
+      });
+      switch (res.status) {
+        case "granted":
+          setFileDownload(res.data!);
+          break;
+        case "denied":
+          setFileError("Download permission denied.");
+          break;
+        case "permanentlyDenied":
+          setFileError("Please enable download permission from device settings.");
+          break;
+        case "restricted":
+          setFileError("Download is restricted on this device.");
+          break;
+      }
+    } catch (error) {
+      setFileError(error instanceof Error ? error.message : "Failed to download file.");
+    } finally {
+      setFileLoading(false);
+    }
+  };
+
+  const handleDownloadFileWeb = () => {
+    setFileLoadingWeb(true);
+    setFileErrorWeb(null);
+    setFileDownloadWeb(false);
+    try {
+      const a = document.createElement("a");
+      a.href = "https://pdfobject.com/pdf/sample.pdf";
+      a.download = "sample.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setFileDownloadWeb(true);
+    } catch (error) {
+      setFileErrorWeb(error instanceof Error ? error.message : "Failed to download file.");
+    } finally {
+      setFileLoadingWeb(false);
+    }
+  };
+
 
   useEffect(() => {
     const onHashChange = () => {
@@ -566,7 +680,26 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
             />
           )}
           {
-            activeTab === "download" && <DownloadTab sdk={sdk!} />
+            activeTab === "download" && (
+              <DownloadTab
+                imageDownload={imageDownload}
+                imageLoading={imageLoading}
+                imageError={imageError}
+                onDownloadImage={handleDownloadImage}
+                imageDownloadWeb={imageDownloadWeb}
+                imageLoadingWeb={imageLoadingWeb}
+                imageErrorWeb={imageErrorWeb}
+                onDownloadImageWeb={handleDownloadImageWeb}
+                fileDownload={fileDownload}
+                fileLoading={fileLoading}
+                fileError={fileError}
+                onDownloadFile={handleDownloadFile}
+                fileDownloadWeb={fileDownloadWeb}
+                fileLoadingWeb={fileLoadingWeb}
+                fileErrorWeb={fileErrorWeb}
+                onDownloadFileWeb={handleDownloadFileWeb}
+              />
+            )
           }
         </div>
       </main>

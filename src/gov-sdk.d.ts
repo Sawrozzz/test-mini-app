@@ -11,10 +11,6 @@ import type {
   FileModule,
 } from '@sawrozzz/mini-app-types';
 
-interface GovSdkRegistry {
-  getActiveInstance(): MiniAppSdkInterface | null;
-}
-
 
 declare global {
   type MiniAppSdk = MiniAppSdkInterface;
@@ -30,7 +26,6 @@ declare global {
 
   interface Window {
     __GSA_SDK__?: MiniAppSdk;
-    getMiniAppBridge(): GovSdkRegistry | undefined;
   }
 }
 
