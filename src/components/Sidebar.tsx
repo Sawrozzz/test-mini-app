@@ -1,4 +1,4 @@
-import { Home, FileText, MessageCircle, MapPin, Camera, Image, Folder, X } from "lucide-react";
+import { Home, FileText, MessageCircle, MapPin, Camera, Image, Folder, X, DownloadIcon } from "lucide-react";
 import type { TabId } from "../types";
 
 const tabs: { id: TabId; label: string; icon: typeof Home }[] = [
@@ -9,6 +9,7 @@ const tabs: { id: TabId; label: string; icon: typeof Home }[] = [
   { id: "camera", label: "Camera", icon: Camera },
   { id: "gallery", label: "Gallery", icon: Image },
   { id: "files", label: "Files", icon: Folder },
+  { id: "download", label: "Download", icon: DownloadIcon },
 ];
 
 export function Sidebar({
@@ -35,7 +36,7 @@ export function Sidebar({
 
       <aside
         className={`
-          flex flex-col shrink-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-r border-slate-700/30
+          flex flex-col shrink-0 bg-linear-to-b from-slate-900 via-slate-800 to-slate-900 border-r border-slate-700/30
 
           absolute inset-y-0 left-0 z-50
           transform transition-transform duration-300 ease-in-out
@@ -48,7 +49,7 @@ export function Sidebar({
       >
         <div className="flex items-center justify-between p-4 border-b border-slate-700/30 md:pt-4">
           <div className={`flex items-center gap-3 ${!open && "md:hidden"}`}>
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/20 ring-1 ring-white/10 shrink-0">
+            <div className="w-9 h-9 bg-linear-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-500/20 ring-1 ring-white/10 shrink-0">
               <span className="text-white font-bold text-xs tracking-tight">
                 MP
               </span>
@@ -91,12 +92,12 @@ export function Sidebar({
                   } ${!open && "md:justify-center md:px-2"}`}
                 >
                   {isActive && (
-                    <span className="absolute inset-0 bg-gradient-to-r from-blue-600/25 via-purple-600/20 to-transparent rounded-xl border border-blue-500/20 shadow-sm shadow-blue-500/10" />
+                    <span className="absolute inset-0 bg-linear-to-r from-blue-600/25 via-purple-600/20 to-transparent rounded-xl border border-blue-500/20 shadow-sm shadow-blue-500/10" />
                   )}
                   <span
                     className={`relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 transition-all duration-200 ${
                       isActive
-                        ? "bg-gradient-to-br from-blue-500 to-purple-600 shadow-md shadow-blue-500/25"
+                        ? "bg-linear-to-br from-blue-500 to-purple-600 shadow-md shadow-blue-500/25"
                         : "bg-slate-800/50 group-hover:bg-slate-700/50"
                     }`}
                   >
@@ -126,7 +127,7 @@ export function Sidebar({
 
         <div className={`p-4 border-t border-slate-700/30 bg-slate-800/30 ${!open && "md:hidden"}`}>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-xs text-slate-300 font-semibold ring-2 ring-slate-600/30 shrink-0">
+            <div className="w-8 h-8 bg-linear-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-xs text-slate-300 font-semibold ring-2 ring-slate-600/30 shrink-0">
               {userName[0]?.toUpperCase() || "G"}
             </div>
             <div className="flex-1 min-w-0">

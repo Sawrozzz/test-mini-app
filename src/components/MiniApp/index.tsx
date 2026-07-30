@@ -10,6 +10,7 @@ import { TabLocation } from "../TabLocation";
 import { TabCamera } from "../TabCamera";
 import { TabGallery } from "../TabGallery";
 import { TabFiles } from "../TabFiles";
+import { DownloadTab } from "../TabDownload";
 
 function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
@@ -24,13 +25,17 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [loading, setLoading] = useState(false);
   const [navResult, setNavResult] = useState("");
   const [navLoading, setNavLoading] = useState(false);
-  const [location, setLocation] = useState<SdkDeviceLocationResult | null>(null);
+  const [location, setLocation] = useState<SdkDeviceLocationResult | null>(
+    null,
+  );
   const [loadLocation, setLoadLocation] = useState(false);
   const [error, setError] = useState("");
-  const [browserLocation, setBrowserLocation] = useState<SdkDeviceLocationResult | null>(null);
+  const [browserLocation, setBrowserLocation] =
+    useState<SdkDeviceLocationResult | null>(null);
   const [browserError, setBrowserError] = useState<string | null>(null);
   const [loadBrowserLocation, setLoadBrowserLocation] = useState(false);
-  const [cameraResponse, setCameraResponse] = useState<SdkDeviceCameraResult | null>(null);
+  const [cameraResponse, setCameraResponse] =
+    useState<SdkDeviceCameraResult | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [loadCamera, setLoadCamera] = useState(false);
   const [license, setLicense] = useState<DriverLicense | null>(null);
@@ -46,12 +51,15 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [documents, setDocuments] = useState<SdkFileModule[] | null>(null);
   const [documentsLoading, setDocumentsLoading] = useState(false);
   const [documentsError, setDocumentsError] = useState<string | null>(null);
-  const [webDocuments, setWebDocuments] = useState<SdkFileModule[] | null>(null);
+  const [webDocuments, setWebDocuments] = useState<SdkFileModule[] | null>(
+    null,
+  );
   const [webDocumentsLoading, setWebDocumentsLoading] = useState(false);
   const [webDocumentsError, setWebDocumentsError] = useState<string | null>(
     null,
   );
-  const [browserCamera, setBrowserCamera] = useState<SdkDeviceCameraResult | null>(null);
+  const [browserCamera, setBrowserCamera] =
+    useState<SdkDeviceCameraResult | null>(null);
   const [browserCameraLoading, setBrowserCameraLoading] = useState(false);
   const [browserCameraError, setBrowserCameraError] = useState<string | null>(
     null,
@@ -67,17 +75,20 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const handleHttpGet = async () => {
     setLoading(true);
     try {
-      const res = await sdk!.http.post<{ data: { driverLicense: DriverLicense }; error?: string }>({
+      const res = await sdk!.http.post<{
+        data: { driverLicense: DriverLicense };
+        error?: string;
+      }>({
         endpoint: "/api/driving-license",
         // method: "POST",
         body: { method: "GET", path: "/v1/license" },
         headers: { "x-app-id": "mini-revenue-app" },
       });
 
-      if (response.data) {
-        setLicense(response.data.driverLicense);
+      if (res.data) {
+        setLicense(res.data.data.driverLicense);
       } else {
-        setError(res.data.error ?? "Unknown error");
+        setError("Unknown error");
       }
     } catch (err) {
       console.error(err);
@@ -119,7 +130,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       });
       switch (res.status) {
         case "granted":
-          setLocation(res.data.location);
+          setLocation(res?.data || null);
           break;
         case "denied":
           setError("Location permission denied.");
@@ -440,6 +451,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     input.click();
   };
 
+
   useEffect(() => {
     const onHashChange = () => {
       const hash = window.location.hash.slice(1) as TabId;
@@ -553,6 +565,11 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
               onUploadWebFiles={handleFileUploadByWeb}
             />
           )}
+          {
+            activeTab === "download" && (
+              <DownloadTab />
+            )
+          }
         </div>
       </main>
     </div>

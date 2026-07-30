@@ -46,4 +46,4 @@ export type User = {
   };
 };
 
-export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files";
+export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download";
