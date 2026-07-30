@@ -1,5 +1,4 @@
 import { Loader } from "../Loader";
-import type { Camera, PermissionStatus } from "../../types";
 
 export function CameraSection({
   loadCamera,
@@ -9,9 +8,9 @@ export function CameraSection({
   onOpenCamera,
 }: {
   loadCamera: boolean;
-  cameraResponse: Camera | null;
+  cameraResponse: SdkDeviceCameraResult | null;
   cameraError: string | null;
-  cameraPermission: PermissionStatus | null;
+  cameraPermission: SdkDevicePermissionStatus | null;
   onOpenCamera: () => void;
 }) {
   const imageSrc = cameraResponse?.url.startsWith("data:")
@@ -62,7 +61,7 @@ export function CameraSection({
 
             <div className="rounded bg-white border px-3 py-2">
               <span className="font-medium">Size:</span>{" "}
-              {(cameraResponse.byteSize / 1024).toFixed(2)} KB
+              {(cameraResponse.byteSize! / 1024).toFixed(2)} KB
             </div>
           </div>
 

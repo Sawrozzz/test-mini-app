@@ -1,5 +1,4 @@
 import { Camera, Loader, X, Image } from "lucide-react";
-import type { Camera as CameraType } from "../types";
 
 export function TabCamera({
   loadCamera,
@@ -12,10 +11,10 @@ export function TabCamera({
   onOpenBrowserCamera,
 }: {
   loadCamera: boolean;
-  cameraResponse: CameraType | null;
+  cameraResponse: SdkDeviceCameraResult | null;
   cameraError: string | null;
   onOpenCamera: () => void;
-  browserCamera: CameraType | null;
+  browserCamera: SdkDeviceCameraResult | null;
   browserCameraLoading: boolean;
   browserCameraError: string | null;
   onOpenBrowserCamera: () => void;
@@ -78,7 +77,7 @@ function CameraCard({
   title: string;
   icon: React.ReactNode;
   color: "amber" | "pink";
-  camera: CameraType | null;
+  camera: SdkDeviceCameraResult | null;
   isLoading: boolean;
   error: string | null;
   onAction: () => void;
@@ -158,7 +157,7 @@ function CameraCard({
                     Size
                   </p>
                   <p className="text-slate-700 font-semibold text-xs">
-                    {(camera.byteSize / 1024).toFixed(1)} KB
+                    {(camera.byteSize! / 1024).toFixed(1)} KB
                   </p>
                 </div>
               </div>

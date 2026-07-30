@@ -5,11 +5,11 @@ import { LoadError } from "../components/LoadError";
 
 type State =
   | { phase: "loading" }
-  | { phase: "ready"; sdk: any; user: any }
+  | { phase: "ready"; sdk: MiniAppSdk; user: SdkPlatformUser | null }
   | { phase: "error"; error: Error };
 
 type Action =
-  | { type: "ready"; sdk: any; user: any }
+  | { type: "ready"; sdk: MiniAppSdk; user: SdkPlatformUser | null }
   | { type: "error"; error: Error };
 
 function reducer(_state: State, action: Action): State {
@@ -44,7 +44,7 @@ export function PlatformSDKProvider({ children }: { children: ReactNode }) {
         });
         const user = await instance.auth.getUser();
         if (!controller.signal.aborted) {
-          dispatch({ type: "ready", sdk: instance, user });
+          dispatch({ type: "ready", sdk: instance, user: user ?? null });
         }
       } catch (error) {
         if (!controller.signal.aborted) {

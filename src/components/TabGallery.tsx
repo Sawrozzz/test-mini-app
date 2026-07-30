@@ -1,5 +1,5 @@
 import { Image, FolderOpen, Loader, Upload, X, FileImage, HardDrive } from "lucide-react";
-import type { FileModule } from "../types";
+
 
 export function TabGallery({
   gallery,
@@ -11,11 +11,11 @@ export function TabGallery({
   webImagesError,
   onUploadWebImages,
 }: {
-  gallery: FileModule[] | null;
+  gallery: SdkFileModule[] | null;
   galleryLoading: boolean;
   galleryError: string | null;
   onOpenGallery: () => void;
-  webImages: FileModule[] | null;
+  webImages: SdkFileModule[] | null;
   webImagesLoading: boolean;
   webImagesError: string | null;
   onUploadWebImages: () => void;
@@ -78,7 +78,7 @@ function ImageCard({
   title: string;
   icon: React.ReactNode;
   color: "violet" | "rose";
-  images: FileModule[] | null;
+  images: SdkFileModule[] | null;
   isLoading: boolean;
   error: string | null;
   onAction: () => void;
@@ -147,10 +147,10 @@ function ImageCard({
   );
 }
 
-function ImagePreview({ file }: { file: FileModule }) {
+function ImagePreview({ file }: { file: SdkFileModule }) {
   const previewUrl = file.previewUrl || file.url;
-  const ext = file.extension || file.fileName.split(".").pop()?.toLowerCase() || "?";
-  const size = formatBytes(file.byteSize);
+  const ext = file.extension || file.fileName!.split(".").pop()?.toLowerCase() || "?";
+  const size = formatBytes(file.byteSize ?? 0);
 
   return (
     <div className="bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">

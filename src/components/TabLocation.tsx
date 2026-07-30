@@ -1,5 +1,5 @@
 import { MapPin, Compass, Loader, Globe, Cpu } from "lucide-react";
-import type { Location } from "../types";
+
 
 export function TabLocation({
   loadLocation,
@@ -12,10 +12,10 @@ export function TabLocation({
   onViewBrowserLocation,
 }: {
   loadLocation: boolean;
-  location: Location | null;
+  location: SdkDeviceLocationResult | null;
   sdkError: string;
   loadBrowserLocation: boolean;
-  browserLocation: Location | null;
+  browserLocation: SdkDeviceLocationResult | null;
   browserError: string | null;
   onViewSdkLocation: () => void;
   onViewBrowserLocation: () => void;
@@ -72,7 +72,7 @@ function LocationCard({
   title: string;
   icon: React.ReactNode;
   color: "emerald" | "indigo";
-  location: Location | null;
+  location: SdkDeviceLocationResult | null;
   isLoading: boolean;
   error: string;
   onView: () => void;
@@ -128,7 +128,7 @@ function LocationCard({
   );
 }
 
-function LocationDataGrid({ location }: { location: Location }) {
+function LocationDataGrid({ location }: { location: SdkDeviceLocationResult }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">

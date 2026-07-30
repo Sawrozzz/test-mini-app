@@ -1,5 +1,4 @@
 import { Loader } from "../Loader";
-import type { Location, PermissionStatus } from "../../types";
 
 export function LocationSection({
   loadLocation,
@@ -9,9 +8,9 @@ export function LocationSection({
   onViewLocation,
 }: {
   loadLocation: boolean;
-  location: Location | null;
+  location: SdkDeviceLocationResult | null;
   error: string;
-  locationPermission: PermissionStatus | null;
+  locationPermission: SdkDevicePermissionStatus | null;
   onViewLocation: () => void;
 }) {
   return (
