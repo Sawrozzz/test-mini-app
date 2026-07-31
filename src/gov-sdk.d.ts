@@ -9,6 +9,8 @@ import type {
   DeviceDownloadResult,
   DeviceExtraOptions,
   DeviceContactResult,
+  DeviceBiometricResult,
+  DeviceBiometricOptions,
   FileModule,
 } from '@lizuz/mini-app-types';
 
@@ -25,6 +27,8 @@ declare global {
    type SdkDeviceContactResult = DeviceContactResult;
   type SdkFileModule = FileModule;
   type SdkDeviceExtraOptions = DeviceExtraOptions;
+  type SdkDeviceBiometricResult = DeviceBiometricResult;
+  type SdkBiometricOptions = DeviceBiometricOptions;
 
   interface Window {
     __GSA_SDK__?: MiniAppSdk;

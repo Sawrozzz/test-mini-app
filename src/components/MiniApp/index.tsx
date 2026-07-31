@@ -17,6 +17,7 @@ import { TabGallery } from "../TabGallery";
 import { TabFiles } from "../TabFiles";
 import { DownloadTab } from "../TabDownload";
 import { TabContacts } from "../TabContacts";
+import { TabBiometric } from "../TabBiometric";
 
 function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
@@ -90,6 +91,12 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [webContact, setWebContact] = useState<SdkDeviceContactResult | null>(null);
   const [webContactLoading, setWebContactLoading] = useState(false);
   const [webContactError, setWebContactError] = useState<string | null>(null);
+  const [biometric, setBiometric] = useState<SdkDeviceBiometricResult | null>(null);
+  const [biometricLoading, setBiometricLoading] = useState(false);
+  const [biometricError, setBiometricError] = useState<string | null>(null);
+  const [webBiometric, setWebBiometric] = useState<SdkDeviceBiometricResult | null>(null);
+  const [webBiometricLoading, setWebBiometricLoading] = useState(false);
+  const [webBiometricError, setWebBiometricError] = useState<string | null>(null);
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
@@ -668,6 +675,54 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     }
   };
 
+  const handleAuthenticateBiometric = async () => {
+    setBiometricLoading(true);
+    setBiometricError(null);
+    setBiometric(null);
+    try {
+      const res = await sdk!.device.biometric({
+        reason: "To verify your identity",
+      });
+      if (!res.success) {
+        setBiometricError(res.error || "Biometric authentication failed.");
+      }
+      setBiometric(res);
+    } catch (error) {
+      setBiometricError(
+        error instanceof Error ? error.message : "Biometric authentication failed.",
+      );
+    } finally {
+      setBiometricLoading(false);
+    }
+  };
+
+  const handleAuthenticateBiometricWeb = async () => {
+    setWebBiometricLoading(true);
+    setWebBiometricError(null);
+    setWebBiometric(null);
+    try {
+      if (!window.PublicKeyCredential) {
+        setWebBiometricError(
+          "WebAuthn is not supported by this browser.",
+        );
+        return;
+      }
+      const res = await sdk!.device.biometric({
+        reason: "To verify your identity",
+      });
+      if (!res.success) {
+        setWebBiometricError(res.error || "Biometric authentication failed.");
+      }
+      setWebBiometric(res);
+    } catch (error) {
+      setWebBiometricError(
+        error instanceof Error ? error.message : "Biometric authentication failed.",
+      );
+    } finally {
+      setWebBiometricLoading(false);
+    }
+  };
+
   useEffect(() => {
     const onHashChange = () => {
       const hash = window.location.hash.slice(1) as TabId;
@@ -811,6 +866,18 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
               webContactLoading={webContactLoading}
               webContactError={webContactError}
               onOpenWebContactPicker={handleOpenWebContactPicker}
+            />
+          )}
+          {activeTab === "biometric" && (
+            <TabBiometric
+              biometric={biometric}
+              biometricLoading={biometricLoading}
+              biometricError={biometricError}
+              onAuthenticate={handleAuthenticateBiometric}
+              webBiometric={webBiometric}
+              webBiometricLoading={webBiometricLoading}
+              webBiometricError={webBiometricError}
+              onAuthenticateWeb={handleAuthenticateBiometricWeb}
             />
           )}
         </div>
