@@ -84,6 +84,7 @@ function CameraCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
+  console.log("CAMERA FILE ", camera)
   const badge = color === "amber"
     ? "bg-amber-50 border-amber-100 text-amber-600"
     : "bg-pink-50 border-pink-100 text-pink-600";
@@ -94,9 +95,7 @@ function CameraCard({
     ? "from-amber-600 to-orange-600 shadow-amber-600/25 hover:shadow-amber-600/40"
     : "from-pink-600 to-rose-600 shadow-pink-600/25 hover:shadow-pink-600/40";
 
-  const imageSrc = camera?.url?.startsWith("data:")
-    ? camera.url
-    : camera?.url?.startsWith("http://") || camera?.url?.startsWith("https://")
+  const imageSrc = camera?.url?.startsWith("data:") || camera?.url?.startsWith("blob:") || camera?.url?.startsWith("http://") || camera?.url?.startsWith("https://")
     ? camera.url
     : camera?.url
     ? `data:${camera.mimeType};base64,${camera.url}`
