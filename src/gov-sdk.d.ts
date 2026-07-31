@@ -9,7 +9,7 @@ import type {
   DeviceDownloadResult,
   DeviceExtraOptions,
   FileModule,
-} from '@sawrozzz/mini-app-types';
+} from '@lizuz/mini-app-types';
 
 
 declare global {
