@@ -8,6 +8,7 @@ import type {
   DeviceFileResult,
   DeviceDownloadResult,
   DeviceExtraOptions,
+  DeviceContactResult,
   FileModule,
 } from '@lizuz/mini-app-types';
 
@@ -20,7 +21,8 @@ declare global {
   type SdkDeviceCameraResult = DeviceCameraResult;
   type SdkDeviceGalleryResult = DeviceGalleryResult;
   type SdkDeviceFileResult = DeviceFileResult;
-  type SdkDeviceDownloadResult = DeviceDownloadResult;
+   type SdkDeviceDownloadResult = DeviceDownloadResult;
+   type SdkDeviceContactResult = DeviceContactResult;
   type SdkFileModule = FileModule;
   type SdkDeviceExtraOptions = DeviceExtraOptions;
 

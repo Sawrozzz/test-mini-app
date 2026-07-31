@@ -16,6 +16,7 @@ import { TabCamera } from "../TabCamera";
 import { TabGallery } from "../TabGallery";
 import { TabFiles } from "../TabFiles";
 import { DownloadTab } from "../TabDownload";
+import { TabContacts } from "../TabContacts";
 
 function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
@@ -83,6 +84,12 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [fileDownloadWeb, setFileDownloadWeb] = useState<boolean>(false);
   const [fileLoadingWeb, setFileLoadingWeb] = useState(false);
   const [fileErrorWeb, setFileErrorWeb] = useState<string | null>(null);
+  const [contact, setContact] = useState<SdkDeviceContactResult | null>(null);
+  const [contactLoading, setContactLoading] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
+  const [webContact, setWebContact] = useState<SdkDeviceContactResult | null>(null);
+  const [webContactLoading, setWebContactLoading] = useState(false);
+  const [webContactError, setWebContactError] = useState<string | null>(null);
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
@@ -585,6 +592,82 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     }
   };
 
+  const handleOpenContactPicker = async () => {
+    setContactLoading(true);
+    setContactError(null);
+    setContact(null);
+    try {
+      const res = await sdk!.device.contact({
+        reason: "To select a contact",
+      });
+      switch (res.status) {
+        case "granted":
+          setContact(res.data ?? null);
+          break;
+        case "denied":
+          setContactError("Contact access denied.");
+          break;
+        case "permanentlyDenied":
+          setContactError(
+            "Please enable contact access from device settings.",
+          );
+          break;
+        case "restricted":
+          setContactError("Contact access is restricted on this device.");
+          break;
+      }
+    } catch (error) {
+      setContactError(
+        error instanceof Error ? error.message : "Failed to open contact picker.",
+      );
+    } finally {
+      setContactLoading(false);
+    }
+  };
+
+  const handleOpenWebContactPicker = () => {
+    setWebContactLoading(true);
+    setWebContactError(null);
+    setWebContact(null);
+    try {
+      const res = sdk!.device.contact({
+        reason: "To select a contact",
+      });
+      res
+        .then((res) => {
+          switch (res.status) {
+            case "granted":
+              setWebContact(res.data ?? null);
+              break;
+            case "denied":
+              setWebContactError("Contact access denied.");
+              break;
+            case "permanentlyDenied":
+              setWebContactError(
+                "Please enable contact access from device settings.",
+              );
+              break;
+            case "restricted":
+              setWebContactError("Contact access is restricted on this device.");
+              break;
+          }
+        })
+        .catch((error) => {
+          setWebContactError(
+            error instanceof Error ? error.message : "Failed to open contact picker.",
+          );
+        })
+        .finally(() => {
+          setWebContactLoading(false);
+        });
+    } catch (error) {
+      setWebContactError(
+        error instanceof Error ? error.message : "Failed to open contact picker.",
+      );
+      setWebContactLoading(false);
+    }
+  };
+
   useEffect(() => {
     const onHashChange = () => {
       const hash = window.location.hash.slice(1) as TabId;
@@ -716,6 +799,18 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
               fileLoadingWeb={fileLoadingWeb}
               fileErrorWeb={fileErrorWeb}
               onDownloadFileWeb={handleDownloadFileWeb}
+            />
+          )}
+          {activeTab === "contact" && (
+            <TabContacts
+              contact={contact}
+              contactLoading={contactLoading}
+              contactError={contactError}
+              onOpenContactPicker={handleOpenContactPicker}
+              webContact={webContact}
+              webContactLoading={webContactLoading}
+              webContactError={webContactError}
+              onOpenWebContactPicker={handleOpenWebContactPicker}
             />
           )}
         </div>

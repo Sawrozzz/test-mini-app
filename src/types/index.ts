@@ -46,7 +46,7 @@ export type User = {
   };
 };
 
-export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download";
+export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download" | "contact";
 
 export interface SdkFileModule {
   rawFile?: File;
@@ -73,3 +73,8 @@ export interface SdkDevicePermissionBaseResponse<T> {
 }
 
 export interface SdkDeviceDownloadResponse extends SdkDevicePermissionBaseResponse<SdkDeviceDownloadResult> {}
+
+export interface SdkDeviceContactResult {
+  contactName?: string;
+  number?: string;
+}

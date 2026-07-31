@@ -31,8 +31,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.8.0(jiti@2.7.0))
       '@lizuz/mini-app-types':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^1.0.7
+        version: 1.0.7
       '@sawrozzz/mini-app-types':
         specifier: ^1.0.3
         version: 1.0.3
@@ -223,8 +223,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lizuz/mini-app-types@1.0.5':
-    resolution: {integrity: sha512-kTKXag3H7e+Mgmzpg3ZJx+3e0IG7s5w/G0eng7RKemJUyv9kFiYJarCemJFkzktsvZUi1/fOmMXTiTrQaEkZWw==}
+  '@lizuz/mini-app-types@1.0.7':
+    resolution: {integrity: sha512-eb/vAErahqutzcLe9hD3Clm1DFNPTpcwE/9S2MeNXsm9MIlwK7S1pnzTH5M4E3zLOQd38BQJHayxurs0LM/M/w==}
 
   '@napi-rs/wasm-runtime@1.2.1':
     resolution: {integrity: sha512-KjZdi8Q1wh89gsVmghvbrMgWl6ZWmRmHV6wjB7/g4Zf0dyO+hH3neZUtuDNPO00qq5YE5RITVWvrIZKRaAmzGQ==}
@@ -1460,7 +1460,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lizuz/mini-app-types@1.0.5': {}
+  '@lizuz/mini-app-types@1.0.7': {}
 
   '@napi-rs/wasm-runtime@1.2.1(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)':
     dependencies:

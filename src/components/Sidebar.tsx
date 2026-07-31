@@ -1,4 +1,4 @@
-import { Home, FileText, MessageCircle, MapPin, Camera, Image, Folder, X, DownloadIcon } from "lucide-react";
+import { Home, FileText, MessageCircle, MapPin, Camera, Image, Folder, X, DownloadIcon, Contact } from "lucide-react";
 import type { TabId } from "../types";
 
 const tabs: { id: TabId; label: string; icon: typeof Home }[] = [
@@ -10,6 +10,7 @@ const tabs: { id: TabId; label: string; icon: typeof Home }[] = [
   { id: "gallery", label: "Gallery", icon: Image },
   { id: "files", label: "Files", icon: Folder },
   { id: "download", label: "Download", icon: DownloadIcon },
+  { id: "contact", label: "Contact", icon: Contact },
 ];
 
 export function Sidebar({
