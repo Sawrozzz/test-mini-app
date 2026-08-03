@@ -694,10 +694,10 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       const res = await sdk!.device.biometric({
         reason: "To verify your identity",
       });
-      if (!res.success) {
+      if (!res.data?.success) {
         setBiometricError(res.error || "Biometric authentication failed.");
       }
-      setBiometric(res);
+      setBiometric(res.data || null);
     } catch (error) {
       setBiometricError(
         error instanceof Error ? error.message : "Biometric authentication failed.",
@@ -721,10 +721,10 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       const res = await sdk!.device.biometric({
         reason: "To verify your identity",
       });
-      if (!res.success) {
+      if (!res.data?.success) {
         setWebBiometricError(res.error || "Biometric authentication failed.");
       }
-      setWebBiometric(res);
+      setWebBiometric(res.data || null);
     } catch (error) {
       setWebBiometricError(
         error instanceof Error ? error.message : "Biometric authentication failed.",
