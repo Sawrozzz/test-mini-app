@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, ChevronLeft } from "lucide-react";
 import type { DriverLicense, TabId, User } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
+import { useAppearance } from "../../hooks/useAppearance";
 import { Sidebar } from "../Sidebar";
 import { TabHome } from "../TabHome";
 import { TabTestApi } from "../TabTestApi";
@@ -13,11 +14,10 @@ import { TabFiles } from "../TabFiles";
 
 function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
+  const { theme } = useAppearance();
   const [activeTab, setActiveTab] = useState<TabId>(
     () =>
-      (initialPath as TabId) ||
-      (window.location.hash.slice(1) as TabId) ||
-      "home",
+      (initialPath as TabId) || "home",
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -112,10 +112,16 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setLoadLocation(true);
     setError("");
     setLocation(null);
+
+    console.log("location button clicked ====>")
     try {
+      debugger;
+    console.log("location button clicked ====> inside try")
       const res = await sdk!.device.location({
         reason: "To view your current location",
       });
+
+      console.log("from miniapp ===>", res)
       switch (res.status) {
         case "granted":
           setLocation(res.data!);
@@ -131,12 +137,17 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
           break;
       }
     } catch (err: any) {
+      console.log("inside catch")
       setError(
         err instanceof Error ? err.message : "Failed to get location via SDK",
       );
     } finally {
+      console.log("inside finally block")
+
       setLoadLocation(false);
     }
+      console.log("outside trycatch")
+
   };
 
   const handleViewBrowserLocation = () => {
@@ -365,7 +376,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       });
       switch (res.status) {
         case "granted":
-          setDocuments(res.data!.file ?? res.data!);
+          setDocuments(res.data!.files ?? res.data!);
           break;
         case "denied":
           setDocumentsError("File access denied.");
@@ -449,7 +460,13 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   }, [activeTab]);
 
   return (
-    <div className="flex min-h-screen bg-linear-to-br from-slate-50 to-slate-100 relative">
+    <div
+      className={`flex min-h-screen relative transition-colors duration-300 ${
+        theme.mode === "dark"
+          ? "bg-linear-to-br from-slate-900 to-slate-800"
+          : "bg-linear-to-br from-slate-50 to-slate-100"
+      }`}
+    >
       <Sidebar
         activeTab={activeTab}
         onTabChange={handleTabChange}

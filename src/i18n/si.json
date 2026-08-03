@@ -1,0 +1,18 @@
+{
+  "app.title": "ඩිජිටල් හැඳුනුම්පත් පසුම්බිය",
+  "app.greeting": "ආයුබෝවන්, {name}",
+  "home.badge": "ඔබේ පරීක්ෂණ පිටිය",
+  "home.heroTitle": "මිනි ඇප් එකට සාදරයෙන් පිළිගනිමු",
+  "home.heroSubtitle": "ඔබේ සියල්ල ඇතුළත් පරීක්ෂණ පිටිය. රියදුරු බලපත්ර බැලීම, AI කතාබස්, ස්ථාන සේවා සහ කැමරා ග්‍රහණය — සියල්ල එකම තැනක.",
+  "home.getStarted": "ආරම්භ කරන්න",
+  "home.exploreTitle": "විශේෂාංග ගවේෂණය",
+  "home.exploreSubtitle": "පිවිසීමට ඕනෑම කාඩ්පතක් තට්ටු කරන්න",
+  "feature.testApi": "Test API",
+  "feature.testApiDesc": "ඔබේ රියදුරු බලපත්රය බලන්න",
+  "feature.chat": "මෙතන කතා කරන්න",
+  "feature.chatDesc": "AI සහායකයා සමඟ කතා කරන්න",
+  "feature.location": "ස්ථානය",
+  "feature.locationDesc": "ඔබගේ වත්මන් ස්ථානය පරීක්ෂා කරන්න",
+  "feature.camera": "කැමරාව",
+  "feature.cameraDesc": "ඡායාරූප ගෙන පෙරදසුන් කරන්න"
+}
