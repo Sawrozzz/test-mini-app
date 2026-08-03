@@ -24,8 +24,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
   const { theme } = useAppearance();
   const [activeTab, setActiveTab] = useState<TabId>(
-    () =>
-      (initialPath as TabId) || "home",
+    () => (initialPath as TabId) || "home",
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -88,15 +87,22 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const [contact, setContact] = useState<SdkDeviceContactResult | null>(null);
   const [contactLoading, setContactLoading] = useState(false);
   const [contactError, setContactError] = useState<string | null>(null);
-  const [webContact, setWebContact] = useState<SdkDeviceContactResult | null>(null);
+  const [webContact, setWebContact] = useState<SdkDeviceContactResult | null>(
+    null,
+  );
   const [webContactLoading, setWebContactLoading] = useState(false);
   const [webContactError, setWebContactError] = useState<string | null>(null);
-  const [biometric, setBiometric] = useState<SdkDeviceBiometricResult | null>(null);
+  const [biometric, setBiometric] = useState<SdkDeviceBiometricResult | null>(
+    null,
+  );
   const [biometricLoading, setBiometricLoading] = useState(false);
   const [biometricError, setBiometricError] = useState<string | null>(null);
-  const [webBiometric, setWebBiometric] = useState<SdkDeviceBiometricResult | null>(null);
+  const [webBiometric, setWebBiometric] =
+    useState<SdkDeviceBiometricResult | null>(null);
   const [webBiometricLoading, setWebBiometricLoading] = useState(false);
-  const [webBiometricError, setWebBiometricError] = useState<string | null>(null);
+  const [webBiometricError, setWebBiometricError] = useState<string | null>(
+    null,
+  );
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
@@ -158,15 +164,15 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setError("");
     setLocation(null);
 
-    console.log("location button clicked ====>")
+    console.log("location button clicked ====>");
     try {
       debugger;
-    console.log("location button clicked ====> inside try")
+      console.log("location button clicked ====> inside try");
       const res = await sdk!.device.location({
         reason: "To view your current location",
       });
 
-      console.log("from miniapp ===>", res)
+      console.log("from miniapp ===>", res);
       switch (res.status) {
         case "granted":
           setLocation(res?.data! || null);
@@ -182,17 +188,16 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
           break;
       }
     } catch (err: any) {
-      console.log("inside catch")
+      console.log("inside catch");
       setError(
         err instanceof Error ? err.message : "Failed to get location via SDK",
       );
     } finally {
-      console.log("inside finally block")
+      console.log("inside finally block");
 
       setLoadLocation(false);
     }
-      console.log("outside trycatch")
-
+    console.log("outside trycatch");
   };
 
   const handleViewBrowserLocation = () => {
@@ -626,9 +631,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
           setContactError("Contact access denied.");
           break;
         case "permanentlyDenied":
-          setContactError(
-            "Please enable contact access from device settings.",
-          );
+          setContactError("Please enable contact access from device settings.");
           break;
         case "restricted":
           setContactError("Contact access is restricted on this device.");
@@ -636,52 +639,59 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       }
     } catch (error) {
       setContactError(
-        error instanceof Error ? error.message : "Failed to open contact picker.",
+        error instanceof Error
+          ? error.message
+          : "Failed to open contact picker.",
       );
     } finally {
       setContactLoading(false);
     }
   };
 
-  const handleOpenWebContactPicker = () => {
+  const handleOpenWebContactPicker = async () => {
     setWebContactLoading(true);
     setWebContactError(null);
     setWebContact(null);
+
     try {
-      const res = sdk!.device.contact({
-        reason: "To select a contact",
+      const nav = navigator as Navigator & {
+        contacts?: {
+          select: (
+            properties: string[],
+            options?: { multiple?: boolean },
+          ) => Promise<Array<{ name?: string[]; tel?: string[] }>>;
+        };
+      };
+
+      if (!nav.contacts || !("ContactsManager" in window)) {
+        throw new Error("Contact Picker API is not supported.");
+      }
+
+      const selected = await nav.contacts.select(["name", "tel"], {
+        multiple: false,
       });
-      res
-        .then((res) => {
-          switch (res.status) {
-            case "granted":
-              setWebContact(res.data ?? null);
-              break;
-            case "denied":
-              setWebContactError("Contact access denied.");
-              break;
-            case "permanentlyDenied":
-              setWebContactError(
-                "Please enable contact access from device settings.",
-              );
-              break;
-            case "restricted":
-              setWebContactError("Contact access is restricted on this device.");
-              break;
-          }
-        })
-        .catch((error) => {
-          setWebContactError(
-            error instanceof Error ? error.message : "Failed to open contact picker.",
-          );
-        })
-        .finally(() => {
-          setWebContactLoading(false);
-        });
+
+      if (selected.length === 0) {
+        return;
+      }
+
+      const number = selected[0].tel?.find((t) => t.trim())?.trim();
+
+      if (!number) {
+        throw new Error("The selected contact has no phone number.");
+      }
+
+      setWebContact({
+        contactName: selected[0].name?.find((n) => n.trim())?.trim(),
+        number,
+      });
     } catch (error) {
       setWebContactError(
-        error instanceof Error ? error.message : "Failed to open contact picker.",
+        error instanceof Error
+          ? error.message
+          : "Failed to open contact picker.",
       );
+    } finally {
       setWebContactLoading(false);
     }
   };
@@ -700,7 +710,9 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       setBiometric(res.data || null);
     } catch (error) {
       setBiometricError(
-        error instanceof Error ? error.message : "Biometric authentication failed.",
+        error instanceof Error
+          ? error.message
+          : "Biometric authentication failed.",
       );
     } finally {
       setBiometricLoading(false);
@@ -713,9 +725,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setWebBiometric(null);
     try {
       if (!window.PublicKeyCredential) {
-        setWebBiometricError(
-          "WebAuthn is not supported by this browser.",
-        );
+        setWebBiometricError("WebAuthn is not supported by this browser.");
         return;
       }
       const res = await sdk!.device.biometric({
@@ -727,7 +737,9 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       setWebBiometric(res.data || null);
     } catch (error) {
       setWebBiometricError(
-        error instanceof Error ? error.message : "Biometric authentication failed.",
+        error instanceof Error
+          ? error.message
+          : "Biometric authentication failed.",
       );
     } finally {
       setWebBiometricLoading(false);
