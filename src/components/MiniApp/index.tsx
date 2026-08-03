@@ -537,21 +537,36 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     }
   };
 
-  const handleDownloadImageWeb = () => {
+  const handleDownloadImageWeb = async () => {
     setImageLoadingWeb(true);
     setImageErrorWeb(null);
     setImageDownloadWeb(false);
+
     try {
-      const a = document.createElement("a");
-      a.href = "https://picsum.photos/1200/800";
-      a.download = "sample-image.jpg";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const response = await fetch("https://picsum.photos/1200/800");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch image.");
+      }
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "sample-image.jpg";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+
       setImageDownloadWeb(true);
     } catch (error) {
       setImageErrorWeb(
-        error instanceof Error ? error.message : "Failed to download file.",
+        error instanceof Error ? error.message : "Failed to download image.",
       );
     } finally {
       setImageLoadingWeb(false);
@@ -594,17 +609,32 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     }
   };
 
-  const handleDownloadFileWeb = () => {
+  const handleDownloadFileWeb = async () => {
     setFileLoadingWeb(true);
     setFileErrorWeb(null);
     setFileDownloadWeb(false);
+
     try {
-      const a = document.createElement("a");
-      a.href = "https://pdfobject.com/pdf/sample.pdf";
-      a.download = "sample.pdf";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const response = await fetch("https://pdfobject.com/pdf/sample.pdf");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch file.");
+      }
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "sample.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+
       setFileDownloadWeb(true);
     } catch (error) {
       setFileErrorWeb(
