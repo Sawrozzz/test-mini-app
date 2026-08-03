@@ -1,0 +1,18 @@
+{
+  "app.title": "Digital ID Wallet",
+  "app.greeting": "Welcome, {name}",
+  "home.badge": "Your Testing Playground",
+  "home.heroTitle": "Welcome to Mini App",
+  "home.heroSubtitle": "Your all-in-one testing playground. Explore driving license lookup, AI chat, location services, and camera capture — all in one place.",
+  "home.getStarted": "Get Started",
+  "home.exploreTitle": "Explore Features",
+  "home.exploreSubtitle": "Tap any card to jump right in",
+  "feature.testApi": "Test API",
+  "feature.testApiDesc": "View your driving license",
+  "feature.chat": "Chat Here",
+  "feature.chatDesc": "Interact with AI assistant",
+  "feature.location": "Location",
+  "feature.locationDesc": "Check your current location",
+  "feature.camera": "Camera",
+  "feature.cameraDesc": "Capture & preview photos"
+}

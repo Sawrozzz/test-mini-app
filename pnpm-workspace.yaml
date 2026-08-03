@@ -1,3 +1,2 @@
 minimumReleaseAgeExclude:
-  - '@lizuz/mini-app-types@1.0.7'
-  - '@sawrozzz/mini-app-types@1.0.3'
+  - '@lizuz/mini-app-types@1.0.8'
