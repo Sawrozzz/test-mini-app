@@ -734,6 +734,7 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       const res = await sdk!.device.biometric({
         reason: "To verify your identity",
       });
+      alert(res)
       if (!res.data?.success) {
         setBiometricError(res.error || "Biometric authentication failed.");
       }
