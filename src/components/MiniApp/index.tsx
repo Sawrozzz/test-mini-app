@@ -164,15 +164,11 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     setError("");
     setLocation(null);
 
-    console.log("location button clicked ====>");
     try {
-      debugger;
-      console.log("location button clicked ====> inside try");
       const res = await sdk!.device.location({
         reason: "To view your current location",
       });
 
-      console.log("from miniapp ===>", res);
       switch (res.status) {
         case "granted":
           setLocation(res?.data! || null);
@@ -188,16 +184,13 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
           break;
       }
     } catch (err: any) {
-      console.log("inside catch");
       setError(
         err instanceof Error ? err.message : "Failed to get location via SDK",
       );
     } finally {
-      console.log("inside finally block");
 
       setLoadLocation(false);
     }
-    console.log("outside trycatch");
   };
 
   const handleViewBrowserLocation = () => {
