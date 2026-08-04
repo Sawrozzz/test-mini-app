@@ -78,7 +78,7 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
             </p>
             <button
               onClick={() => onNavigate("test-api")}
-              className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center gap-2"
+              className="group bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center gap-2"
             >
               {t("home.getStarted")}
               <ArrowRight
@@ -106,7 +106,7 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
               className="group relative bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-300 text-left hover:-translate-y-1"
             >
               <div
-                className={`w-12 h-12 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300`}
+                className={`w-12 h-12 bg-linear-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300`}
               >
                 <Icon size={22} className="text-white" />
               </div>
