@@ -8,7 +8,6 @@ import type {
 } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { useAppearance } from "../../hooks/useAppearance";
-import { useInitialPath } from "../../hooks/useInitialPath";
 import { Sidebar } from "../Sidebar";
 import { TabHome } from "../TabHome";
 import { TabTestApi } from "../TabTestApi";
@@ -21,10 +20,9 @@ import { DownloadTab } from "../TabDownload";
 import { TabContacts } from "../TabContacts";
 import { TabBiometric } from "../TabBiometric";
 
-function TestMiniApp({ initialPath }: { initialPath?: string }) {
+function TestMiniApp() {
   const { sdk, user } = usePlatformSDK();
   const { theme } = useAppearance();
-  useInitialPath(initialPath);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loading, setLoading] = useState(false);
