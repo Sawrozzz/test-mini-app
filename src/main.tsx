@@ -4,12 +4,10 @@ import "./index.css";
 
 export function mount(
   container: HTMLElement,
-  runtime?: { initialPath?: string; basename?: string },
+  runtime?: { initialPath?: string },
 ) {
   const root: Root = createRoot(container);
-  root.render(
-    <App initialPath={runtime?.initialPath} basename={runtime?.basename} />,
-  );
+  root.render(<App initialPath={runtime?.initialPath} />);
 
   return {
     unmount() {

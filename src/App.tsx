@@ -1,20 +1,14 @@
-import { BrowserRouter } from "react-router";
+import { HashRouter } from "react-router";
 import TestMiniApp from "./components/MiniApp";
 import { PlatformSDKProvider } from "./providers/PlatformSDKProvider";
 import "./index.css";
 
-export default function App({
-  initialPath,
-  basename,
-}: {
-  initialPath?: string;
-  basename?: string;
-}) {
+export default function App({ initialPath }: { initialPath?: string }) {
   return (
-    <BrowserRouter basename={basename}>
+    <HashRouter>
       <PlatformSDKProvider>
         <TestMiniApp initialPath={initialPath} />
       </PlatformSDKProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

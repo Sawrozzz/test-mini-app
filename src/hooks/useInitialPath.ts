@@ -4,9 +4,9 @@ import { toRoutePath } from "../routes";
 
 /**
  * The host can mount the mini app on a deep link via `mount(el, { initialPath })`.
- * With BrowserRouter the URL is the source of truth, so `initialPath` only seeds
- * the very first navigation — and only when the host hasn't already routed us
- * somewhere. Subsequent in-app navigation is left untouched.
+ * With HashRouter the hash is the source of truth, so `initialPath` only seeds the
+ * very first navigation — and only when the URL carries no hash of its own (e.g. a
+ * refresh on `#/camera` wins). Subsequent in-app navigation is left untouched.
  */
 export function useInitialPath(initialPath?: string) {
   const navigate = useNavigate();
