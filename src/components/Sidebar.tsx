@@ -1,28 +1,12 @@
-import { Home, FileText, MessageCircle, MapPin, Camera, Image, Folder, X, DownloadIcon, Contact, Fingerprint } from "lucide-react";
-import type { TabId } from "../types";
-
-const tabs: { id: TabId; label: string; icon: typeof Home }[] = [
-  { id: "home", label: "Home", icon: Home },
-  { id: "test-api", label: "Test Api", icon: FileText },
-  { id: "chat", label: "Chat Here", icon: MessageCircle },
-  { id: "location", label: "Location", icon: MapPin },
-  { id: "camera", label: "Camera", icon: Camera },
-  { id: "gallery", label: "Gallery", icon: Image },
-  { id: "files", label: "Files", icon: Folder },
-  { id: "download", label: "Download", icon: DownloadIcon },
-  { id: "contact", label: "Contact", icon: Contact },
-  { id: "biometric", label: "Biometric", icon: Fingerprint },
-];
+import { X } from "lucide-react";
+import { NavLink } from "react-router";
+import { navItems } from "../routes";
 
 export function Sidebar({
-  activeTab,
-  onTabChange,
   userName,
   open,
   onToggle,
 }: {
-  activeTab: TabId;
-  onTabChange: (tab: TabId) => void;
   userName: string;
   open: boolean;
   onToggle: () => void;
@@ -78,52 +62,56 @@ export function Sidebar({
             Navigation
           </p>
           <nav className="space-y-0.5">
-            {tabs.map(({ id, label, icon: Icon }) => {
-              const isActive = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  onClick={() => {
-                    onTabChange(id);
-                    if (window.innerWidth < 768) onToggle();
-                  }}
-                  className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
+            {navItems.map(({ id, path, label, icon: Icon }) => (
+              <NavLink
+                key={id}
+                to={path}
+                end={path === "/"}
+                onClick={() => {
+                  if (window.innerWidth < 768) onToggle();
+                }}
+                className={({ isActive }) =>
+                  `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
                     isActive
                       ? "text-white"
                       : "text-slate-400 hover:text-slate-200"
-                  } ${!open && "md:justify-center md:px-2"}`}
-                >
-                  {isActive && (
-                    <span className="absolute inset-0 bg-linear-to-r from-blue-600/25 via-purple-600/20 to-transparent rounded-xl border border-blue-500/20 shadow-sm shadow-blue-500/10" />
-                  )}
-                  <span
-                    className={`relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 transition-all duration-200 ${
-                      isActive
-                        ? "bg-linear-to-br from-blue-500 to-purple-600 shadow-md shadow-blue-500/25"
-                        : "bg-slate-800/50 group-hover:bg-slate-700/50"
-                    }`}
-                  >
-                    <Icon
-                      size={16}
-                      className={`transition-colors duration-200 ${
+                  } ${!open && "md:justify-center md:px-2"}`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {isActive && (
+                      <span className="absolute inset-0 bg-linear-to-r from-blue-600/25 via-purple-600/20 to-transparent rounded-xl border border-blue-500/20 shadow-sm shadow-blue-500/10" />
+                    )}
+                    <span
+                      className={`relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 transition-all duration-200 ${
                         isActive
-                          ? "text-white"
-                          : "text-slate-400 group-hover:text-slate-200"
+                          ? "bg-linear-to-br from-blue-500 to-purple-600 shadow-md shadow-blue-500/25"
+                          : "bg-slate-800/50 group-hover:bg-slate-700/50"
                       }`}
-                    />
-                  </span>
-                  <span className={`relative ${!open && "md:hidden"}`}>
-                    {label}
-                  </span>
-                  {isActive && (
-                    <span className={`relative ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50 ${!open && "md:hidden"}`} />
-                  )}
-                  {!isActive && (
-                    <span className={`relative ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-1 h-1 rounded-full bg-slate-600 ${!open && "md:hidden"}`} />
-                  )}
-                </button>
-              );
-            })}
+                    >
+                      <Icon
+                        size={16}
+                        className={`transition-colors duration-200 ${
+                          isActive
+                            ? "text-white"
+                            : "text-slate-400 group-hover:text-slate-200"
+                        }`}
+                      />
+                    </span>
+                    <span className={`relative ${!open && "md:hidden"}`}>
+                      {label}
+                    </span>
+                    {isActive && (
+                      <span className={`relative ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50 ${!open && "md:hidden"}`} />
+                    )}
+                    {!isActive && (
+                      <span className={`relative ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-1 h-1 rounded-full bg-slate-600 ${!open && "md:hidden"}`} />
+                    )}
+                  </>
+                )}
+              </NavLink>
+            ))}
           </nav>
         </div>
 

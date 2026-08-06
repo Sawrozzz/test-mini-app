@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu, ChevronLeft } from "lucide-react";
+import { Navigate, Route, Routes } from "react-router";
 import type {
   DriverLicense,
-  TabId,
   User,
   SdkDeviceDownloadResult,
 } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { useAppearance } from "../../hooks/useAppearance";
+import { useInitialPath } from "../../hooks/useInitialPath";
 import { Sidebar } from "../Sidebar";
 import { TabHome } from "../TabHome";
 import { TabTestApi } from "../TabTestApi";
@@ -23,9 +24,7 @@ import { TabBiometric } from "../TabBiometric";
 function TestMiniApp({ initialPath }: { initialPath?: string }) {
   const { sdk, user } = usePlatformSDK();
   const { theme } = useAppearance();
-  const [activeTab, setActiveTab] = useState<TabId>(
-    () => (initialPath as TabId) || "home",
-  );
+  useInitialPath(initialPath);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loading, setLoading] = useState(false);
@@ -105,11 +104,6 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
   );
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
-
-  const handleTabChange = (tab: TabId) => {
-    setActiveTab(tab);
-    window.location.hash = tab;
-  };
 
   const handleHttpGet = async () => {
     setLoading(true);
@@ -769,15 +763,6 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
     }
   };
 
-  useEffect(() => {
-    const onHashChange = () => {
-      const hash = window.location.hash.slice(1) as TabId;
-      if (hash && hash! != activeTab) setActiveTab(hash);
-    };
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, [activeTab]);
-
   return (
     <div
       className={`flex min-h-screen relative transition-colors duration-300 ${
@@ -787,8 +772,6 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
       }`}
     >
       <Sidebar
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
         userName={userName}
         open={sidebarOpen}
         onToggle={() => setSidebarOpen((v) => !v)}
@@ -820,118 +803,148 @@ function TestMiniApp({ initialPath }: { initialPath?: string }) {
         </div>
 
         <div className="pt-2">
-          {activeTab === "home" && <TabHome onNavigate={setActiveTab} />}
-          {activeTab === "test-api" && (
-            <TabTestApi
-              license={license}
-              loading={loading}
-              error={error}
-              onFetchLicense={handleHttpGet}
-              userData={userData}
-              loadUser={loadUser}
-              userError={userError}
-              onFetchUser={handleFetchUser}
+          <Routes>
+            <Route path="/" element={<TabHome />} />
+            <Route
+              path="/test-api"
+              element={
+                <TabTestApi
+                  license={license}
+                  loading={loading}
+                  error={error}
+                  onFetchLicense={handleHttpGet}
+                  userData={userData}
+                  loadUser={loadUser}
+                  userError={userError}
+                  onFetchUser={handleFetchUser}
+                />
+              }
             />
-          )}
-          {activeTab === "chat" && (
-            <TabChat
-              navLoading={navLoading}
-              navResult={navResult}
-              onNavigate={handleNavigate}
+            <Route
+              path="/chat"
+              element={
+                <TabChat
+                  navLoading={navLoading}
+                  navResult={navResult}
+                  onNavigate={handleNavigate}
+                />
+              }
             />
-          )}
-          {activeTab === "location" && (
-            <TabLocation
-              loadLocation={loadLocation}
-              location={location}
-              sdkError={error}
-              loadBrowserLocation={loadBrowserLocation}
-              browserLocation={browserLocation}
-              browserError={browserError}
-              onViewSdkLocation={handleViewSdkLocation}
-              onViewBrowserLocation={handleViewBrowserLocation}
+            <Route
+              path="/location"
+              element={
+                <TabLocation
+                  loadLocation={loadLocation}
+                  location={location}
+                  sdkError={error}
+                  loadBrowserLocation={loadBrowserLocation}
+                  browserLocation={browserLocation}
+                  browserError={browserError}
+                  onViewSdkLocation={handleViewSdkLocation}
+                  onViewBrowserLocation={handleViewBrowserLocation}
+                />
+              }
             />
-          )}
-          {activeTab === "camera" && (
-            <TabCamera
-              loadCamera={loadCamera}
-              cameraResponse={cameraResponse}
-              cameraError={cameraError}
-              onOpenCamera={handleOpenCamera}
-              browserCamera={browserCamera}
-              browserCameraLoading={browserCameraLoading}
-              browserCameraError={browserCameraError}
-              onOpenBrowserCamera={handleOpenBrowserCamera}
+            <Route
+              path="/camera"
+              element={
+                <TabCamera
+                  loadCamera={loadCamera}
+                  cameraResponse={cameraResponse}
+                  cameraError={cameraError}
+                  onOpenCamera={handleOpenCamera}
+                  browserCamera={browserCamera}
+                  browserCameraLoading={browserCameraLoading}
+                  browserCameraError={browserCameraError}
+                  onOpenBrowserCamera={handleOpenBrowserCamera}
+                />
+              }
             />
-          )}
-          {activeTab === "gallery" && (
-            <TabGallery
-              gallery={gallery}
-              galleryLoading={galleryLoading}
-              galleryError={galleryError}
-              onOpenGallery={handleImages}
-              webImages={webImages}
-              webImagesLoading={webImagesLoading}
-              webImagesError={webImagesError}
-              onUploadWebImages={handleImageUploadByWebOnly}
+            <Route
+              path="/gallery"
+              element={
+                <TabGallery
+                  gallery={gallery}
+                  galleryLoading={galleryLoading}
+                  galleryError={galleryError}
+                  onOpenGallery={handleImages}
+                  webImages={webImages}
+                  webImagesLoading={webImagesLoading}
+                  webImagesError={webImagesError}
+                  onUploadWebImages={handleImageUploadByWebOnly}
+                />
+              }
             />
-          )}
-          {activeTab === "files" && (
-            <TabFiles
-              documents={documents}
-              documentsLoading={documentsLoading}
-              documentsError={documentsError}
-              onOpenFilePicker={handleFileUpload}
-              webDocuments={webDocuments}
-              webDocumentsLoading={webDocumentsLoading}
-              webDocumentsError={webDocumentsError}
-              onUploadWebFiles={handleFileUploadByWeb}
+            <Route
+              path="/files"
+              element={
+                <TabFiles
+                  documents={documents}
+                  documentsLoading={documentsLoading}
+                  documentsError={documentsError}
+                  onOpenFilePicker={handleFileUpload}
+                  webDocuments={webDocuments}
+                  webDocumentsLoading={webDocumentsLoading}
+                  webDocumentsError={webDocumentsError}
+                  onUploadWebFiles={handleFileUploadByWeb}
+                />
+              }
             />
-          )}
-          {activeTab === "download" && (
-            <DownloadTab
-              imageDownload={imageDownload}
-              imageLoading={imageLoading}
-              imageError={imageError}
-              onDownloadImage={handleDownloadImage}
-              imageDownloadWeb={imageDownloadWeb}
-              imageLoadingWeb={imageLoadingWeb}
-              imageErrorWeb={imageErrorWeb}
-              onDownloadImageWeb={handleDownloadImageWeb}
-              fileDownload={fileDownload}
-              fileLoading={fileLoading}
-              fileError={fileError}
-              onDownloadFile={handleDownloadFile}
-              fileDownloadWeb={fileDownloadWeb}
-              fileLoadingWeb={fileLoadingWeb}
-              fileErrorWeb={fileErrorWeb}
-              onDownloadFileWeb={handleDownloadFileWeb}
+            <Route
+              path="/download"
+              element={
+                <DownloadTab
+                  imageDownload={imageDownload}
+                  imageLoading={imageLoading}
+                  imageError={imageError}
+                  onDownloadImage={handleDownloadImage}
+                  imageDownloadWeb={imageDownloadWeb}
+                  imageLoadingWeb={imageLoadingWeb}
+                  imageErrorWeb={imageErrorWeb}
+                  onDownloadImageWeb={handleDownloadImageWeb}
+                  fileDownload={fileDownload}
+                  fileLoading={fileLoading}
+                  fileError={fileError}
+                  onDownloadFile={handleDownloadFile}
+                  fileDownloadWeb={fileDownloadWeb}
+                  fileLoadingWeb={fileLoadingWeb}
+                  fileErrorWeb={fileErrorWeb}
+                  onDownloadFileWeb={handleDownloadFileWeb}
+                />
+              }
             />
-          )}
-          {activeTab === "contact" && (
-            <TabContacts
-              contact={contact}
-              contactLoading={contactLoading}
-              contactError={contactError}
-              onOpenContactPicker={handleOpenContactPicker}
-              webContact={webContact}
-              webContactLoading={webContactLoading}
-              webContactError={webContactError}
-              onOpenWebContactPicker={handleOpenWebContactPicker}
+            <Route
+              path="/contact"
+              element={
+                <TabContacts
+                  contact={contact}
+                  contactLoading={contactLoading}
+                  contactError={contactError}
+                  onOpenContactPicker={handleOpenContactPicker}
+                  webContact={webContact}
+                  webContactLoading={webContactLoading}
+                  webContactError={webContactError}
+                  onOpenWebContactPicker={handleOpenWebContactPicker}
+                />
+              }
             />
-          )}
-          {activeTab === "biometric" && (
-            <TabBiometric
-              biometric={biometric}
-              biometricLoading={biometricLoading}
-              biometricError={biometricError}
-              onAuthenticate={handleAuthenticateBiometric}
-              webBiometric={webBiometric}
-              webBiometricLoading={webBiometricLoading}
-              webBiometricError={webBiometricError}
-              onAuthenticateWeb={handleAuthenticateBiometricWeb}
+            <Route
+              path="/biometric"
+              element={
+                <TabBiometric
+                  biometric={biometric}
+                  biometricLoading={biometricLoading}
+                  biometricError={biometricError}
+                  onAuthenticate={handleAuthenticateBiometric}
+                  webBiometric={webBiometric}
+                  webBiometricLoading={webBiometricLoading}
+                  webBiometricError={webBiometricError}
+                  onAuthenticateWeb={handleAuthenticateBiometricWeb}
+                />
+              }
             />
-          )}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </div>
       </main>
     </div>

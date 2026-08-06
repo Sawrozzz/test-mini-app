@@ -7,42 +7,42 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
-import type { TabId } from "../types";
+import { Link } from "react-router";
 import { useT } from "../hooks/useT";
 
 const features: {
   icon: typeof FileText;
   key: string;
   gradient: string;
-  tab: TabId;
+  path: string;
 }[] = [
   {
     icon: FileText,
     key: "testApi",
     gradient: "from-blue-500 to-cyan-500",
-    tab: "test-api",
+    path: "/test-api",
   },
   {
     icon: MessageCircle,
     key: "chat",
     gradient: "from-purple-500 to-pink-500",
-    tab: "chat",
+    path: "/chat",
   },
   {
     icon: MapPin,
     key: "location",
     gradient: "from-emerald-500 to-teal-500",
-    tab: "location",
+    path: "/location",
   },
   {
     icon: Camera,
     key: "camera",
     gradient: "from-amber-500 to-orange-500",
-    tab: "camera",
+    path: "/camera",
   },
 ];
 
-export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
+export function TabHome() {
   const { t } = useT();
   return (
     <div className="min-h-full p-6 md:p-10 lg:p-14">
@@ -76,8 +76,8 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
             <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
               {t("home.heroSubtitle")}
             </p>
-            <button
-              onClick={() => onNavigate("test-api")}
+            <Link
+              to="/test-api"
               className="group bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center gap-2"
             >
               {t("home.getStarted")}
@@ -85,7 +85,7 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
                 size={16}
                 className="group-hover:translate-x-1 transition-transform"
               />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -99,10 +99,10 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
-          {features.map(({ icon: Icon, key, gradient, tab }) => (
-            <button
-              key={tab}
-              onClick={() => onNavigate(tab)}
+          {features.map(({ icon: Icon, key, gradient, path }) => (
+            <Link
+              key={path}
+              to={path}
               className="group relative bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-300 text-left hover:-translate-y-1"
             >
               <div
@@ -114,7 +114,7 @@ export function TabHome({ onNavigate }: { onNavigate: (tab: TabId) => void }) {
                 {t(`feature.${key}`)}
               </h3>
               <p className="text-slate-400 text-sm">{t(`feature.${key}Desc`)}</p>
-            </button>
+            </Link>
           ))}
         </div>
       </div>
