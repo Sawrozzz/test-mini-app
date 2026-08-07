@@ -2,6 +2,7 @@ import { useEffect, useReducer, useRef, type ReactNode } from "react";
 import { SDKContext } from "../context/SDKContext";
 import { retry } from "../utils/retry";
 import { LoadError } from "../components/LoadError";
+import { useHostRouter } from "../hooks/useHostRouter";
 
 type State =
   | { phase: "loading" }
@@ -25,6 +26,16 @@ function getSDK() {
   const instance = window.__GSA_SDK__ ?? null;
   if (!instance) throw new Error("SDK not available");
   return instance;
+}
+
+function PlatformSDKRuntime({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  useHostRouter();
+
+  return <>{children}</>;
 }
 
 export function PlatformSDKProvider({ children }: { children: ReactNode }) {
@@ -76,7 +87,7 @@ export function PlatformSDKProvider({ children }: { children: ReactNode }) {
     <SDKContext.Provider
       value={{ sdk: state.sdk, user: state.user, isReady: true, error: null }}
     >
-      {children}
+       <PlatformSDKRuntime>{children}</PlatformSDKRuntime>
     </SDKContext.Provider>
   );
 }
