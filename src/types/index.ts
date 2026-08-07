@@ -46,7 +46,7 @@ export type User = {
   };
 };
 
-export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download" | "contact" | "biometric";
+export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download" | "contact" | "biometric" | "router";
 
 export interface SdkFileModule {
   rawFile?: File;

@@ -8,6 +8,7 @@ import type {
 } from "../../types";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { useAppearance } from "../../hooks/useAppearance";
+import { useHostRouter } from "../../hooks/useHostRouter";
 import { Sidebar } from "../Sidebar";
 import { TabHome } from "../TabHome";
 import { TabTestApi } from "../TabTestApi";
@@ -19,10 +20,14 @@ import { TabFiles } from "../TabFiles";
 import { DownloadTab } from "../TabDownload";
 import { TabContacts } from "../TabContacts";
 import { TabBiometric } from "../TabBiometric";
+import { TabRouter } from "../TabRouter";
 
 function TestMiniApp() {
   const { sdk, user } = usePlatformSDK();
   const { theme } = useAppearance();
+  // Answers the host's native back button for every route in this app, not
+  // just the Router tab — see `useHostRouter`.
+  const hostRouter = useHostRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [loading, setLoading] = useState(false);
@@ -938,6 +943,17 @@ function TestMiniApp() {
                   webBiometricLoading={webBiometricLoading}
                   webBiometricError={webBiometricError}
                   onAuthenticateWeb={handleAuthenticateBiometricWeb}
+                />
+              }
+            />
+            <Route
+              path="/router/*"
+              element={
+                <TabRouter
+                  depth={hostRouter.depth}
+                  canGoBack={hostRouter.canGoBack}
+                  log={hostRouter.log}
+                  onBack={hostRouter.goBack}
                 />
               }
             />

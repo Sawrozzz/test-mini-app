@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@lizuz/mini-app-types": "1.0.9",
+    "@lizuz/mini-app-types": "1.0.10",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
