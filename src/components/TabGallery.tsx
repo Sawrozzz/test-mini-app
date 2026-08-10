@@ -43,27 +43,27 @@ export function TabGallery({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ImageCard
-            title="WITH SDK"
-            icon={<FolderOpen size={14} />}
+            actionIcon={<FolderOpen size={16} />}
+            actionLabel="Open Gallery"
             color="violet"
+            error={galleryError}
+            icon={<FolderOpen size={14} />}
             images={gallery}
             isLoading={galleryLoading}
-            error={galleryError}
             onAction={onOpenGallery}
-            actionLabel="Open Gallery"
-            actionIcon={<FolderOpen size={16} />}
+            title="WITH SDK"
           />
 
           <ImageCard
-            title="WITHOUT SDK"
-            icon={<Upload size={14} />}
+            actionIcon={<Upload size={16} />}
+            actionLabel="Upload Images"
             color="rose"
+            error={webImagesError}
+            icon={<Upload size={14} />}
             images={webImages}
             isLoading={webImagesLoading}
-            error={webImagesError}
             onAction={onUploadWebImages}
-            actionLabel="Upload Images"
-            actionIcon={<Upload size={16} />}
+            title="WITHOUT SDK"
           />
         </div>
       </div>
@@ -117,7 +117,7 @@ function ImageCard({
 
       {isLoading && !images ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Loading...</p>
         </div>
       ) : (
@@ -134,7 +134,7 @@ function ImageCard({
             <div className="space-y-4 mb-4">
               <div className="grid grid-cols-2 gap-3">
                 {images.map((file) => (
-                  <ImagePreview key={file.url} file={file} />
+                  <ImagePreview file={file} key={file.url} />
                 ))}
               </div>
               <p className="text-slate-400 text-xs text-center">
@@ -147,9 +147,9 @@ function ImageCard({
 
       {!isLoading && (
         <button
-          type="button"
+          className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
           onClick={onAction}
-          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          type="button"
         >
           {actionIcon}
           {actionLabel}
@@ -169,9 +169,9 @@ function ImagePreview({ file }: { file: SdkFileModule }) {
     <div className="bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
       <div className="aspect-square bg-slate-200 flex items-center justify-center overflow-hidden">
         <img
-          src={previewUrl}
           alt={file.fileName}
           className="w-full h-full object-cover"
+          src={previewUrl}
         />
       </div>
       <div className="p-3 space-y-1.5">
@@ -191,7 +191,7 @@ function ImagePreview({ file }: { file: SdkFileModule }) {
             {size}
           </span>
         </div>
-        {file.mimeType && (
+        {!!file.mimeType && (
           <p className="text-[9px] text-slate-300 truncate">{file.mimeType}</p>
         )}
       </div>

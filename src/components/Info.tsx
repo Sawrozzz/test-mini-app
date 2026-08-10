@@ -1,10 +1,6 @@
-export function Info({
-  label,
-  value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) {
+import type { ReactNode } from "react";
+
+export function Info({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="py-2.5">
       <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">

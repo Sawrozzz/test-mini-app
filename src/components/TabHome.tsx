@@ -53,10 +53,10 @@ export function TabHome() {
               <div className="absolute inset-0 bg-linear-to-br from-blue-400/20 via-purple-400/10 to-pink-400/20 rounded-full blur-3xl" />
               <div className="relative flex items-center justify-center">
                 <div className="w-56 h-56 md:w-64 md:h-64 bg-linear-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-3xl rotate-12 shadow-2xl shadow-blue-500/20 flex items-center justify-center">
-                  <Sparkles size={72} className="text-white/80" />
+                  <Sparkles className="text-white/80" size={72} />
                 </div>
                 <div className="absolute -top-3 -right-3 w-20 h-20 bg-linear-to-br from-amber-400 to-orange-500 rounded-2xl -rotate-12 shadow-lg shadow-amber-500/30 flex items-center justify-center">
-                  <Zap size={32} className="text-white" />
+                  <Zap className="text-white" size={32} />
                 </div>
                 <div className="absolute -bottom-3 -left-3 w-16 h-16 bg-linear-to-br from-emerald-400 to-teal-500 rounded-2xl rotate-6 shadow-lg shadow-emerald-500/30 flex items-center justify-center">
                   <span className="text-2xl">✨</span>
@@ -77,13 +77,13 @@ export function TabHome() {
               {t("home.heroSubtitle")}
             </p>
             <Link
-              to="/test-api"
               className="group bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center gap-2"
+              to="/test-api"
             >
               {t("home.getStarted")}
               <ArrowRight
-                size={16}
                 className="group-hover:translate-x-1 transition-transform"
+                size={16}
               />
             </Link>
           </div>
@@ -101,14 +101,14 @@ export function TabHome() {
         <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
           {features.map(({ icon: Icon, key, gradient, path }) => (
             <Link
+              className="group relative bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-300 text-left hover:-translate-y-1"
               key={path}
               to={path}
-              className="group relative bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-300 text-left hover:-translate-y-1"
             >
               <div
                 className={`w-12 h-12 bg-linear-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:shadow-md transition-all duration-300`}
               >
-                <Icon size={22} className="text-white" />
+                <Icon className="text-white" size={22} />
               </div>
               <h3 className="text-slate-800 font-semibold mb-1 group-hover:text-blue-600 transition-colors">
                 {t(`feature.${key}`)}

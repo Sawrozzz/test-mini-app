@@ -62,68 +62,68 @@ export function DownloadTab({
         <div className="space-y-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Image size={16} className="text-slate-600" />
+              <Image className="text-slate-600" size={16} />
               <h2 className="text-lg font-semibold text-slate-800">
                 Image Download
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <DownloadCard
-                title="WITH SDK"
-                icon={<Download size={14} />}
+                actionIcon={<Download size={16} />}
+                actionLabel="Download Image"
                 color="blue"
                 download={imageDownload}
-                isLoading={imageLoading}
                 error={imageError}
+                icon={<Download size={14} />}
+                isLoading={imageLoading}
                 onAction={onDownloadImage}
-                actionLabel="Download Image"
-                actionIcon={<Download size={16} />}
+                title="WITH SDK"
               />
               <BrowserDownloadCard
-                title="WITHOUT SDK"
-                icon={<Save size={14} />}
+                actionIcon={<Save size={16} />}
+                actionLabel="Download Image"
                 color="green"
                 downloaded={imageDownloadWeb}
-                isLoading={imageLoadingWeb}
                 error={imageErrorWeb}
-                onAction={onDownloadImageWeb}
-                actionLabel="Download Image"
-                actionIcon={<Save size={16} />}
                 fileName="sample-image.jpg"
+                icon={<Save size={14} />}
+                isLoading={imageLoadingWeb}
+                onAction={onDownloadImageWeb}
+                title="WITHOUT SDK"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <FileText size={16} className="text-slate-600" />
+              <FileText className="text-slate-600" size={16} />
               <h2 className="text-lg font-semibold text-slate-800">
                 File Download
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <DownloadCard
-                title="WITH SDK"
-                icon={<Download size={14} />}
+                actionIcon={<Download size={16} />}
+                actionLabel="Download File"
                 color="blue"
                 download={fileDownload}
-                isLoading={fileLoading}
                 error={fileError}
+                icon={<Download size={14} />}
+                isLoading={fileLoading}
                 onAction={onDownloadFile}
-                actionLabel="Download File"
-                actionIcon={<Download size={16} />}
+                title="WITH SDK"
               />
               <BrowserDownloadCard
-                title="WITHOUT SDK"
-                icon={<Save size={14} />}
+                actionIcon={<Save size={16} />}
+                actionLabel="Download File"
                 color="green"
                 downloaded={fileDownloadWeb}
-                isLoading={fileLoadingWeb}
                 error={fileErrorWeb}
-                onAction={onDownloadFileWeb}
-                actionLabel="Download File"
-                actionIcon={<Save size={16} />}
                 fileName="sample.pdf"
+                icon={<Save size={14} />}
+                isLoading={fileLoadingWeb}
+                onAction={onDownloadFileWeb}
+                title="WITHOUT SDK"
               />
             </div>
           </div>
@@ -179,7 +179,7 @@ function DownloadCard({
 
       {isLoading && !download ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Downloading...</p>
         </div>
       ) : (
@@ -192,7 +192,7 @@ function DownloadCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {download && (
+          {!!download && (
             <div className="space-y-4 mb-4">
               <div className="grid grid-cols-3 gap-2">
                 <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
@@ -222,13 +222,13 @@ function DownloadCard({
                   </p>
                 </div>
               </div>
-              {download.file.url && (
+              {!!download.file.url && (
                 <div className="flex justify-center">
                   <a
-                    href={download.file.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                    href={download.file.url}
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
                     <ExternalLink size={14} />
                     Open downloaded file
@@ -242,12 +242,12 @@ function DownloadCard({
 
       {!isLoading && (
         <button
-          type="button"
-          onClick={onAction}
           className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          onClick={onAction}
+          type="button"
         >
           {actionIcon}
-          {download ? "Download Again" : actionLabel}
+          {download ? "Download Again" : `${actionLabel}`}
         </button>
       )}
     </div>
@@ -302,12 +302,12 @@ function BrowserDownloadCard({
 
       {isLoading ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Downloading...</p>
         </div>
       ) : (
         <>
-          {error && (
+          {!!error && (
             <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3 mb-4">
               <span className="text-rose-500 mt-0.5 shrink-0">
                 <X size={14} />
@@ -315,11 +315,11 @@ function BrowserDownloadCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {downloaded && (
+          {downloaded ? (
             <div className="space-y-4 mb-4">
               <div className="flex items-center justify-center py-4">
                 <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                  <Check size={24} className="text-green-600" />
+                  <Check className="text-green-600" size={24} />
                 </div>
               </div>
               <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
@@ -334,18 +334,18 @@ function BrowserDownloadCard({
                 Download completed successfully
               </p>
             </div>
-          )}
+          ) : null}
         </>
       )}
 
       {!isLoading && (
         <button
-          type="button"
+          className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
           onClick={onAction}
-          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          type="button"
         >
           {actionIcon}
-          {downloaded ? "Download Again" : actionLabel}
+          {downloaded ? "Download Again" : `${actionLabel}`}
         </button>
       )}
     </div>

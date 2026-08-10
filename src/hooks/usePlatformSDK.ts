@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { SDKContext, type SDKContextValue } from "../context/SDKContext";
+import type { SDKContextValue } from "../context/SDKContext";
+import { SDKContext } from "../context/SDKContext";
 
 export function usePlatformSDK(): SDKContextValue & { sdk: MiniAppSdk } {
   const ctx = useContext(SDKContext);

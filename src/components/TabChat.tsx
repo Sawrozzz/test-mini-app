@@ -26,14 +26,14 @@ export function TabChat({
         <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8 md:p-10">
           <div className="flex flex-col items-center">
             <div className="relative mb-8">
-              <div className="w-36 h-36 bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-3xl rotate-6 shadow-xl shadow-purple-500/20 flex items-center justify-center">
-                <MessageCircle size={56} className="text-white/90" />
+              <div className="w-36 h-36 bg-linear-to-br from-purple-500 via-pink-500 to-rose-500 rounded-3xl rotate-6 shadow-xl shadow-purple-500/20 flex items-center justify-center">
+                <MessageCircle className="text-white/90" size={56} />
               </div>
               <div className="absolute -top-2 -right-2 w-12 h-12 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-                <Sparkles size={20} className="text-purple-500" />
+                <Sparkles className="text-purple-500" size={20} />
               </div>
-              <div className="absolute -bottom-2 -left-2 w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center">
-                <Send size={16} className="text-purple-400" />
+              <div className="absolute -bottom-2 -left-2 w-10 h-10 bg-linear-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center">
+                <Send className="text-purple-400" size={16} />
               </div>
             </div>
 
@@ -46,10 +46,10 @@ export function TabChat({
             </p>
 
             <button
-              type="button"
-              onClick={onNavigate}
+              className="group bg-linear-to-r from-purple-600 to-pink-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
               disabled={navLoading}
-              className="group bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
+              onClick={onNavigate}
+              type="button"
             >
               {navLoading ? (
                 "Processing..."
@@ -57,15 +57,15 @@ export function TabChat({
                 <>
                   Chat Now
                   <ArrowRight
-                    size={16}
                     className="group-hover:translate-x-1 transition-transform"
+                    size={16}
                   />
                 </>
               )}
             </button>
           </div>
 
-          {navResult && (
+          {!!navResult && (
             <div
               className={`mt-6 p-4 rounded-2xl text-sm font-mono border ${
                 navResult.startsWith("Error")

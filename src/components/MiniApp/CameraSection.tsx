@@ -23,19 +23,19 @@ export function CameraSection({
   return (
     <>
       <button
-        type="button"
-        className="rounded border py-2 px-4 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 mt-4"
-        onClick={onOpenCamera}
+        className="rounded border py-2 px-4 cursor-pointer disabled:opacity-50 mt-4"
         disabled={loadCamera}
+        onClick={onOpenCamera}
+        type="button"
       >
         Open Camera
       </button>
 
-      {loadCamera && (
+      {loadCamera ? (
         <div className="mt-2">
           <Loader />
         </div>
-      )}
+      ) : null}
 
       {cameraError && !loadCamera && cameraPermission !== "granted" && (
         <div className="mt-2 text-sm text-rose-600">{cameraError}</div>
@@ -44,9 +44,9 @@ export function CameraSection({
       {!loadCamera && cameraResponse && (
         <div className="mt-4 rounded-lg border bg-slate-50 p-4">
           <img
-            src={imageSrc}
             alt={cameraResponse.fileName}
             className="mx-auto max-h-80 max-w-full rounded border object-contain"
+            src={imageSrc}
           />
 
           <div className="mt-4 flex flex-wrap gap-3 text-sm">

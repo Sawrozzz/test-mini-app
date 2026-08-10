@@ -54,9 +54,9 @@ export function TabTestApi({
                 WITH SDK
               </div>
               <LicenseCard
+                error={error}
                 license={license}
                 loading={loading}
-                error={error}
                 onFetchLicense={onFetchLicense}
               />
             </div>
@@ -70,7 +70,7 @@ export function TabTestApi({
 
             {loadUser && !userData ? (
               <div className="flex flex-col items-center py-6">
-                <Loader size={24} className="text-cyan-500 animate-spin mb-3" />
+                <Loader className="text-cyan-500 animate-spin mb-3" size={24} />
                 <p className="text-slate-400 text-xs">Fetching user data...</p>
               </div>
             ) : (
@@ -83,15 +83,15 @@ export function TabTestApi({
                     <p className="text-rose-600 text-xs">{userError}</p>
                   </div>
                 )}
-                {userData && <UserDataGrid user={userData} />}
+                {!!userData && <UserDataGrid user={userData} />}
               </>
             )}
 
             {!loadUser && (
               <button
-                type="button"
+                className="w-full bg-linear-to-r from-cyan-600 to-teal-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4"
                 onClick={onFetchUser}
-                className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4"
+                type="button"
               >
                 <Globe size={16} />
                 Fetch User
@@ -107,9 +107,9 @@ export function TabTestApi({
 function UserDataGrid({ user }: { user: User }) {
   return (
     <div className="space-y-3">
-      <div className="relative bg-gradient-to-br from-cyan-50 to-teal-50 rounded-2xl p-5 border border-cyan-200 flex items-center gap-4">
-        <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20">
-          <UserIcon size={32} className="text-white" />
+      <div className="relative bg-linear-to-br from-cyan-50 to-teal-50 rounded-2xl p-5 border border-cyan-200 flex items-center gap-4">
+        <div className="w-16 h-16 bg-linear-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <UserIcon className="text-white" size={32} />
         </div>
         <div>
           <p className="text-lg font-bold text-slate-800">{user.name}</p>
@@ -117,7 +117,7 @@ function UserDataGrid({ user }: { user: User }) {
         </div>
       </div>
 
-      <div className="divide-y divide-slate-100 border-t border-b border-slate-100">
+      <div className="divide-y border-t border-b border-slate-100">
         <div className="grid grid-cols-2 gap-x-4">
           <DetailItem
             icon={<Mail size={12} />}

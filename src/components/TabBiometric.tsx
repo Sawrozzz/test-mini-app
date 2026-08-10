@@ -1,4 +1,5 @@
 import { Fingerprint, Loader, ShieldCheck, ShieldX, X } from "lucide-react";
+import type { ReactNode } from "react";
 
 export function TabBiometric({
   biometric,
@@ -35,27 +36,27 @@ export function TabBiometric({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <BiometricCard
-            title="WITH SDK"
-            icon={<Fingerprint size={14} />}
-            color="emerald"
-            biometric={biometric}
-            isLoading={biometricLoading}
-            error={biometricError}
-            onAction={onAuthenticate}
-            actionLabel="Authenticate with SDK"
             actionIcon={<Fingerprint size={16} />}
+            actionLabel="Authenticate with SDK"
+            biometric={biometric}
+            color="emerald"
+            error={biometricError}
+            icon={<Fingerprint size={14} />}
+            isLoading={biometricLoading}
+            onAction={onAuthenticate}
+            title="WITH SDK"
           />
 
           <BiometricCard
-            title="WITHOUT SDK"
-            icon={<ShieldCheck size={14} />}
-            color="sky"
-            biometric={webBiometric}
-            isLoading={webBiometricLoading}
-            error={webBiometricError}
-            onAction={onAuthenticateWeb}
-            actionLabel="Authenticate (WebAuthn)"
             actionIcon={<ShieldCheck size={16} />}
+            actionLabel="Authenticate (WebAuthn)"
+            biometric={webBiometric}
+            color="sky"
+            error={webBiometricError}
+            icon={<ShieldCheck size={14} />}
+            isLoading={webBiometricLoading}
+            onAction={onAuthenticateWeb}
+            title="WITHOUT SDK"
           />
         </div>
       </div>
@@ -75,14 +76,14 @@ function BiometricCard({
   actionIcon,
 }: {
   title: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   color: "emerald" | "sky";
   biometric: SdkDeviceBiometricResult | null;
   isLoading: boolean;
   error: string | null;
   onAction: () => void;
   actionLabel: string;
-  actionIcon: React.ReactNode;
+  actionIcon: ReactNode;
 }) {
   const badge =
     color === "emerald"
@@ -109,12 +110,12 @@ function BiometricCard({
 
       {isLoading ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Authenticating...</p>
         </div>
       ) : (
         <>
-          {error && (
+          {!!error && (
             <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3 mb-4">
               <span className="text-rose-500 mt-0.5 shrink-0">
                 <X size={14} />
@@ -122,7 +123,7 @@ function BiometricCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {biometric && (
+          {!!biometric && (
             <div className="space-y-4 mb-4">
               <div
                 className={`rounded-2xl border p-6 flex flex-col items-center gap-3 ${
@@ -153,7 +154,7 @@ function BiometricCard({
                     ? "Authentication successful"
                     : "Authentication failed"}
                 </p>
-                {biometric.error && (
+                {!!biometric.error && (
                   <p className="text-xs text-slate-500 text-center">
                     {biometric.error}
                   </p>
@@ -166,9 +167,9 @@ function BiometricCard({
 
       {!isLoading && (
         <button
-          type="button"
-          onClick={onAction}
           className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          onClick={onAction}
+          type="button"
         >
           {actionIcon}
           {actionLabel}

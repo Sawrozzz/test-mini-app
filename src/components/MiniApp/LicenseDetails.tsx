@@ -3,7 +3,7 @@ import { Info } from "../Info";
 
 export function LicenseDetails({ license }: { license: DriverLicense }) {
   return (
-    <div className="divide-y divide-slate-100 border-t border-b border-slate-100 py-2">
+    <div className="divide-y divide-slate-100 border-t border-b py-2">
       <div className="grid grid-cols-2 gap-x-4">
         <Info label="Gender" value={license.gender} />
         <Info label="Issue Date" value={license.issueDate} />

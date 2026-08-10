@@ -35,27 +35,27 @@ export function TabContacts({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ContactCard
-            title="WITH SDK"
-            icon={<Users size={14} />}
+            actionIcon={<Users size={16} />}
+            actionLabel="Open Contact Picker"
             color="indigo"
             contact={contact}
-            isLoading={contactLoading}
             error={contactError}
+            icon={<Users size={14} />}
+            isLoading={contactLoading}
             onAction={onOpenContactPicker}
-            actionLabel="Open Contact Picker"
-            actionIcon={<Users size={16} />}
+            title="WITH SDK"
           />
 
           <ContactCard
-            title="WITHOUT SDK"
-            icon={<User size={14} />}
+            actionIcon={<User size={16} />}
+            actionLabel="Pick Contact"
             color="teal"
             contact={webContact}
-            isLoading={webContactLoading}
             error={webContactError}
+            icon={<User size={14} />}
+            isLoading={webContactLoading}
             onAction={onOpenWebContactPicker}
-            actionLabel="Pick Contact"
-            actionIcon={<User size={16} />}
+            title="WITHOUT SDK"
           />
         </div>
       </div>
@@ -81,7 +81,7 @@ function ContactCard({
   isLoading: boolean;
   error: string | null;
   onAction: () => void;
-  actionLabel: string;
+  actionLabel?: string;
   actionIcon: React.ReactNode;
 }) {
   const badge =
@@ -109,7 +109,7 @@ function ContactCard({
 
       {isLoading && !contact ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Opening contact picker...</p>
         </div>
       ) : (
@@ -122,7 +122,7 @@ function ContactCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {contact && (
+          {contact ? (
             <div className="space-y-4 mb-4">
               <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center gap-4">
                 <div
@@ -144,18 +144,18 @@ function ContactCard({
                 </div>
               </div>
             </div>
-          )}
+          ) : null}
         </>
       )}
 
       {!isLoading && (
         <button
-          type="button"
-          onClick={onAction}
           className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          onClick={onAction}
+          type="button"
         >
           {actionIcon}
-          {contact ? "Pick Another Contact" : actionLabel}
+          {contact ? "Pick Another Contact" : `${actionLabel}`}
         </button>
       )}
     </div>

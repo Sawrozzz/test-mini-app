@@ -10,10 +10,10 @@ export function ChatAction({
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-sm">
       <button
-        type="button"
-        onClick={onNavigate}
-        disabled={navLoading}
         className="bg-blue-600 text-white px-6 py-3.5 rounded-xl font-semibold text-sm hover:bg-blue-700 disabled:opacity-50 w-full transition shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
+        disabled={navLoading}
+        onClick={onNavigate}
+        type="button"
       >
         {navLoading ? (
           "Processing..."
@@ -25,7 +25,7 @@ export function ChatAction({
         )}
       </button>
 
-      {navResult && (
+      {navResult ? (
         <pre
           className={`text-left font-mono text-[11px] p-4 rounded-xl overflow-auto max-h-40 border ${
             navResult.startsWith("Error")
@@ -35,7 +35,7 @@ export function ChatAction({
         >
           {navResult}
         </pre>
-      )}
+      ) : null}
     </div>
   );
 }

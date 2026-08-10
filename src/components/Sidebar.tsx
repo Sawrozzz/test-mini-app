@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { useCallback } from "react";
 import { NavLink } from "react-router";
 import { navItems } from "../routes";
 
@@ -11,14 +12,28 @@ export function Sidebar({
   open: boolean;
   onToggle: () => void;
 }) {
+  const navLinkClassName = useCallback(
+    ({ isActive }: { isActive: boolean }) =>
+      `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
+        isActive ? "text-white" : "text-slate-400 hover:text-slate-200"
+      } ${!open ? "md:justify-center md:px-2" : ""}`,
+    [open],
+  );
+
+  const handleNavClick = useCallback(() => {
+    if (window.innerWidth < 768) {
+      onToggle();
+    }
+  }, [onToggle]);
+
   return (
     <>
-      {open && (
+      {!!open && (
         <button
-          type="button"
           aria-label="Close sidebar"
           className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden cursor-pointer"
           onClick={onToggle}
+          type="button"
         />
       )}
 
@@ -52,9 +67,9 @@ export function Sidebar({
             </div>
           </div>
           <button
-            type="button"
-            onClick={onToggle}
             className="md:hidden w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+            onClick={onToggle}
+            type="button"
           >
             <X size={16} />
           </button>
@@ -69,23 +84,15 @@ export function Sidebar({
           <nav className="space-y-0.5">
             {navItems.map(({ id, path, label, icon: Icon }) => (
               <NavLink
-                key={id}
-                to={path}
+                className={navLinkClassName}
                 end={path === "/"}
-                onClick={() => {
-                  if (window.innerWidth < 768) onToggle();
-                }}
-                className={({ isActive }) =>
-                  `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
-                    isActive
-                      ? "text-white"
-                      : "text-slate-400 hover:text-slate-200"
-                  } ${!open && "md:justify-center md:px-2"}`
-                }
+                key={id}
+                onClick={handleNavClick}
+                to={path}
               >
                 {({ isActive }) => (
                   <>
-                    {isActive && (
+                    {!!isActive && (
                       <span className="absolute inset-0 bg-linear-to-r from-blue-600/25 via-purple-600/20 to-transparent rounded-xl border border-blue-500/20 shadow-sm shadow-blue-500/10" />
                     )}
                     <span
@@ -96,18 +103,18 @@ export function Sidebar({
                       }`}
                     >
                       <Icon
-                        size={16}
                         className={`transition-colors duration-200 ${
                           isActive
                             ? "text-white"
                             : "text-slate-400 group-hover:text-slate-200"
                         }`}
+                        size={16}
                       />
                     </span>
                     <span className={`relative ${!open && "md:hidden"}`}>
                       {label}
                     </span>
-                    {isActive && (
+                    {!!isActive && (
                       <span
                         className={`relative ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50 ${!open && "md:hidden"}`}
                       />

@@ -12,6 +12,7 @@
       "!**/.pnpm-store",
       "!**/dist",
       "!**/build",
+      "!**/*.svg",
       "!**/coverage",
       "!**/*.min.js",
       "!**/*.d.ts",

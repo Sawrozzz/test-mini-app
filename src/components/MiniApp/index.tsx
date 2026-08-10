@@ -1,5 +1,5 @@
 import { ChevronLeft, Menu } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { useAppearance } from "../../hooks/useAppearance";
 import { usePlatformSDK } from "../../hooks/usePlatformSDK";
@@ -100,7 +100,7 @@ function TestMiniApp() {
 
   const userName = user?.name ?? user?.fullName ?? "Guest";
 
-  const handleHttpGet = async () => {
+  const handleHttpGet = useCallback(async () => {
     setLoading(true);
     try {
       const res = await sdk.http.post<{
@@ -123,9 +123,9 @@ function TestMiniApp() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sdk.http.post]);
 
-  const handleNavigate = async () => {
+  const handleNavigate = useCallback(async () => {
     setNavLoading(true);
     setNavResult("");
     try {
@@ -147,8 +147,9 @@ function TestMiniApp() {
     } finally {
       setNavLoading(false);
     }
-  };
-  const handleViewSdkLocation = async () => {
+  }, [sdk.navigation.navigate]);
+
+  const handleViewSdkLocation = useCallback(async () => {
     setLoadLocation(true);
     setError("");
     setLocation(null);
@@ -179,9 +180,9 @@ function TestMiniApp() {
     } finally {
       setLoadLocation(false);
     }
-  };
+  }, [sdk.device.location]);
 
-  const handleViewBrowserLocation = () => {
+  const handleViewBrowserLocation = useCallback(() => {
     setLoadBrowserLocation(true);
     setBrowserError(null);
     setBrowserLocation(null);
@@ -207,9 +208,9 @@ function TestMiniApp() {
       setBrowserError("Geolocation is not supported by this browser.");
       setLoadBrowserLocation(false);
     }
-  };
+  }, []);
 
-  const handleFetchUser = async () => {
+  const handleFetchUser = useCallback(async () => {
     setLoadUser(true);
     setUserError(null);
     setUserData(null);
@@ -225,9 +226,9 @@ function TestMiniApp() {
     } finally {
       setLoadUser(false);
     }
-  };
+  }, []);
 
-  const handleOpenCamera = async () => {
+  const handleOpenCamera = useCallback(async () => {
     setLoadCamera(true);
     setCameraResponse(null);
     setCameraError(null);
@@ -258,9 +259,9 @@ function TestMiniApp() {
     } finally {
       setLoadCamera(false);
     }
-  };
+  }, [sdk.device.camera]);
 
-  const handleOpenBrowserCamera = () => {
+  const handleOpenBrowserCamera = useCallback(() => {
     setBrowserCameraLoading(true);
     setBrowserCameraError(null);
     setBrowserCamera(null);
@@ -308,9 +309,9 @@ function TestMiniApp() {
     };
 
     input.click();
-  };
+  }, []);
 
-  const handleImages = async () => {
+  const handleImages = useCallback(async () => {
     setGalleryLoading(true);
     setGalleryError(null);
 
@@ -348,9 +349,9 @@ function TestMiniApp() {
     } finally {
       setGalleryLoading(false);
     }
-  };
+  }, [sdk.device.gallery]);
 
-  const handleImageUploadByWebOnly = () => {
+  const handleImageUploadByWebOnly = useCallback(() => {
     setWebImagesLoading(true);
     setWebImagesError(null);
 
@@ -402,9 +403,9 @@ function TestMiniApp() {
     };
 
     input.click();
-  };
+  }, []);
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = useCallback(async () => {
     setDocumentsLoading(true);
     setDocumentsError(null);
 
@@ -439,9 +440,9 @@ function TestMiniApp() {
     } finally {
       setDocumentsLoading(false);
     }
-  };
+  }, [sdk.device.files]);
 
-  const handleFileUploadByWeb = () => {
+  const handleFileUploadByWeb = useCallback(() => {
     setWebDocumentsLoading(true);
     setWebDocumentsError(null);
 
@@ -492,9 +493,9 @@ function TestMiniApp() {
     };
 
     input.click();
-  };
+  }, []);
 
-  const handleDownloadImage = async () => {
+  const handleDownloadImage = useCallback(async () => {
     setImageLoading(true);
     setImageError(null);
     setImageDownload(null);
@@ -528,9 +529,9 @@ function TestMiniApp() {
     } finally {
       setImageLoading(false);
     }
-  };
+  }, [sdk.device.download]);
 
-  const handleDownloadImageWeb = async () => {
+  const handleDownloadImageWeb = useCallback(async () => {
     setImageLoadingWeb(true);
     setImageErrorWeb(null);
     setImageDownloadWeb(false);
@@ -564,9 +565,9 @@ function TestMiniApp() {
     } finally {
       setImageLoadingWeb(false);
     }
-  };
+  }, []);
 
-  const handleDownloadFile = async () => {
+  const handleDownloadFile = useCallback(async () => {
     setFileLoading(true);
     setFileError(null);
     setFileDownload(null);
@@ -600,9 +601,9 @@ function TestMiniApp() {
     } finally {
       setFileLoading(false);
     }
-  };
+  }, [sdk.device.download]);
 
-  const handleDownloadFileWeb = async () => {
+  const handleDownloadFileWeb = useCallback(async () => {
     setFileLoadingWeb(true);
     setFileErrorWeb(null);
     setFileDownloadWeb(false);
@@ -636,9 +637,9 @@ function TestMiniApp() {
     } finally {
       setFileLoadingWeb(false);
     }
-  };
+  }, []);
 
-  const handleOpenContactPicker = async () => {
+  const handleOpenContactPicker = useCallback(async () => {
     setContactLoading(true);
     setContactError(null);
     setContact(null);
@@ -669,9 +670,9 @@ function TestMiniApp() {
     } finally {
       setContactLoading(false);
     }
-  };
+  }, [sdk.device.contact]);
 
-  const handleOpenWebContactPicker = async () => {
+  const handleOpenWebContactPicker = useCallback(async () => {
     setWebContactLoading(true);
     setWebContactError(null);
     setWebContact(null);
@@ -717,9 +718,9 @@ function TestMiniApp() {
     } finally {
       setWebContactLoading(false);
     }
-  };
+  }, []);
 
-  const handleAuthenticateBiometric = async () => {
+  const handleAuthenticateBiometric = useCallback(async () => {
     setBiometricLoading(true);
     setBiometricError(null);
     setBiometric(null);
@@ -740,9 +741,9 @@ function TestMiniApp() {
     } finally {
       setBiometricLoading(false);
     }
-  };
+  }, [sdk.device.biometric]);
 
-  const handleAuthenticateBiometricWeb = async () => {
+  const handleAuthenticateBiometricWeb = useCallback(async () => {
     setWebBiometricLoading(true);
     setWebBiometricError(null);
     setWebBiometric(null);
@@ -767,7 +768,11 @@ function TestMiniApp() {
     } finally {
       setWebBiometricLoading(false);
     }
-  };
+  }, [sdk.device.biometric]);
+
+  const handleSidebarOpen = useCallback(() => {
+    setSidebarOpen((v) => !v);
+  }, []);
 
   return (
     <div
@@ -778,33 +783,33 @@ function TestMiniApp() {
       }`}
     >
       <Sidebar
-        userName={userName}
+        onToggle={handleSidebarOpen}
         open={sidebarOpen}
-        onToggle={() => setSidebarOpen((v) => !v)}
+        userName={userName}
       />
 
       <main className="flex-1 overflow-y-auto min-w-0">
         <div className="sticky top-0 z-30 h-0">
           <button
-            type="button"
-            onClick={() => setSidebarOpen((v) => !v)}
             className="hidden md:flex absolute top-3 w-8 h-8 rounded-xl items-center justify-center transition-all duration-300 shadow-lg bg-white/90 backdrop-blur-sm border border-slate-200/80 text-slate-500 hover:text-slate-700 hover:bg-white hover:shadow-xl active:scale-95"
+            onClick={handleSidebarOpen}
             style={{
               left: sidebarOpen ? "calc(2rem - 16px)" : "12px",
             }}
             title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            type="button"
           >
             <ChevronLeft
-              size={15}
               className={`transition-transform duration-300 ${sidebarOpen ? "" : "rotate-180"}`}
+              size={15}
             />
           </button>
 
           <button
-            type="button"
-            onClick={() => setSidebarOpen(true)}
             className={`md:hidden absolute top-3 left-3 w-9 h-9 rounded-xl items-center justify-center shadow-lg bg-white/90 backdrop-blur-sm border border-slate-200/80 text-slate-500 hover:text-slate-700 hover:bg-white transition-all duration-200 ${sidebarOpen ? "hidden" : "flex"}`}
+            onClick={handleSidebarOpen}
             title="Open sidebar"
+            type="button"
           >
             <Menu size={18} />
           </button>
@@ -812,24 +817,23 @@ function TestMiniApp() {
 
         <div className="pt-2">
           <Routes>
-            <Route path="/" element={<TabHome />} />
+            <Route element={<TabHome />} path="/" />
             <Route
-              path="/test-api"
               element={
                 <TabTestApi
+                  error={error}
                   license={license}
                   loading={loading}
-                  error={error}
-                  onFetchLicense={handleHttpGet}
-                  userData={userData}
                   loadUser={loadUser}
-                  userError={userError}
+                  onFetchLicense={handleHttpGet}
                   onFetchUser={handleFetchUser}
+                  userData={userData}
+                  userError={userError}
                 />
               }
+              path="/test-api"
             />
             <Route
-              path="/chat"
               element={
                 <TabChat
                   navLoading={navLoading}
@@ -837,121 +841,117 @@ function TestMiniApp() {
                   onNavigate={handleNavigate}
                 />
               }
+              path="/chat"
             />
             <Route
-              path="/location"
               element={
                 <TabLocation
+                  browserError={browserError}
+                  browserLocation={browserLocation}
+                  loadBrowserLocation={loadBrowserLocation}
                   loadLocation={loadLocation}
                   location={location}
-                  sdkError={error}
-                  loadBrowserLocation={loadBrowserLocation}
-                  browserLocation={browserLocation}
-                  browserError={browserError}
-                  onViewSdkLocation={handleViewSdkLocation}
                   onViewBrowserLocation={handleViewBrowserLocation}
+                  onViewSdkLocation={handleViewSdkLocation}
+                  sdkError={error}
                 />
               }
             />
             <Route
-              path="/camera"
               element={
                 <TabCamera
-                  loadCamera={loadCamera}
-                  cameraResponse={cameraResponse}
-                  cameraError={cameraError}
-                  onOpenCamera={handleOpenCamera}
                   browserCamera={browserCamera}
-                  browserCameraLoading={browserCameraLoading}
                   browserCameraError={browserCameraError}
+                  browserCameraLoading={browserCameraLoading}
+                  cameraError={cameraError}
+                  cameraResponse={cameraResponse}
+                  loadCamera={loadCamera}
                   onOpenBrowserCamera={handleOpenBrowserCamera}
+                  onOpenCamera={handleOpenCamera}
                 />
               }
             />
             <Route
-              path="/gallery"
               element={
                 <TabGallery
                   gallery={gallery}
-                  galleryLoading={galleryLoading}
                   galleryError={galleryError}
+                  galleryLoading={galleryLoading}
                   onOpenGallery={handleImages}
-                  webImages={webImages}
-                  webImagesLoading={webImagesLoading}
-                  webImagesError={webImagesError}
                   onUploadWebImages={handleImageUploadByWebOnly}
+                  webImages={webImages}
+                  webImagesError={webImagesError}
+                  webImagesLoading={webImagesLoading}
                 />
               }
             />
             <Route
-              path="/files"
               element={
                 <TabFiles
                   documents={documents}
-                  documentsLoading={documentsLoading}
                   documentsError={documentsError}
+                  documentsLoading={documentsLoading}
                   onOpenFilePicker={handleFileUpload}
-                  webDocuments={webDocuments}
-                  webDocumentsLoading={webDocumentsLoading}
-                  webDocumentsError={webDocumentsError}
                   onUploadWebFiles={handleFileUploadByWeb}
+                  webDocuments={webDocuments}
+                  webDocumentsError={webDocumentsError}
+                  webDocumentsLoading={webDocumentsLoading}
                 />
               }
             />
             <Route
-              path="/download"
               element={
                 <DownloadTab
-                  imageDownload={imageDownload}
-                  imageLoading={imageLoading}
-                  imageError={imageError}
-                  onDownloadImage={handleDownloadImage}
-                  imageDownloadWeb={imageDownloadWeb}
-                  imageLoadingWeb={imageLoadingWeb}
-                  imageErrorWeb={imageErrorWeb}
-                  onDownloadImageWeb={handleDownloadImageWeb}
                   fileDownload={fileDownload}
-                  fileLoading={fileLoading}
-                  fileError={fileError}
-                  onDownloadFile={handleDownloadFile}
                   fileDownloadWeb={fileDownloadWeb}
-                  fileLoadingWeb={fileLoadingWeb}
+                  fileError={fileError}
                   fileErrorWeb={fileErrorWeb}
+                  fileLoading={fileLoading}
+                  fileLoadingWeb={fileLoadingWeb}
+                  imageDownload={imageDownload}
+                  imageDownloadWeb={imageDownloadWeb}
+                  imageError={imageError}
+                  imageErrorWeb={imageErrorWeb}
+                  imageLoading={imageLoading}
+                  imageLoadingWeb={imageLoadingWeb}
+                  onDownloadFile={handleDownloadFile}
                   onDownloadFileWeb={handleDownloadFileWeb}
+                  onDownloadImage={handleDownloadImage}
+                  onDownloadImageWeb={handleDownloadImageWeb}
                 />
               }
+              path="/download"
             />
             <Route
-              path="/contact"
               element={
                 <TabContacts
                   contact={contact}
-                  contactLoading={contactLoading}
                   contactError={contactError}
+                  contactLoading={contactLoading}
                   onOpenContactPicker={handleOpenContactPicker}
-                  webContact={webContact}
-                  webContactLoading={webContactLoading}
-                  webContactError={webContactError}
                   onOpenWebContactPicker={handleOpenWebContactPicker}
+                  webContact={webContact}
+                  webContactError={webContactError}
+                  webContactLoading={webContactLoading}
                 />
               }
+              path="/contact"
             />
             <Route
-              path="/biometric"
               element={
                 <TabBiometric
                   biometric={biometric}
-                  biometricLoading={biometricLoading}
                   biometricError={biometricError}
+                  biometricLoading={biometricLoading}
                   onAuthenticate={handleAuthenticateBiometric}
-                  webBiometric={webBiometric}
-                  webBiometricLoading={webBiometricLoading}
-                  webBiometricError={webBiometricError}
                   onAuthenticateWeb={handleAuthenticateBiometricWeb}
+                  webBiometric={webBiometric}
+                  webBiometricError={webBiometricError}
+                  webBiometricLoading={webBiometricLoading}
                 />
               }
             />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route element={<Navigate replace to="/" />} />
           </Routes>
         </div>
       </main>

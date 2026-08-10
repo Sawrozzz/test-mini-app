@@ -47,27 +47,27 @@ export function TabFiles({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FileCard
-            title="WITH SDK"
-            icon={<Folder size={14} />}
-            color="cyan"
-            files={documents}
-            isLoading={documentsLoading}
-            error={documentsError}
-            onAction={onOpenFilePicker}
-            actionLabel="Open File Picker"
             actionIcon={<Folder size={16} />}
+            actionLabel="Open File Picker"
+            color="cyan"
+            error={documentsError}
+            files={documents}
+            icon={<Folder size={14} />}
+            isLoading={documentsLoading}
+            onAction={onOpenFilePicker}
+            title="WITH SDK"
           />
 
           <FileCard
-            title="WITHOUT SDK"
-            icon={<Upload size={14} />}
-            color="amber"
-            files={webDocuments}
-            isLoading={webDocumentsLoading}
-            error={webDocumentsError}
-            onAction={onUploadWebFiles}
-            actionLabel="Upload Files"
             actionIcon={<Upload size={16} />}
+            actionLabel="Upload Files"
+            color="amber"
+            error={webDocumentsError}
+            files={webDocuments}
+            icon={<Upload size={14} />}
+            isLoading={webDocumentsLoading}
+            onAction={onUploadWebFiles}
+            title="WITHOUT SDK"
           />
         </div>
       </div>
@@ -121,7 +121,7 @@ function FileCard({
 
       {isLoading && !files ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Loading...</p>
         </div>
       ) : (
@@ -138,7 +138,7 @@ function FileCard({
             <div className="space-y-4 mb-4">
               <div className="space-y-2">
                 {files.map((file) => (
-                  <FilePreview key={file.url} file={file} />
+                  <FilePreview file={file} key={file.url} />
                 ))}
               </div>
               <p className="text-slate-400 text-xs text-center">
@@ -151,9 +151,9 @@ function FileCard({
 
       {!isLoading && (
         <button
-          type="button"
+          className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
           onClick={onAction}
-          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          type="button"
         >
           {actionIcon}
           {actionLabel}
@@ -175,14 +175,14 @@ function FilePreview({ file }: { file: SdkFileModule }) {
       {isImage && (file.previewUrl || file.url) ? (
         <div className="w-12 h-12 rounded-lg bg-slate-200 overflow-hidden shrink-0">
           <img
-            src={file.previewUrl || file.url}
             alt={file.fileName}
             className="w-full h-full object-cover"
+            src={file.previewUrl || file.url}
           />
         </div>
       ) : (
         <div className="w-12 h-12 rounded-lg bg-slate-200 flex items-center justify-center shrink-0">
-          <Icon size={22} className="text-slate-500" />
+          <Icon className="text-slate-500" size={22} />
         </div>
       )}
       <div className="min-w-0 flex-1">

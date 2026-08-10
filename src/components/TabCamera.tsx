@@ -35,27 +35,27 @@ export function TabCamera({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CameraCard
-            title="WITH SDK"
-            icon={<Camera size={14} />}
-            color="amber"
-            camera={cameraResponse}
-            isLoading={loadCamera}
-            error={cameraError}
-            onAction={onOpenCamera}
-            actionLabel="Open Camera"
             actionIcon={<Camera size={16} />}
+            actionLabel="Open Camera"
+            camera={cameraResponse}
+            color="amber"
+            error={cameraError}
+            icon={<Camera size={14} />}
+            isLoading={loadCamera}
+            onAction={onOpenCamera}
+            title="WITH SDK"
           />
 
           <CameraCard
-            title="WITHOUT SDK"
-            icon={<Image size={14} />}
-            color="pink"
-            camera={browserCamera}
-            isLoading={browserCameraLoading}
-            error={browserCameraError}
-            onAction={onOpenBrowserCamera}
-            actionLabel="Capture Photo"
             actionIcon={<Camera size={16} />}
+            actionLabel="Capture Photo"
+            camera={browserCamera}
+            color="pink"
+            error={browserCameraError}
+            icon={<Image size={14} />}
+            isLoading={browserCameraLoading}
+            onAction={onOpenBrowserCamera}
+            title="WITHOUT SDK"
           />
         </div>
       </div>
@@ -120,7 +120,7 @@ function CameraCard({
 
       {isLoading && !camera ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Opening camera...</p>
         </div>
       ) : (
@@ -133,13 +133,13 @@ function CameraCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {camera && imageSrc && (
+          {!!(camera && imageSrc) && (
             <div className="space-y-4 mb-4">
               <div className="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50">
                 <img
-                  src={imageSrc}
                   alt={camera.fileName || "Camera preview"}
                   className="w-full max-h-56 object-contain mx-auto"
+                  src={imageSrc}
                 />
               </div>
               <div className="grid grid-cols-3 gap-2">
@@ -175,12 +175,12 @@ function CameraCard({
 
       {!isLoading && (
         <button
-          type="button"
+          className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
           onClick={onAction}
-          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
+          type="button"
         >
           {actionIcon}
-          {camera ? "Capture Again" : actionLabel}
+          {camera ? "Capture Again" : `${actionLabel}`}
         </button>
       )}
     </div>

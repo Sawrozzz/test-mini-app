@@ -35,23 +35,23 @@ export function TabLocation({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <LocationCard
-            title="WITH SDK"
-            icon={<Cpu size={14} />}
             color="emerald"
-            location={location}
-            isLoading={loadLocation}
             error={sdkError}
+            icon={<Cpu size={14} />}
+            isLoading={loadLocation}
+            location={location}
             onView={onViewSdkLocation}
+            title="WITH SDK"
           />
 
           <LocationCard
-            title="WITHOUT SDK"
-            icon={<Globe size={14} />}
             color="indigo"
-            location={browserLocation}
-            isLoading={loadBrowserLocation}
             error={browserError || ""}
+            icon={<Globe size={14} />}
+            isLoading={loadBrowserLocation}
+            location={browserLocation}
             onView={onViewBrowserLocation}
+            title="WITHOUT SDK"
           />
         </div>
       </div>
@@ -102,7 +102,7 @@ function LocationCard({
 
       {isLoading && !location ? (
         <div className="flex flex-col items-center py-6">
-          <Loader size={24} className={`${loaderColor} animate-spin mb-3`} />
+          <Loader className={`${loaderColor} animate-spin mb-3`} size={24} />
           <p className="text-slate-400 text-xs">Fetching location...</p>
         </div>
       ) : (
@@ -115,15 +115,15 @@ function LocationCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {location && <LocationDataGrid location={location} />}
+          {!!location && <LocationDataGrid location={location} />}
         </>
       )}
 
       {!isLoading && (
         <button
-          type="button"
+          className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4`}
           onClick={onView}
-          className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4`}
+          type="button"
         >
           <MapPin size={16} />
           View Location
@@ -162,7 +162,7 @@ function LocationDataGrid({ location }: { location: SdkDeviceLocationResult }) {
           </p>
         </div>
       )}
-      {location.timestamp && (
+      {!!location.timestamp && (
         <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
           <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">
             Timestamp

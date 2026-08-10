@@ -10,9 +10,9 @@ export function SignatureBlock({ license }: { license: DriverLicense }) {
         <p className="text-xs text-slate-400 mt-0.5">Digitally Verified ID</p>
       </div>
       <img
-        src={license.signatureUrl}
         alt="Signature"
         className="h-10 object-contain mix-blend-multiply opacity-80"
+        src={license.signatureUrl}
       />
     </div>
   );

@@ -16,15 +16,15 @@ export function LocationSection({
   return (
     <>
       <button
-        type="button"
         className="rounded border py-2 px-4 disabled:cursor-not-allowed disabled:opacity-50 mt-4"
-        onClick={onViewLocation}
         disabled={loadLocation}
+        onClick={onViewLocation}
+        type="button"
       >
         Your location
       </button>
 
-      {loadLocation && (
+      {!!loadLocation && (
         <div className="mt-2">
           <Loader />
         </div>

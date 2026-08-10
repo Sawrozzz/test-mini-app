@@ -34,7 +34,7 @@ export function Header({
           {theme.mode}
         </span>
       </div>
-      {license && (
+      {license ? (
         <span
           className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
             license.status === "Active"
@@ -44,7 +44,7 @@ export function Header({
         >
           ● {license.status}
         </span>
-      )}
+      ) : null}
     </div>
   );
 }

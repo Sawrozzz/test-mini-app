@@ -1,4 +1,5 @@
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import type { ErrorInfo, ReactNode } from "react";
+import { Component } from "react";
 import { LoadError } from "./LoadError";
 
 interface ErrorBoundaryProps {

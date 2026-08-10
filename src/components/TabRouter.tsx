@@ -5,6 +5,7 @@ import {
   Radio,
   Smartphone,
 } from "lucide-react";
+import { useCallback } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 const ROUTER_ROOT = "/router";
@@ -23,11 +24,14 @@ export function TabRouter({
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Each push appends a segment, so the URL itself shows how deep the stack
-  // is: /router -> /router/level-1 -> /router/level-1/level-2 -> ...
-  const pushDeeper = () => {
+  const pushDeeper = useCallback(() => {
     navigate(`${location.pathname.replace(/\/$/, "")}/level-${depth + 1}`);
-  };
+  }, [depth, location.pathname.replace, navigate]);
+
+  const handleNavigate = useCallback(
+    () => navigate(ROUTER_ROOT, { replace: true }),
+    [navigate],
+  );
 
   return (
     <div className="min-h-full p-6 md:p-10 lg:p-14">
@@ -81,18 +85,18 @@ export function TabRouter({
 
           <div className="flex flex-wrap gap-3">
             <button
-              type="button"
+              className="inline-flex items-center gap-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02]"
               onClick={pushDeeper}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02]"
+              type="button"
             >
               <ChevronsDown size={16} />
               Push a route
             </button>
 
             <button
-              type="button"
-              onClick={onBack}
               className="inline-flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-all duration-200"
+              onClick={onBack}
+              type="button"
             >
               <ArrowLeft size={16} />
               Back (same path as the host)
@@ -100,9 +104,9 @@ export function TabRouter({
 
             {location.pathname !== ROUTER_ROOT && (
               <button
-                type="button"
-                onClick={() => navigate(ROUTER_ROOT, { replace: true })}
                 className="inline-flex items-center gap-2 text-slate-400 px-3 py-2.5 rounded-xl font-medium text-sm hover:text-slate-600 transition-colors"
+                onClick={handleNavigate}
+                type="button"
               >
                 Reset
               </button>
@@ -122,11 +126,11 @@ export function TabRouter({
             <ul className="space-y-1.5 max-h-64 overflow-y-auto">
               {log.map((line, index) => (
                 <li
-                  // biome-ignore lint/suspicious/noArrayIndexKey: log lines may repeat, index disambiguates
-                  key={`${line}-${index}`}
                   className={`font-mono text-xs break-all ${
                     index === 0 ? "text-emerald-400" : "text-slate-400"
                   }`}
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <combined with line>
+                  key={`${line}-${index}`}
                 >
                   {line}
                 </li>

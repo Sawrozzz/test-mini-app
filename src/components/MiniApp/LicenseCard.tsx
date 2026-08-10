@@ -20,9 +20,9 @@ export function LicenseCard({
     <div>
       {loading && !license ? (
         <button
-          type="button"
-          disabled
           className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-semibold shadow-sm opacity-50 cursor-not-allowed"
+          disabled
+          type="button"
         >
           Loading License...
         </button>
@@ -36,7 +36,7 @@ export function LicenseCard({
               <p className="text-rose-600 text-xs">{error}</p>
             </div>
           )}
-          {license && (
+          {license ? (
             <div className="space-y-6 mb-4">
               <div className="relative bg-linear-to-br from-slate-50 to-slate-100/50 rounded-2xl p-5 border border-slate-200 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
                 <LicensePhoto license={license} />
@@ -45,15 +45,15 @@ export function LicenseCard({
               <LicenseDetails license={license} />
               <SignatureBlock license={license} />
             </div>
-          )}
+          ) : null}
         </>
       )}
 
       {!loading && (
         <button
-          type="button"
-          onClick={onFetchLicense}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-semibold shadow-sm transition"
+          onClick={onFetchLicense}
+          type="button"
         >
           {license ? "Refresh License" : "Show My Driving License"}
         </button>
