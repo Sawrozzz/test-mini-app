@@ -14,8 +14,10 @@ export function Sidebar({
   return (
     <>
       {open && (
-        <div
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden"
+        <button
+          type="button"
+          aria-label="Close sidebar"
+          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden cursor-pointer"
           onClick={onToggle}
         />
       )}
@@ -50,6 +52,7 @@ export function Sidebar({
             </div>
           </div>
           <button
+            type="button"
             onClick={onToggle}
             className="md:hidden w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
           >
@@ -58,7 +61,9 @@ export function Sidebar({
         </div>
 
         <div className="flex-1 overflow-y-auto p-3">
-          <p className={`px-4 pb-2 text-[10px] uppercase font-bold tracking-widest text-slate-600 ${!open && "md:hidden"}`}>
+          <p
+            className={`px-4 pb-2 text-[10px] uppercase font-bold tracking-widest text-slate-600 ${!open && "md:hidden"}`}
+          >
             Navigation
           </p>
           <nav className="space-y-0.5">
@@ -103,10 +108,14 @@ export function Sidebar({
                       {label}
                     </span>
                     {isActive && (
-                      <span className={`relative ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50 ${!open && "md:hidden"}`} />
+                      <span
+                        className={`relative ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50 ${!open && "md:hidden"}`}
+                      />
                     )}
                     {!isActive && (
-                      <span className={`relative ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-1 h-1 rounded-full bg-slate-600 ${!open && "md:hidden"}`} />
+                      <span
+                        className={`relative ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-1 h-1 rounded-full bg-slate-600 ${!open && "md:hidden"}`}
+                      />
                     )}
                   </>
                 )}
@@ -115,7 +124,9 @@ export function Sidebar({
           </nav>
         </div>
 
-        <div className={`p-4 border-t border-slate-700/30 bg-slate-800/30 ${!open && "md:hidden"}`}>
+        <div
+          className={`p-4 border-t border-slate-700/30 bg-slate-800/30 ${!open && "md:hidden"}`}
+        >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-linear-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-xs text-slate-300 font-semibold ring-2 ring-slate-600/30 shrink-0">
               {userName[0]?.toUpperCase() || "G"}

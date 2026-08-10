@@ -33,8 +33,7 @@ function parseErrorDetails(error: Error): ErrorDetails {
 function parseFirstStackFrame(stack?: string) {
   if (!stack) return undefined;
 
-  const frameRe =
-    /^\s+at\s+(?:(.+?)\s+\()?(.+?):(\d+):(\d+)\)?$/;
+  const frameRe = /^\s+at\s+(?:(.+?)\s+\()?(.+?):(\d+):(\d+)\)?$/;
   for (const line of stack.split("\n")) {
     const match = line.match(frameRe);
     if (match) {

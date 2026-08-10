@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import {createManifest} from "./src/utils/createManifest.ts";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import { createManifest } from "./src/utils/createManifest.ts";
 
 export default defineConfig({
   plugins: [
@@ -9,7 +9,7 @@ export default defineConfig({
       jsxRuntime: "automatic",
     }),
     tailwindcss(),
-      createManifest(),
+    createManifest(),
   ],
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),

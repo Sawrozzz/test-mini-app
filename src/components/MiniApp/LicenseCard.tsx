@@ -1,8 +1,8 @@
 import { FileText } from "lucide-react";
 import type { DriverLicense } from "../../types";
+import { LicenseDetails } from "./LicenseDetails";
 import { LicensePhoto } from "./LicensePhoto";
 import { LicenseQuickDetails } from "./LicenseQuickDetails";
-import { LicenseDetails } from "./LicenseDetails";
 import { SignatureBlock } from "./SignatureBlock";
 
 export function LicenseCard({
@@ -20,6 +20,7 @@ export function LicenseCard({
     <div>
       {loading && !license ? (
         <button
+          type="button"
           disabled
           className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-semibold shadow-sm opacity-50 cursor-not-allowed"
         >
@@ -50,6 +51,7 @@ export function LicenseCard({
 
       {!loading && (
         <button
+          type="button"
           onClick={onFetchLicense}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-semibold shadow-sm transition"
         >

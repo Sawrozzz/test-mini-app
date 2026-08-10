@@ -1,14 +1,14 @@
 import {
-  Home,
-  FileText,
-  MessageCircle,
-  MapPin,
   Camera,
-  Image,
-  Folder,
-  DownloadIcon,
   Contact,
+  DownloadIcon,
+  FileText,
   Fingerprint,
+  Folder,
+  Home,
+  Image,
+  MapPin,
+  MessageCircle,
   Route as RouteIcon,
 } from "lucide-react";
 import type { TabId } from "./types";
@@ -30,7 +30,12 @@ export const navItems: NavItem[] = [
   { id: "files", path: "/files", label: "Files", icon: Folder },
   { id: "download", path: "/download", label: "Download", icon: DownloadIcon },
   { id: "contact", path: "/contact", label: "Contact", icon: Contact },
-  { id: "biometric", path: "/biometric", label: "Biometric", icon: Fingerprint },
+  {
+    id: "biometric",
+    path: "/biometric",
+    label: "Biometric",
+    icon: Fingerprint,
+  },
   { id: "router", path: "/router", label: "Router", icon: RouteIcon },
 ];
 

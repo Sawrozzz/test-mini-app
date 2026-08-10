@@ -1,4 +1,4 @@
-import { Fingerprint, Loader, X, ShieldCheck, ShieldX } from "lucide-react";
+import { Fingerprint, Loader, ShieldCheck, ShieldX, X } from "lucide-react";
 
 export function TabBiometric({
   biometric,
@@ -84,20 +84,24 @@ function BiometricCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
-  const badge = color === "emerald"
-    ? "bg-emerald-50 border-emerald-100 text-emerald-600"
-    : "bg-sky-50 border-sky-100 text-sky-600";
+  const badge =
+    color === "emerald"
+      ? "bg-emerald-50 border-emerald-100 text-emerald-600"
+      : "bg-sky-50 border-sky-100 text-sky-600";
 
   const loaderColor = color === "emerald" ? "text-emerald-500" : "text-sky-500";
 
-  const btnGradient = color === "emerald"
-    ? "from-emerald-600 to-teal-600 shadow-emerald-600/25 hover:shadow-emerald-600/40"
-    : "from-sky-600 to-blue-600 shadow-sky-600/25 hover:shadow-sky-600/40";
+  const btnGradient =
+    color === "emerald"
+      ? "from-emerald-600 to-teal-600 shadow-emerald-600/25 hover:shadow-emerald-600/40"
+      : "from-sky-600 to-blue-600 shadow-sky-600/25 hover:shadow-sky-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -120,26 +124,34 @@ function BiometricCard({
           )}
           {biometric && (
             <div className="space-y-4 mb-4">
-              <div className={`rounded-2xl border p-6 flex flex-col items-center gap-3 ${
-                biometric.success
-                  ? "bg-emerald-50 border-emerald-100"
-                  : "bg-rose-50 border-rose-100"
-              }`}>
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+              <div
+                className={`rounded-2xl border p-6 flex flex-col items-center gap-3 ${
                   biometric.success
-                    ? "bg-emerald-100 text-emerald-600"
-                    : "bg-rose-100 text-rose-600"
-                }`}>
+                    ? "bg-emerald-50 border-emerald-100"
+                    : "bg-rose-50 border-rose-100"
+                }`}
+              >
+                <div
+                  className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                    biometric.success
+                      ? "bg-emerald-100 text-emerald-600"
+                      : "bg-rose-100 text-rose-600"
+                  }`}
+                >
                   {biometric.success ? (
                     <ShieldCheck size={32} />
                   ) : (
                     <ShieldX size={32} />
                   )}
                 </div>
-                <p className={`text-sm font-semibold ${
-                  biometric.success ? "text-emerald-700" : "text-rose-700"
-                }`}>
-                  {biometric.success ? "Authentication successful" : "Authentication failed"}
+                <p
+                  className={`text-sm font-semibold ${
+                    biometric.success ? "text-emerald-700" : "text-rose-700"
+                  }`}
+                >
+                  {biometric.success
+                    ? "Authentication successful"
+                    : "Authentication failed"}
                 </p>
                 {biometric.error && (
                   <p className="text-xs text-slate-500 text-center">
@@ -154,6 +166,7 @@ function BiometricCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >

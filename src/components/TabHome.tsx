@@ -1,9 +1,9 @@
 import {
-  FileText,
-  MessageCircle,
-  MapPin,
-  Camera,
   ArrowRight,
+  Camera,
+  FileText,
+  MapPin,
+  MessageCircle,
   Sparkles,
   Zap,
 } from "lucide-react";
@@ -113,7 +113,9 @@ export function TabHome() {
               <h3 className="text-slate-800 font-semibold mb-1 group-hover:text-blue-600 transition-colors">
                 {t(`feature.${key}`)}
               </h3>
-              <p className="text-slate-400 text-sm">{t(`feature.${key}Desc`)}</p>
+              <p className="text-slate-400 text-sm">
+                {t(`feature.${key}Desc`)}
+              </p>
             </Link>
           ))}
         </div>

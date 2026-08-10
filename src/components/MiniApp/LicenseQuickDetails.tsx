@@ -8,7 +8,9 @@ export function LicenseQuickDetails({ license }: { license: DriverLicense }) {
         <p className="font-semibold text-slate-700">{license.licenseClass}</p>
       </div>
       <div>
-        <p className="text-[10px] uppercase font-bold text-slate-400">Expires</p>
+        <p className="text-[10px] uppercase font-bold text-slate-400">
+          Expires
+        </p>
         <p className="font-semibold text-rose-600">{license.expiryDate}</p>
       </div>
       <div>

@@ -39,7 +39,9 @@ export function LoadError({
                   {details.functionName && (
                     <>
                       <dt className="font-medium text-gray-500">Function</dt>
-                      <dd className="break-all font-mono">{details.functionName}</dd>
+                      <dd className="break-all font-mono">
+                        {details.functionName}
+                      </dd>
                     </>
                   )}
                   {details.file && (
@@ -70,6 +72,7 @@ export function LoadError({
         )}
 
         <button
+          type="button"
           onClick={() => window.location.reload()}
           className="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700"
         >

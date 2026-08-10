@@ -1,6 +1,6 @@
-import type { DriverLicense } from "../../types";
 import { useAppearance } from "../../hooks/useAppearance";
 import { useT } from "../../hooks/useT";
+import type { DriverLicense } from "../../types";
 
 export function Header({
   userName,
@@ -21,7 +21,9 @@ export function Header({
           <h1 className="text-sm font-semibold tracking-wide uppercase text-slate-400">
             {t("app.title")}
           </h1>
-          <p className="text-xs text-slate-500">{t("app.greeting", { name: userName })}</p>
+          <p className="text-xs text-slate-500">
+            {t("app.greeting", { name: userName })}
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-2">

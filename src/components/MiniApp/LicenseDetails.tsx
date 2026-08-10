@@ -15,7 +15,10 @@ export function LicenseDetails({ license }: { license: DriverLicense }) {
       <Info label="Issuing Authority" value={license.issuingAuthority} />
       <div className="grid grid-cols-2 gap-x-4">
         <Info label="Restrictions" value={license.restrictions || "None"} />
-        <Info label="Organ Donor" value={license.isOrganDonor ? "❤️ Yes" : "No"} />
+        <Info
+          label="Organ Donor"
+          value={license.isOrganDonor ? "❤️ Yes" : "No"}
+        />
       </div>
     </div>
   );

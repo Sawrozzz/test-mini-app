@@ -1,6 +1,6 @@
 import { MemoryRouter } from "react-router";
-import TestMiniApp from "./components/MiniApp";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import TestMiniApp from "./components/MiniApp";
 import { PlatformSDKProvider } from "./providers/PlatformSDKProvider";
 import { toRoutePath } from "./routes";
 import "./index.css";

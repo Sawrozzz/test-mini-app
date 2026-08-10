@@ -16,13 +16,14 @@ export function CameraSection({
   const imageSrc = cameraResponse?.url.startsWith("data:")
     ? cameraResponse.url
     : cameraResponse?.url.startsWith("http://") ||
-      cameraResponse?.url.startsWith("https://")
-    ? cameraResponse.url
-    : `data:${cameraResponse?.mimeType};base64,${cameraResponse?.url}`;
+        cameraResponse?.url.startsWith("https://")
+      ? cameraResponse.url
+      : `data:${cameraResponse?.mimeType};base64,${cameraResponse?.url}`;
 
   return (
     <>
       <button
+        type="button"
         className="rounded border py-2 px-4 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 mt-4"
         onClick={onOpenCamera}
         disabled={loadCamera}
@@ -61,7 +62,7 @@ export function CameraSection({
 
             <div className="rounded bg-white border px-3 py-2">
               <span className="font-medium">Size:</span>{" "}
-              {(cameraResponse.byteSize! / 1024).toFixed(2)} KB
+              {((cameraResponse.byteSize ?? 0) / 1024).toFixed(2)} KB
             </div>
           </div>
 

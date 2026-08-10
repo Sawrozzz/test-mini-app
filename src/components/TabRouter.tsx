@@ -1,4 +1,10 @@
-import { ArrowLeft, ChevronsDown, Layers, Radio, Smartphone } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronsDown,
+  Layers,
+  Radio,
+  Smartphone,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 
 const ROUTER_ROOT = "/router";
@@ -31,10 +37,12 @@ export function TabRouter({
             <Radio size={14} />
             navigation.router
           </div>
-          <h1 className="text-3xl font-bold text-slate-800">Native Back Button</h1>
+          <h1 className="text-3xl font-bold text-slate-800">
+            Native Back Button
+          </h1>
           <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto">
-            Push a few routes, then press the phone's back button. The host
-            asks first; this app pops a route and answers{" "}
+            Push a few routes, then press the phone's back button. The host asks
+            first; this app pops a route and answers{" "}
             <code className="font-mono text-slate-500">consumed=true</code>{" "}
             until there is nothing left to pop.
           </p>
@@ -73,6 +81,7 @@ export function TabRouter({
 
           <div className="flex flex-wrap gap-3">
             <button
+              type="button"
               onClick={pushDeeper}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 hover:scale-[1.02]"
             >
@@ -81,6 +90,7 @@ export function TabRouter({
             </button>
 
             <button
+              type="button"
               onClick={onBack}
               className="inline-flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-5 py-2.5 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-all duration-200"
             >
@@ -90,6 +100,7 @@ export function TabRouter({
 
             {location.pathname !== ROUTER_ROOT && (
               <button
+                type="button"
                 onClick={() => navigate(ROUTER_ROOT, { replace: true })}
                 className="inline-flex items-center gap-2 text-slate-400 px-3 py-2.5 rounded-xl font-medium text-sm hover:text-slate-600 transition-colors"
               >
@@ -111,6 +122,7 @@ export function TabRouter({
             <ul className="space-y-1.5 max-h-64 overflow-y-auto">
               {log.map((line, index) => (
                 <li
+                  // biome-ignore lint/suspicious/noArrayIndexKey: log lines may repeat, index disambiguates
                   key={`${line}-${index}`}
                   className={`font-mono text-xs break-all ${
                     index === 0 ? "text-emerald-400" : "text-slate-400"

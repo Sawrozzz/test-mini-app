@@ -1,4 +1,13 @@
-import { Download, Loader, X, ExternalLink, Image, FileText, Save, Check } from "lucide-react";
+import {
+  Check,
+  Download,
+  ExternalLink,
+  FileText,
+  Image,
+  Loader,
+  Save,
+  X,
+} from "lucide-react";
 import type { SdkDeviceDownloadResult } from "../types";
 
 export function DownloadTab({
@@ -54,7 +63,9 @@ export function DownloadTab({
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Image size={16} className="text-slate-600" />
-              <h2 className="text-lg font-semibold text-slate-800">Image Download</h2>
+              <h2 className="text-lg font-semibold text-slate-800">
+                Image Download
+              </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <DownloadCard
@@ -86,7 +97,9 @@ export function DownloadTab({
           <div>
             <div className="flex items-center gap-2 mb-4">
               <FileText size={16} className="text-slate-600" />
-              <h2 className="text-lg font-semibold text-slate-800">File Download</h2>
+              <h2 className="text-lg font-semibold text-slate-800">
+                File Download
+              </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <DownloadCard
@@ -141,20 +154,24 @@ function DownloadCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
-  const badge = color === "blue"
-    ? "bg-blue-50 border-blue-100 text-blue-600"
-    : "bg-green-50 border-green-100 text-green-600";
+  const badge =
+    color === "blue"
+      ? "bg-blue-50 border-blue-100 text-blue-600"
+      : "bg-green-50 border-green-100 text-green-600";
 
   const loaderColor = color === "blue" ? "text-blue-500" : "text-green-500";
 
-  const btnGradient = color === "blue"
-    ? "from-blue-600 to-indigo-600 shadow-blue-600/25 hover:shadow-blue-600/40"
-    : "from-green-600 to-emerald-600 shadow-green-600/25 hover:shadow-green-600/40";
+  const btnGradient =
+    color === "blue"
+      ? "from-blue-600 to-indigo-600 shadow-blue-600/25 hover:shadow-blue-600/40"
+      : "from-green-600 to-emerald-600 shadow-green-600/25 hover:shadow-green-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -199,7 +216,9 @@ function DownloadCard({
                     Size
                   </p>
                   <p className="text-slate-700 font-semibold text-xs">
-                    {download.file.byteSize ? (download.file.byteSize / 1024).toFixed(1) + " KB" : "—"}
+                    {download.file.byteSize
+                      ? `${(download.file.byteSize / 1024).toFixed(1)} KB`
+                      : "—"}
                   </p>
                 </div>
               </div>
@@ -223,6 +242,7 @@ function DownloadCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >
@@ -257,20 +277,24 @@ function BrowserDownloadCard({
   actionIcon: React.ReactNode;
   fileName: string;
 }) {
-  const badge = color === "blue"
-    ? "bg-blue-50 border-blue-100 text-blue-600"
-    : "bg-green-50 border-green-100 text-green-600";
+  const badge =
+    color === "blue"
+      ? "bg-blue-50 border-blue-100 text-blue-600"
+      : "bg-green-50 border-green-100 text-green-600";
 
   const loaderColor = color === "blue" ? "text-blue-500" : "text-green-500";
 
-  const btnGradient = color === "blue"
-    ? "from-blue-600 to-indigo-600 shadow-blue-600/25 hover:shadow-blue-600/40"
-    : "from-green-600 to-emerald-600 shadow-green-600/25 hover:shadow-green-600/40";
+  const btnGradient =
+    color === "blue"
+      ? "from-blue-600 to-indigo-600 shadow-blue-600/25 hover:shadow-blue-600/40"
+      : "from-green-600 to-emerald-600 shadow-green-600/25 hover:shadow-green-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -316,6 +340,7 @@ function BrowserDownloadCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >

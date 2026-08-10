@@ -1,5 +1,4 @@
-import { MapPin, Compass, Loader, Globe, Cpu } from "lucide-react";
-
+import { Compass, Cpu, Globe, Loader, MapPin } from "lucide-react";
 
 export function TabLocation({
   loadLocation,
@@ -77,20 +76,25 @@ function LocationCard({
   error: string;
   onView: () => void;
 }) {
-  const badge = color === "emerald"
-    ? "bg-emerald-50 border-emerald-100 text-emerald-600"
-    : "bg-indigo-50 border-indigo-100 text-indigo-600";
+  const badge =
+    color === "emerald"
+      ? "bg-emerald-50 border-emerald-100 text-emerald-600"
+      : "bg-indigo-50 border-indigo-100 text-indigo-600";
 
-  const loaderColor = color === "emerald" ? "text-emerald-500" : "text-indigo-500";
+  const loaderColor =
+    color === "emerald" ? "text-emerald-500" : "text-indigo-500";
 
-  const btnGradient = color === "emerald"
-    ? "from-emerald-600 to-teal-600 shadow-emerald-600/25 hover:shadow-emerald-600/40"
-    : "from-indigo-600 to-blue-600 shadow-indigo-600/25 hover:shadow-indigo-600/40";
+  const btnGradient =
+    color === "emerald"
+      ? "from-emerald-600 to-teal-600 shadow-emerald-600/25 hover:shadow-emerald-600/40"
+      : "from-indigo-600 to-blue-600 shadow-indigo-600/25 hover:shadow-indigo-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -117,6 +121,7 @@ function LocationCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onView}
           className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4`}
         >

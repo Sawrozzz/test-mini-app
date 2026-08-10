@@ -1,4 +1,4 @@
-import { Camera, Loader, X, Image } from "lucide-react";
+import { Camera, Image, Loader, X } from "lucide-react";
 
 export function TabCamera({
   loadCamera,
@@ -84,27 +84,35 @@ function CameraCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
-  console.log("CAMERA FILE ", camera)
-  const badge = color === "amber"
-    ? "bg-amber-50 border-amber-100 text-amber-600"
-    : "bg-pink-50 border-pink-100 text-pink-600";
+  console.log("CAMERA FILE ", camera);
+  const badge =
+    color === "amber"
+      ? "bg-amber-50 border-amber-100 text-amber-600"
+      : "bg-pink-50 border-pink-100 text-pink-600";
 
   const loaderColor = color === "amber" ? "text-amber-500" : "text-pink-500";
 
-  const btnGradient = color === "amber"
-    ? "from-amber-600 to-orange-600 shadow-amber-600/25 hover:shadow-amber-600/40"
-    : "from-pink-600 to-rose-600 shadow-pink-600/25 hover:shadow-pink-600/40";
+  const btnGradient =
+    color === "amber"
+      ? "from-amber-600 to-orange-600 shadow-amber-600/25 hover:shadow-amber-600/40"
+      : "from-pink-600 to-rose-600 shadow-pink-600/25 hover:shadow-pink-600/40";
 
-  const imageSrc = camera?.url?.startsWith("data:") || camera?.url?.startsWith("blob:") || camera?.url?.startsWith("http://") || camera?.url?.startsWith("https://")
-    ? camera.url
-    : camera?.url
-    ? `data:${camera.mimeType};base64,${camera.url}`
-    : null;
+  const imageSrc =
+    camera?.url?.startsWith("data:") ||
+    camera?.url?.startsWith("blob:") ||
+    camera?.url?.startsWith("http://") ||
+    camera?.url?.startsWith("https://")
+      ? camera.url
+      : camera?.url
+        ? `data:${camera.mimeType};base64,${camera.url}`
+        : null;
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -156,7 +164,7 @@ function CameraCard({
                     Size
                   </p>
                   <p className="text-slate-700 font-semibold text-xs">
-                    {(camera.byteSize! / 1024).toFixed(1)} KB
+                    {((camera.byteSize ?? 0) / 1024).toFixed(1)} KB
                   </p>
                 </div>
               </div>
@@ -167,6 +175,7 @@ function CameraCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >

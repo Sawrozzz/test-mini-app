@@ -1,6 +1,17 @@
-import { LicenseCard } from "./MiniApp/LicenseCard";
+import {
+  Building,
+  FileText,
+  Globe,
+  Link2,
+  Loader,
+  Mail,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  User as UserIcon,
+} from "lucide-react";
 import type { DriverLicense, User } from "../types";
-import { FileText, ShieldCheck, Globe, Loader, MapPin, Building, Phone, Mail, User as UserIcon, Link2 } from "lucide-react";
+import { LicenseCard } from "./MiniApp/LicenseCard";
 
 export function TabTestApi({
   license,
@@ -29,9 +40,7 @@ export function TabTestApi({
             <ShieldCheck size={14} />
             API Integration
           </div>
-          <h1 className="text-3xl font-bold text-slate-800">
-            Data Fetch
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-800">Data Fetch</h1>
           <p className="text-slate-400 text-sm mt-2">
             Fetch data via SDK or public API
           </p>
@@ -80,6 +89,7 @@ export function TabTestApi({
 
             {!loadUser && (
               <button
+                type="button"
                 onClick={onFetchUser}
                 className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2 mt-4"
               >
@@ -109,8 +119,16 @@ function UserDataGrid({ user }: { user: User }) {
 
       <div className="divide-y divide-slate-100 border-t border-b border-slate-100">
         <div className="grid grid-cols-2 gap-x-4">
-          <DetailItem icon={<Mail size={12} />} label="Email" value={user.email} />
-          <DetailItem icon={<Phone size={12} />} label="Phone" value={user.phone} />
+          <DetailItem
+            icon={<Mail size={12} />}
+            label="Email"
+            value={user.email}
+          />
+          <DetailItem
+            icon={<Phone size={12} />}
+            label="Phone"
+            value={user.phone}
+          />
         </div>
         <DetailItem
           icon={<Link2 size={12} />}
@@ -132,7 +150,15 @@ function UserDataGrid({ user }: { user: User }) {
   );
 }
 
-function DetailItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function DetailItem({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
   return (
     <div className="py-2.5">
       <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">

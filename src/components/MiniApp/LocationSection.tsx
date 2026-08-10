@@ -16,6 +16,7 @@ export function LocationSection({
   return (
     <>
       <button
+        type="button"
         className="rounded border py-2 px-4 disabled:cursor-not-allowed disabled:opacity-50 mt-4"
         onClick={onViewLocation}
         disabled={loadLocation}
@@ -36,8 +37,8 @@ export function LocationSection({
       {!loadLocation && location && (
         <div className="mt-2 text-sm text-slate-600">
           Lat: {location.latitude}, Lng: {location.longitude}, Accuracy:{" "}
-          {location.accuracy},
-          Time: {location?.timestamp ? String(location.timestamp) : ""}
+          {location.accuracy}, Time:{" "}
+          {location?.timestamp ? String(location.timestamp) : ""}
         </div>
       )}
     </>

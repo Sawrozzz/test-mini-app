@@ -1,10 +1,14 @@
 import { useMemo } from "react";
-import { useAppearance } from "./useAppearance";
 import en from "../i18n/en.json";
 import si from "../i18n/si.json";
 import tam from "../i18n/tam.json";
+import { useAppearance } from "./useAppearance";
 
-const DICTIONARIES: Record<string, Record<string, string>> = { en, si, ta: tam };
+const DICTIONARIES: Record<string, Record<string, string>> = {
+  en,
+  si,
+  ta: tam,
+};
 
 export interface UseTResult {
   language: string;

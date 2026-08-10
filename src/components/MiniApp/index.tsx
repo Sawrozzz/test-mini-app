@@ -1,24 +1,20 @@
+import { ChevronLeft, Menu } from "lucide-react";
 import { useState } from "react";
-import { Menu, ChevronLeft } from "lucide-react";
 import { Navigate, Route, Routes } from "react-router";
-import type {
-  DriverLicense,
-  User,
-  SdkDeviceDownloadResult,
-} from "../../types";
-import { usePlatformSDK } from "../../hooks/usePlatformSDK";
 import { useAppearance } from "../../hooks/useAppearance";
+import { usePlatformSDK } from "../../hooks/usePlatformSDK";
+import type { DriverLicense, SdkDeviceDownloadResult, User } from "../../types";
 import { Sidebar } from "../Sidebar";
-import { TabHome } from "../TabHome";
-import { TabTestApi } from "../TabTestApi";
-import { TabChat } from "../TabChat";
-import { TabLocation } from "../TabLocation";
-import { TabCamera } from "../TabCamera";
-import { TabGallery } from "../TabGallery";
-import { TabFiles } from "../TabFiles";
-import { DownloadTab } from "../TabDownload";
-import { TabContacts } from "../TabContacts";
 import { TabBiometric } from "../TabBiometric";
+import { TabCamera } from "../TabCamera";
+import { TabChat } from "../TabChat";
+import { TabContacts } from "../TabContacts";
+import { DownloadTab } from "../TabDownload";
+import { TabFiles } from "../TabFiles";
+import { TabGallery } from "../TabGallery";
+import { TabHome } from "../TabHome";
+import { TabLocation } from "../TabLocation";
+import { TabTestApi } from "../TabTestApi";
 
 function TestMiniApp() {
   const { sdk, user } = usePlatformSDK();
@@ -107,7 +103,7 @@ function TestMiniApp() {
   const handleHttpGet = async () => {
     setLoading(true);
     try {
-      const res = await sdk!.http.post<{
+      const res = await sdk.http.post<{
         data: { driverLicense: DriverLicense };
         error?: string;
       }>({
@@ -138,7 +134,7 @@ function TestMiniApp() {
         sourceApp: "mini-revenue-app",
         timestamp: Date.now().toString(),
       };
-      await sdk!.navigation.navigate({
+      await sdk.navigation.navigate({
         route: "/",
         app: "chat-mini-app",
         params: payload,
@@ -158,13 +154,13 @@ function TestMiniApp() {
     setLocation(null);
 
     try {
-      const res = await sdk!.device.location({
+      const res = await sdk.device.location({
         reason: "To view your current location",
       });
 
       switch (res.status) {
         case "granted":
-          setLocation(res?.data! || null);
+          setLocation(res.data ?? null);
           break;
         case "denied":
           setError("Location permission denied.");
@@ -176,12 +172,11 @@ function TestMiniApp() {
           setError("Location access is restricted on this device.");
           break;
       }
-    } catch (err: any) {
+    } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to get location via SDK",
       );
     } finally {
-
       setLoadLocation(false);
     }
   };
@@ -223,8 +218,10 @@ function TestMiniApp() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: User = await res.json();
       setUserData(data);
-    } catch (err: any) {
-      setUserError(err.message || "Failed to fetch user data");
+    } catch (err) {
+      setUserError(
+        err instanceof Error ? err.message : "Failed to fetch user data",
+      );
     } finally {
       setLoadUser(false);
     }
@@ -235,12 +232,12 @@ function TestMiniApp() {
     setCameraResponse(null);
     setCameraError(null);
     try {
-      const res = await sdk!.device.camera({
+      const res = await sdk.device.camera({
         reason: "To capture a photo for verification",
       });
       switch (res.status) {
         case "granted":
-          setCameraResponse(res.data!);
+          setCameraResponse(res.data ?? null);
           break;
         case "denied":
           setCameraError("Camera permission denied.");
@@ -318,14 +315,20 @@ function TestMiniApp() {
     setGalleryError(null);
 
     try {
-      const res = await sdk!.device.gallery({
+      const res = await sdk.device.gallery({
         reason: "To select images",
         multiple: true,
       });
       switch (res.status) {
-        case "granted":
-          setGallery(res.data!.images ?? res.data!);
+        case "granted": {
+          const galleryData = res.data;
+          setGallery(
+            Array.isArray(galleryData)
+              ? galleryData
+              : (galleryData?.images ?? null),
+          );
           break;
+        }
         case "denied":
           setGalleryError("Image upload cancelled.");
           break;
@@ -406,15 +409,19 @@ function TestMiniApp() {
     setDocumentsError(null);
 
     try {
-      const res = await sdk!.device.files({
+      const res = await sdk.device.files({
         reason: "To select documents",
         multiple: true,
       });
 
       switch (res.status) {
-        case "granted":
-          setDocuments(res.data!.files ?? res.data!);
+        case "granted": {
+          const filesData = res.data;
+          setDocuments(
+            Array.isArray(filesData) ? filesData : (filesData?.files ?? null),
+          );
           break;
+        }
         case "denied":
           setDocumentsError("File access denied.");
           break;
@@ -492,7 +499,7 @@ function TestMiniApp() {
     setImageError(null);
     setImageDownload(null);
     try {
-      const res = await sdk!.device.download({
+      const res = await sdk.device.download({
         url: "https://picsum.photos/1200/800",
         fileName: "sample-image.jpg",
         mimeType: "image/jpeg",
@@ -500,7 +507,7 @@ function TestMiniApp() {
       });
       switch (res.status) {
         case "granted":
-          setImageDownload(res.data!);
+          setImageDownload(res.data ?? null);
           break;
         case "denied":
           setImageError("Download permission denied.");
@@ -564,7 +571,7 @@ function TestMiniApp() {
     setFileError(null);
     setFileDownload(null);
     try {
-      const res = await sdk!.device.download({
+      const res = await sdk.device.download({
         url: "https://pdfobject.com/pdf/sample.pdf",
         fileName: "sample.pdf",
         mimeType: "application/pdf",
@@ -572,7 +579,7 @@ function TestMiniApp() {
       });
       switch (res.status) {
         case "granted":
-          setFileDownload(res.data!);
+          setFileDownload(res.data ?? null);
           break;
         case "denied":
           setFileError("Download permission denied.");
@@ -636,7 +643,7 @@ function TestMiniApp() {
     setContactError(null);
     setContact(null);
     try {
-      const res = await sdk!.device.contact({
+      const res = await sdk.device.contact({
         reason: "To select a contact",
       });
       switch (res.status) {
@@ -717,7 +724,7 @@ function TestMiniApp() {
     setBiometricError(null);
     setBiometric(null);
     try {
-      const res = await sdk!.device.biometric({
+      const res = await sdk.device.biometric({
         reason: "To verify your identity",
       });
       if (!res.data?.success) {
@@ -744,7 +751,7 @@ function TestMiniApp() {
         setWebBiometricError("WebAuthn is not supported by this browser.");
         return;
       }
-      const res = await sdk!.device.biometric({
+      const res = await sdk.device.biometric({
         reason: "To verify your identity",
       });
       if (!res.data?.success) {
@@ -779,6 +786,7 @@ function TestMiniApp() {
       <main className="flex-1 overflow-y-auto min-w-0">
         <div className="sticky top-0 z-30 h-0">
           <button
+            type="button"
             onClick={() => setSidebarOpen((v) => !v)}
             className="hidden md:flex absolute top-3 w-8 h-8 rounded-xl items-center justify-center transition-all duration-300 shadow-lg bg-white/90 backdrop-blur-sm border border-slate-200/80 text-slate-500 hover:text-slate-700 hover:bg-white hover:shadow-xl active:scale-95"
             style={{
@@ -793,6 +801,7 @@ function TestMiniApp() {
           </button>
 
           <button
+            type="button"
             onClick={() => setSidebarOpen(true)}
             className={`md:hidden absolute top-3 left-3 w-9 h-9 rounded-xl items-center justify-center shadow-lg bg-white/90 backdrop-blur-sm border border-slate-200/80 text-slate-500 hover:text-slate-700 hover:bg-white transition-all duration-200 ${sidebarOpen ? "hidden" : "flex"}`}
             title="Open sidebar"

@@ -14,22 +14,24 @@ export function useHostRouter() {
   const location = useLocation();
   const navigationType = useNavigationType();
 
+  // react-router's stable API does not expose the history stack depth, so we
+  // mirror it from navigation actions: PUSH +1, POP -1, REPLACE unchanged.
   const depthRef = useRef(0);
 
-  const goBackRef = useRef<() => Promise<void>>(async () => {});
-
-  const countedKeyRef = useRef<string | null>(null);
-  const previousPathRef = useRef<string | null>(null);
+  // location.key is unique per navigation; it lets us count each entry exactly
+  // once even when the effect re-runs for other reasons.
+  const lastKeyRef = useRef<string | null>(null);
+  const previousPathRef = useRef(location.pathname);
 
   useEffect(() => {
-    if (countedKeyRef.current === location.key) {
+    if (lastKeyRef.current === location.key) {
       return;
     }
 
-    const isFirstObservation = countedKeyRef.current === null;
-    countedKeyRef.current = location.key;
+    const isFirstNavigation = lastKeyRef.current === null;
+    lastKeyRef.current = location.key;
 
-    if (isFirstObservation) {
+    if (isFirstNavigation) {
       previousPathRef.current = location.pathname;
       return;
     }
@@ -62,21 +64,12 @@ export function useHostRouter() {
   const goBack = useCallback(async () => {
     const consumed = depthRef.current > 0;
 
-
     if (consumed) {
       navigate(-1);
     }
-    if (!sdk?.navigation.router) {
-      return;
-    }
 
-    await sdk.navigation.router.back(consumed);
-  }, [sdk, navigate]);
-
-  useEffect(() => {
-    goBackRef.current = goBack;
-  }, [goBack]);
-
+    await sdk?.navigation.router?.back(consumed);
+  }, [navigate, sdk]);
 
   useEffect(() => {
     if (!sdk || !isReady) {
@@ -84,7 +77,7 @@ export function useHostRouter() {
     }
 
     return sdk.on(NAVIGATION_EVENTS.BACK_REQUESTED, () => {
-      void goBackRef.current();
+      void goBack();
     });
-  }, [sdk, isReady]);
+  }, [sdk, isReady, goBack]);
 }

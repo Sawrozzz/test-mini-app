@@ -46,7 +46,18 @@ export type User = {
   };
 };
 
-export type TabId = "home" | "test-api" | "chat" | "location" | "camera" | "gallery" | "files" | "download" | "contact" | "biometric" | "router";
+export type TabId =
+  | "home"
+  | "test-api"
+  | "chat"
+  | "location"
+  | "camera"
+  | "gallery"
+  | "files"
+  | "download"
+  | "contact"
+  | "biometric"
+  | "router";
 
 export interface SdkFileModule {
   rawFile?: File;
@@ -72,7 +83,8 @@ export interface SdkDevicePermissionBaseResponse<T> {
   error?: string;
 }
 
-export interface SdkDeviceDownloadResponse extends SdkDevicePermissionBaseResponse<SdkDeviceDownloadResult> {}
+export interface SdkDeviceDownloadResponse
+  extends SdkDevicePermissionBaseResponse<SdkDeviceDownloadResult> {}
 
 export interface SdkDeviceContactResult {
   contactName?: string;

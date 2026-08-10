@@ -1,5 +1,12 @@
-import { Image, FolderOpen, Loader, Upload, X, FileImage, HardDrive } from "lucide-react";
-
+import {
+  FileImage,
+  FolderOpen,
+  HardDrive,
+  Image,
+  Loader,
+  Upload,
+  X,
+} from "lucide-react";
 
 export function TabGallery({
   gallery,
@@ -85,20 +92,24 @@ function ImageCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
-  const badge = color === "violet"
-    ? "bg-violet-50 border-violet-100 text-violet-600"
-    : "bg-rose-50 border-rose-100 text-rose-600";
+  const badge =
+    color === "violet"
+      ? "bg-violet-50 border-violet-100 text-violet-600"
+      : "bg-rose-50 border-rose-100 text-rose-600";
 
   const loaderColor = color === "violet" ? "text-violet-500" : "text-rose-500";
 
-  const btnGradient = color === "violet"
-    ? "from-violet-600 to-purple-600 shadow-violet-600/25 hover:shadow-violet-600/40"
-    : "from-rose-600 to-pink-600 shadow-rose-600/25 hover:shadow-rose-600/40";
+  const btnGradient =
+    color === "violet"
+      ? "from-violet-600 to-purple-600 shadow-violet-600/25 hover:shadow-violet-600/40"
+      : "from-rose-600 to-pink-600 shadow-rose-600/25 hover:shadow-rose-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -122,8 +133,8 @@ function ImageCard({
           {images && images.length > 0 && (
             <div className="space-y-4 mb-4">
               <div className="grid grid-cols-2 gap-3">
-                {images.map((file, i) => (
-                  <ImagePreview key={i} file={file} />
+                {images.map((file) => (
+                  <ImagePreview key={file.url} file={file} />
                 ))}
               </div>
               <p className="text-slate-400 text-xs text-center">
@@ -136,6 +147,7 @@ function ImageCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >
@@ -149,7 +161,8 @@ function ImageCard({
 
 function ImagePreview({ file }: { file: SdkFileModule }) {
   const previewUrl = file.previewUrl || file.url;
-  const ext = file.extension || file.fileName!.split(".").pop()?.toLowerCase() || "?";
+  const ext =
+    file.extension || file.fileName?.split(".").pop()?.toLowerCase() || "?";
   const size = formatBytes(file.byteSize ?? 0);
 
   return (
@@ -162,7 +175,10 @@ function ImagePreview({ file }: { file: SdkFileModule }) {
         />
       </div>
       <div className="p-3 space-y-1.5">
-        <p className="text-[10px] font-medium text-slate-700 truncate leading-tight" title={file.fileName}>
+        <p
+          className="text-[10px] font-medium text-slate-700 truncate leading-tight"
+          title={file.fileName}
+        >
           {file.fileName}
         </p>
         <div className="flex items-center gap-2 text-[10px] text-slate-400">

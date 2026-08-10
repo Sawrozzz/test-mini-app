@@ -1,5 +1,16 @@
-import { Folder, Loader, Upload, X, FileText, HardDrive, FileImage, Film, FileArchive, FileCode, FileSpreadsheet } from "lucide-react";
-
+import {
+  FileArchive,
+  FileCode,
+  FileImage,
+  FileSpreadsheet,
+  FileText,
+  Film,
+  Folder,
+  HardDrive,
+  Loader,
+  Upload,
+  X,
+} from "lucide-react";
 
 export function TabFiles({
   documents,
@@ -85,20 +96,24 @@ function FileCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
-  const badge = color === "cyan"
-    ? "bg-cyan-50 border-cyan-100 text-cyan-600"
-    : "bg-amber-50 border-amber-100 text-amber-600";
+  const badge =
+    color === "cyan"
+      ? "bg-cyan-50 border-cyan-100 text-cyan-600"
+      : "bg-amber-50 border-amber-100 text-amber-600";
 
   const loaderColor = color === "cyan" ? "text-cyan-500" : "text-amber-500";
 
-  const btnGradient = color === "cyan"
-    ? "from-cyan-600 to-teal-600 shadow-cyan-600/25 hover:shadow-cyan-600/40"
-    : "from-amber-600 to-orange-600 shadow-amber-600/25 hover:shadow-amber-600/40";
+  const btnGradient =
+    color === "cyan"
+      ? "from-cyan-600 to-teal-600 shadow-cyan-600/25 hover:shadow-cyan-600/40"
+      : "from-amber-600 to-orange-600 shadow-amber-600/25 hover:shadow-amber-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -122,8 +137,8 @@ function FileCard({
           {files && files.length > 0 && (
             <div className="space-y-4 mb-4">
               <div className="space-y-2">
-                {files.map((file, i) => (
-                  <FilePreview key={i} file={file} />
+                {files.map((file) => (
+                  <FilePreview key={file.url} file={file} />
                 ))}
               </div>
               <p className="text-slate-400 text-xs text-center">
@@ -136,6 +151,7 @@ function FileCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-gradient-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >
@@ -148,7 +164,8 @@ function FileCard({
 }
 
 function FilePreview({ file }: { file: SdkFileModule }) {
-  const ext = file.extension || file.fileName!.split(".").pop()?.toLowerCase() || "?";
+  const ext =
+    file.extension || file.fileName?.split(".").pop()?.toLowerCase() || "?";
   const size = formatBytes(file.byteSize ?? 0);
   const isImage = file.mimeType?.startsWith("image/");
   const Icon = getFileIcon(ext);
@@ -169,7 +186,10 @@ function FilePreview({ file }: { file: SdkFileModule }) {
         </div>
       )}
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-medium text-slate-700 truncate" title={file.fileName}>
+        <p
+          className="text-xs font-medium text-slate-700 truncate"
+          title={file.fileName}
+        >
           {file.fileName}
         </p>
         <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-0.5">
@@ -191,13 +211,34 @@ function getFileIcon(ext: string) {
   const imageExts = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "ico"];
   const videoExts = ["mp4", "webm", "avi", "mov", "mkv", "flv"];
   const archiveExts = ["zip", "rar", "7z", "tar", "gz", "bz2"];
-  const codeExts = ["js", "ts", "jsx", "tsx", "json", "html", "css", "py", "java", "cpp", "c", "go", "rs"];
+  const codeExts = [
+    "js",
+    "ts",
+    "jsx",
+    "tsx",
+    "json",
+    "html",
+    "css",
+    "py",
+    "java",
+    "cpp",
+    "c",
+    "go",
+    "rs",
+  ];
 
   if (imageExts.includes(ext)) return FileImage;
   if (videoExts.includes(ext)) return Film;
   if (archiveExts.includes(ext)) return FileArchive;
   if (codeExts.includes(ext)) return FileCode;
-  if (ext === "pdf" || ext === "doc" || ext === "docx" || ext === "xls" || ext === "xlsx") return FileSpreadsheet;
+  if (
+    ext === "pdf" ||
+    ext === "doc" ||
+    ext === "docx" ||
+    ext === "xls" ||
+    ext === "xlsx"
+  )
+    return FileSpreadsheet;
   return FileText;
 }
 

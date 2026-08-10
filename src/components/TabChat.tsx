@@ -1,4 +1,4 @@
-import { MessageCircle, Sparkles, Send, ArrowRight } from "lucide-react";
+import { ArrowRight, MessageCircle, Send, Sparkles } from "lucide-react";
 
 export function TabChat({
   navLoading,
@@ -46,6 +46,7 @@ export function TabChat({
             </p>
 
             <button
+              type="button"
               onClick={onNavigate}
               disabled={navLoading}
               className="group bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"

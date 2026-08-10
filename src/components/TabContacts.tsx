@@ -1,4 +1,4 @@
-import { Phone, Loader, X, User, Users } from "lucide-react";
+import { Loader, Phone, User, Users, X } from "lucide-react";
 
 export function TabContacts({
   contact,
@@ -84,20 +84,24 @@ function ContactCard({
   actionLabel: string;
   actionIcon: React.ReactNode;
 }) {
-  const badge = color === "indigo"
-    ? "bg-indigo-50 border-indigo-100 text-indigo-600"
-    : "bg-teal-50 border-teal-100 text-teal-600";
+  const badge =
+    color === "indigo"
+      ? "bg-indigo-50 border-indigo-100 text-indigo-600"
+      : "bg-teal-50 border-teal-100 text-teal-600";
 
   const loaderColor = color === "indigo" ? "text-indigo-500" : "text-teal-500";
 
-  const btnGradient = color === "indigo"
-    ? "from-indigo-600 to-blue-600 shadow-indigo-600/25 hover:shadow-indigo-600/40"
-    : "from-teal-600 to-cyan-600 shadow-teal-600/25 hover:shadow-teal-600/40";
+  const btnGradient =
+    color === "indigo"
+      ? "from-indigo-600 to-blue-600 shadow-indigo-600/25 hover:shadow-indigo-600/40"
+      : "from-teal-600 to-cyan-600 shadow-teal-600/25 hover:shadow-teal-600/40";
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}>
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${badge}`}
+        >
           {icon}
           {title}
         </div>
@@ -121,9 +125,13 @@ function ContactCard({
           {contact && (
             <div className="space-y-4 mb-4">
               <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
-                  color === "indigo" ? "bg-indigo-100 text-indigo-600" : "bg-teal-100 text-teal-600"
-                }`}>
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
+                    color === "indigo"
+                      ? "bg-indigo-100 text-indigo-600"
+                      : "bg-teal-100 text-teal-600"
+                  }`}
+                >
                   <User size={22} />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -142,6 +150,7 @@ function ContactCard({
 
       {!isLoading && (
         <button
+          type="button"
           onClick={onAction}
           className={`w-full group bg-linear-to-r ${btnGradient} text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg transition-all duration-300 hover:scale-[1.02] inline-flex items-center justify-center gap-2`}
         >

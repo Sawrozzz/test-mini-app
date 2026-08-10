@@ -1,8 +1,9 @@
-import { useEffect, useReducer, useRef, type ReactNode } from "react";
-import { SDKContext } from "../context/SDKContext";
-import { retry } from "../utils/retry";
+import type { ReactNode } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { LoadError } from "../components/LoadError";
+import { SDKContext } from "../context/SDKContext";
 import { useHostRouter } from "../hooks/useHostRouter";
+import { retry } from "../utils/retry";
 
 type State =
   | { phase: "loading" }
@@ -28,11 +29,7 @@ function getSDK() {
   return instance;
 }
 
-function PlatformSDKRuntime({
-  children,
-}: {
-  children: ReactNode;
-}) {
+function PlatformSDKRuntime({ children }: { children: ReactNode }) {
   useHostRouter();
 
   return <>{children}</>;
@@ -87,7 +84,7 @@ export function PlatformSDKProvider({ children }: { children: ReactNode }) {
     <SDKContext.Provider
       value={{ sdk: state.sdk, user: state.user, isReady: true, error: null }}
     >
-       <PlatformSDKRuntime>{children}</PlatformSDKRuntime>
+      <PlatformSDKRuntime>{children}</PlatformSDKRuntime>
     </SDKContext.Provider>
   );
 }

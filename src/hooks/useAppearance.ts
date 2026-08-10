@@ -1,6 +1,10 @@
+import type {
+  AppearanceState,
+  LocaleState,
+  ThemeState,
+} from "@lizuz/mini-app-types";
 import { useEffect, useState } from "react";
 import { usePlatformSDK } from "./usePlatformSDK";
-import type { AppearanceState, LocaleState, ThemeState } from "@lizuz/mini-app-types";
 
 const DEFAULT_STATE: AppearanceState = {
   locale: { locale: "en-LK", language: "en", direction: "ltr" },
@@ -11,7 +15,6 @@ export interface UseAppearanceResult {
   locale: LocaleState;
   theme: ThemeState;
 }
-
 export function useAppearance(): UseAppearanceResult {
   const { sdk, isReady } = usePlatformSDK();
   const [state, setState] = useState<AppearanceState>(() =>
@@ -22,7 +25,7 @@ export function useAppearance(): UseAppearanceResult {
     if (!sdk) return;
     setState(sdk.appearance.state());
     return sdk.appearance.subscribe(setState);
-  }, [sdk, isReady]);
+  }, [sdk]);
 
   return { locale: state.locale, theme: state.theme };
 }
