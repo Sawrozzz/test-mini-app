@@ -856,6 +856,7 @@ function TestMiniApp() {
                   sdkError={error}
                 />
               }
+              path="/location"
             />
             <Route
               element={
@@ -870,6 +871,7 @@ function TestMiniApp() {
                   onOpenCamera={handleOpenCamera}
                 />
               }
+              path="/camera"
             />
             <Route
               element={
@@ -884,6 +886,7 @@ function TestMiniApp() {
                   webImagesLoading={webImagesLoading}
                 />
               }
+              path="/gallery"
             />
             <Route
               element={
@@ -898,6 +901,7 @@ function TestMiniApp() {
                   webDocumentsLoading={webDocumentsLoading}
                 />
               }
+              path="/files"
             />
             <Route
               element={
