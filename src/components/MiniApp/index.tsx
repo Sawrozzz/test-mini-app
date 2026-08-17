@@ -954,6 +954,7 @@ function TestMiniApp() {
                   webBiometricLoading={webBiometricLoading}
                 />
               }
+              path="/biometric"
             />
             <Route element={<Navigate replace to="/" />} />
           </Routes>
