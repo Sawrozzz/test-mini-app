@@ -53,6 +53,7 @@ export type TabId =
   | "location"
   | "camera"
   | "gallery"
+  | "images"
   | "files"
   | "download"
   | "contact"

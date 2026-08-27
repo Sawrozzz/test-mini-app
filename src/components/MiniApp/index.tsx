@@ -13,6 +13,7 @@ import { DownloadTab } from "../TabDownload";
 import { TabFiles } from "../TabFiles";
 import { TabGallery } from "../TabGallery";
 import { TabHome } from "../TabHome";
+import { TabImages } from "../TabImages";
 import { TabLocation } from "../TabLocation";
 import { TabTestApi } from "../TabTestApi";
 
@@ -888,6 +889,7 @@ function TestMiniApp() {
               }
               path="/gallery"
             />
+            <Route element={<TabImages />} path="/images" />
             <Route
               element={
                 <TabFiles
