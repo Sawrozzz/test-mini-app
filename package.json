@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --port 3002 --host",
     "build": "biome check --error-on-warnings --max-diagnostics=200 . && tsc -b && vite build",
+    "build:test": "tsc -b && vite build",
     "lint": "biome check .",
     "format": "biome format --write .",
     "check": "biome check --write .",

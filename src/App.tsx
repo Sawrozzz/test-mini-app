@@ -1,24 +1,17 @@
-import { MemoryRouter } from "react-router";
+import { HashRouter } from "react-router";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import TestMiniApp from "./components/MiniApp";
 import { PlatformSDKProvider } from "./providers/PlatformSDKProvider";
-import { toRoutePath } from "./routes";
 import "./index.css";
 
-function resolveInitialEntry(initialPath?: string): string {
-  const hash = window.location.hash.replace(/^#/, "");
-  const raw = hash || initialPath || "/";
-  return toRoutePath(raw);
-}
-
-export default function App({ initialPath }: { initialPath?: string }) {
+export default function App() {
   return (
     <ErrorBoundary>
-      <MemoryRouter initialEntries={[resolveInitialEntry(initialPath)]}>
+      <HashRouter>
         <PlatformSDKProvider>
           <TestMiniApp />
         </PlatformSDKProvider>
-      </MemoryRouter>
+      </HashRouter>
     </ErrorBoundary>
   );
 }

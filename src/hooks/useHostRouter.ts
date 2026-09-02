@@ -14,12 +14,14 @@ export function useHostRouter() {
   const location = useLocation();
   const navigationType = useNavigationType();
 
-  // react-router's stable API does not expose the history stack depth, so we
-  // mirror it from navigation actions: PUSH +1, POP -1, REPLACE unchanged.
-  const depthRef = useRef(0);
+  // For HashRouter the pathname *is* the hash path (e.g. "#/chat" -> "/chat").
+  // Using it directly is robust for fast navigations where `location.key`
+  // effects can be batched and `PUSH`/`POP` counting races. Any non-root
+  // pathname means the mini-app has somewhere to go back to.
+  const isRoot = location.pathname === "/" || location.pathname === "";
+  const canGoBackRef = useRef(!isRoot);
+  canGoBackRef.current = !isRoot;
 
-  // location.key is unique per navigation; it lets us count each entry exactly
-  // once even when the effect re-runs for other reasons.
   const lastKeyRef = useRef<string | null>(null);
   const previousPathRef = useRef(location.pathname);
 
@@ -33,43 +35,64 @@ export function useHostRouter() {
 
     if (isFirstNavigation) {
       previousPathRef.current = location.pathname;
+      // Sync host immediately on first mount if not at root (e.g. deep link)
+      if (!isRoot && sdk) {
+        sdk.emit(NAVIGATION_EVENTS.ROUTE_CHANGED, {
+          previous: previousPathRef.current,
+          current: location.pathname,
+          canGoBack: true,
+        });
+        void sdk.navigation.router?.push(true);
+      }
       return;
-    }
-
-    if (navigationType === "PUSH") {
-      depthRef.current += 1;
-    } else if (navigationType === "POP") {
-      depthRef.current = Math.max(0, depthRef.current - 1);
     }
 
     if (!sdk) {
       return;
     }
 
+    const canGoBack = !isRoot;
+
     // Keep the host's back-button policy in sync with this app's history,
     // otherwise the host never knows a route was pushed and exits on back.
     sdk.emit(NAVIGATION_EVENTS.ROUTE_CHANGED, {
       previous: previousPathRef.current,
       current: location.pathname,
-      canGoBack: depthRef.current > 0,
+      canGoBack,
     });
 
     previousPathRef.current = location.pathname;
 
-    if (navigationType === "PUSH" && sdk.navigation.router) {
-      void sdk.navigation.router.push(true);
+    if (!isRoot && navigationType === "PUSH" && sdk.navigation.router.push) {
+      void sdk.navigation.router?.push(true);
     }
-  }, [location.key, location.pathname, navigationType, sdk]);
+    // On POP to root, the host will learn canGoBack=false via the emit above;
+    // no need to call router.push. On POP to non-root, still canGoBack=true,
+    // already emitted.
+  }, [location.key, location.pathname, navigationType, sdk, isRoot]);
 
   const goBack = useCallback(async () => {
-    const consumed = depthRef.current > 0;
+    const consumed = canGoBackRef.current;
 
+    await sdk?.navigation.router?.back(consumed);
     if (consumed) {
       navigate(-1);
     }
-
-    await sdk?.navigation.router?.back(consumed);
   }, [navigate, sdk]);
+
+  // Sync host when SDK becomes ready — pushes that happened before the
+  // bridge was ready never informed the host.
+  useEffect(() => {
+    if (!sdk || !isReady) return;
+    if (!isRoot) {
+      sdk.emit(NAVIGATION_EVENTS.ROUTE_CHANGED, {
+        previous: previousPathRef.current,
+        current: location.pathname,
+        canGoBack: true,
+      });
+      void sdk.navigation.router?.push(true);
+    }
+  }, [sdk, isReady, location.pathname, isRoot]);
 
   useEffect(() => {
     if (!sdk || !isReady) {

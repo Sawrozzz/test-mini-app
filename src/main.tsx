@@ -8,7 +8,8 @@ export function mount(
   runtime?: { initialPath?: string },
 ) {
   const root: Root = createRoot(container);
-  root.render(<App initialPath={runtime?.initialPath} />);
+  void runtime?.initialPath;
+  root.render(<App />);
 
   return {
     unmount() {
