@@ -42,7 +42,9 @@ export function useHostRouter() {
           current: location.pathname,
           canGoBack: true,
         });
-        void sdk.navigation.router?.push(true);
+        // Same guard as below: don't crash if the mobile host hasn't
+        // implemented the router bridge.
+        void sdk.navigation.router?.push?.(true);
       }
       return;
     }
@@ -63,8 +65,10 @@ export function useHostRouter() {
 
     previousPathRef.current = location.pathname;
 
-    if (!isRoot && navigationType === "PUSH" && sdk.navigation.router.push) {
-      void sdk.navigation.router?.push(true);
+    // Mobile hosts may not implement sdk.navigation.router; guard so that
+    // the absence of a router bridge on the host does not crash rendering.
+    if (!isRoot && navigationType === "PUSH") {
+      void sdk.navigation.router?.push?.(true);
     }
     // On POP to root, the host will learn canGoBack=false via the emit above;
     // no need to call router.push. On POP to non-root, still canGoBack=true,
@@ -74,7 +78,9 @@ export function useHostRouter() {
   const goBack = useCallback(async () => {
     const consumed = canGoBackRef.current;
 
-    await sdk?.navigation.router?.back(consumed);
+    // Guard: some mobile hosts don't implement the back bridge, so the
+    // optional chain keeps both web and mobile from crashing.
+    await sdk?.navigation.router?.back?.(consumed);
     if (consumed) {
       navigate(-1);
     }
@@ -90,7 +96,7 @@ export function useHostRouter() {
         current: location.pathname,
         canGoBack: true,
       });
-      void sdk.navigation.router?.push(true);
+      void sdk.navigation.router?.push?.(true);
     }
   }, [sdk, isReady, location.pathname, isRoot]);
 
