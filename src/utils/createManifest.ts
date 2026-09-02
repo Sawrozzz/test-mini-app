@@ -71,7 +71,7 @@ export function createManifest(): Plugin {
         },
         platform: {
           runtime: "^1.0.0",
-          sdk: "^2.0.0",
+          sdk: "^1.0.9",
         },
         bundle: {
           entry: entryFile,
