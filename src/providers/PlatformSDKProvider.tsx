@@ -50,9 +50,11 @@ export function PlatformSDKProvider({ children }: { children: ReactNode }) {
           delayMs: 500,
           signal: controller.signal,
         });
-        await new Promise<void>(res => {
+        await new Promise<void>((res) => {
           if (window.__GSA_SDK__) return res();
-          window.addEventListener('__GSA_SDK_READY__', () => res(), { once: true });
+          window.addEventListener("__GSA_SDK_READY__", () => res(), {
+            once: true,
+          });
         });
         const user = await instance.auth.getUser();
         if (!controller.signal.aborted) {
